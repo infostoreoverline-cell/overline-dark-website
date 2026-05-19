@@ -557,12 +557,12 @@ ScrollTrigger.create({
   trigger: '.s5-scroll-panels',
   start: 'top+=33% center',
   onEnter: () => {
-    gsap.to('#p1', { opacity:0, y:-40, duration:0.5, ease:'power4.inOut' });
-    gsap.to('#p2', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1 });
+    gsap.to('#p1', { opacity:0, y:-40, duration:0.5, ease:'power4.inOut', overwrite:true });
+    gsap.to('#p2', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
   },
   onLeaveBack: () => {
-    gsap.to('#p2', { opacity:0, y:40,  duration:0.5, ease:'power4.inOut' });
-    gsap.to('#p1', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1 });
+    gsap.to('#p2', { opacity:0, y:40,  duration:0.5, ease:'power4.inOut', overwrite:true });
+    gsap.to('#p1', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
   }
 });
 
@@ -571,12 +571,12 @@ ScrollTrigger.create({
   trigger: '.s5-scroll-panels',
   start: 'top+=66% center',
   onEnter: () => {
-    gsap.to('#p2', { opacity:0, y:-40, duration:0.5, ease:'power4.inOut' });
-    gsap.to('#p3', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1 });
+    gsap.to('#p2', { opacity:0, y:-40, duration:0.5, ease:'power4.inOut', overwrite:true });
+    gsap.to('#p3', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
   },
   onLeaveBack: () => {
-    gsap.to('#p3', { opacity:0, y:40,  duration:0.5, ease:'power4.inOut' });
-    gsap.to('#p2', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1 });
+    gsap.to('#p3', { opacity:0, y:40,  duration:0.5, ease:'power4.inOut', overwrite:true });
+    gsap.to('#p2', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
   }
 });
 
