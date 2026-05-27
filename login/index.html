@@ -286,6 +286,28 @@ body {
   border-bottom-color: var(--accent);
 }
 
+/* ── ERROR BANNER ── */
+.error-banner {
+  background: var(--accent);
+  color: #FFF;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  padding: 12px 16px;
+  border-left: 4px solid #FF4D4D;
+  margin-bottom: 24px;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(230,0,0,0.2);
+}
+
+.error-banner span.icon {
+  font-size: 14px;
+}
+
 /* ── REVEAL EFFECTS ── */
 .reveal-wrap { overflow: hidden; display: block; }
 .reveal-line { display: block; overflow: hidden; transform: translateY(100%); opacity: 0; }
@@ -336,7 +358,13 @@ body {
         <p class="typewriter-text"></p>
       </div>
 
-      <form action="#" method="POST" id="login-form">
+      <form action="#" method="POST" id="login-form" novalidate>
+        
+        <div class="error-banner" id="error-banner">
+          <span class="icon">⚠</span>
+          <span id="error-text">CREDENZIALI NON VALIDE</span>
+        </div>
+
         <div class="form-group stagger-item">
           <label for="email">Email</label>
           <input type="email" id="email" name="email" placeholder="nome@esempio.com" required autocomplete="email">
@@ -436,20 +464,48 @@ body {
         });
       }
 
-      // 8. Animazione "Screen Shake" su errore login
+      // 8. Animazione "Screen Shake" e Allarme Custom su errore login
       const loginForm = document.getElementById('login-form');
+      const emailInput = document.getElementById('email');
+      const pwdInput = document.getElementById('password');
+      const errorBanner = document.getElementById('error-banner');
+      const errorText = document.getElementById('error-text');
       
       if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
-          e.preventDefault(); // Previene l'invio reale per mostrare l'animazione
+          e.preventDefault(); // Previene l'invio reale
+          
+          let errorMessage = "CREDENZIALI NON VALIDE";
+          let hasError = true;
+
+          if (!emailInput.validity.valid) {
+            errorMessage = emailInput.value === "" ? "INSERISCI UN INDIRIZZO EMAIL" : "FORMATO EMAIL NON VALIDO";
+          } else if (!pwdInput.validity.valid) {
+            errorMessage = "PASSWORD MANCANTE O NON VALIDA";
+          } else {
+            // Se i campi sono validi simuliamo comunque un errore di sistema (visto che è un prototipo)
+            errorMessage = "ACCESSO NEGATO: ATTREZZATURA BLOCCATA";
+          }
+
+          // Mostra il banner d'errore
+          errorText.textContent = errorMessage;
+          errorBanner.style.display = 'flex';
+          
+          // Anima l'ingresso del banner
+          gsap.fromTo(errorBanner, 
+            { opacity: 0, y: -10 },
+            { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
+          );
           
           // Fa tremare l'intera pagina (body)
           document.body.classList.remove('shake');
           void document.body.offsetWidth; // Trigger reflow per forzare il riavvio
           document.body.classList.add('shake');
 
-          // Flash rosso sugli input
-          gsap.fromTo('.form-group input', 
+          // Flash rosso solo sugli input invalidi (o su tutti se forziamo l'errore)
+          const inputsToFlash = (!emailInput.validity.valid || !pwdInput.validity.valid) ? '.form-group input:invalid' : '.form-group input';
+
+          gsap.fromTo(inputsToFlash, 
             { borderColor: '#E60000', backgroundColor: 'rgba(230, 0, 0, 0.15)' },
             { borderColor: 'var(--outline)', backgroundColor: '#000', duration: 1.5, ease: 'power2.out' }
           );
