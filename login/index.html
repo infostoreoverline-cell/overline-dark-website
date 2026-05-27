@@ -55,10 +55,10 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
-  filter: blur(6px) grayscale(40%);
+  object-position: 25% center;
+  filter: blur(3px) grayscale(40%);
   opacity: 0.6;
-  transform: scale(1.05); /* Slight zoom to hide blur edges */
+  transform: scale(1.15); /* Slight zoom to hide blur edges */
 }
 
 .bg-container::after {
@@ -315,7 +315,7 @@ body {
 
       // 1. Lieve zoom out del background per dare profondità
       tl.to('#bg-image', {
-        scale: 1,
+        scale: 1.05,
         duration: 2.5,
         ease: 'power2.out'
       }, 0);
