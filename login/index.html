@@ -56,8 +56,8 @@ body {
   height: 100%;
   object-fit: cover;
   object-position: 25% center;
-  filter: blur(3px) grayscale(40%);
-  opacity: 0.6;
+  filter: blur(3px) grayscale(20%);
+  opacity: 0.85;
   transform: scale(1.15); /* Slight zoom to hide blur edges */
 }
 
@@ -342,6 +342,34 @@ body {
         { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out' },
         0.8
       );
+      
+      // 5. Animazione interattiva: Parallasse sottile sul background e tilt 3D sulla card
+      gsap.set('.login-wrapper', { perspective: 1200 });
+      gsap.set('#card', { transformStyle: 'preserve-3d' });
+
+      window.addEventListener('mousemove', (e) => {
+        // Calcola la posizione del mouse rispetto al centro (-1 to 1)
+        const xPos = (e.clientX / window.innerWidth - 0.5) * 2;
+        const yPos = (e.clientY / window.innerHeight - 0.5) * 2;
+        
+        // Movimento sfondo
+        gsap.to('#bg-image', {
+          x: xPos * -15,
+          y: yPos * -15,
+          duration: 1.5,
+          ease: 'power2.out'
+        });
+        
+        // Tilt 3D della card
+        gsap.to('#card', {
+          rotationY: xPos * 4,
+          rotationX: yPos * -4,
+          x: xPos * 5,
+          y: yPos * 5,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+      });
     });
   </script>
 </body>
