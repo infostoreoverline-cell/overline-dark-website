@@ -288,20 +288,19 @@ body {
 
 /* ── ERROR BANNER ── */
 .error-banner {
-  background: var(--accent);
-  color: #FFF;
+  background: rgba(230, 0, 0, 0.08);
+  color: var(--accent);
   font-family: var(--f-mono);
   font-size: 11px;
   letter-spacing: 0.15em;
   padding: 12px 16px;
-  border-left: 4px solid #FF4D4D;
+  border: 1px solid rgba(230, 0, 0, 0.15);
+  border-left: 3px solid var(--accent);
   margin-bottom: 24px;
   display: none;
   align-items: center;
   gap: 12px;
   text-transform: uppercase;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(230,0,0,0.2);
 }
 
 .error-banner span.icon {
@@ -312,22 +311,22 @@ body {
 .reveal-wrap { overflow: hidden; display: block; }
 .reveal-line { display: block; overflow: hidden; transform: translateY(100%); opacity: 0; }
 
-/* ── SCREEN SHAKE EFFECT ── */
+/* ── SCREEN SHAKE EFFECT (ELEGANT) ── */
 @keyframes shake {
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  10% { transform: translate(-15px, -15px) rotate(-1deg); }
-  20% { transform: translate(15px, 15px) rotate(1deg); }
-  30% { transform: translate(-20px, 10px) rotate(-2deg); }
-  40% { transform: translate(20px, -10px) rotate(2deg); }
-  50% { transform: translate(-15px, -15px) rotate(-1deg); }
-  60% { transform: translate(15px, 15px) rotate(1deg); }
-  70% { transform: translate(-10px, 5px) rotate(-0.5deg); }
-  80% { transform: translate(10px, -5px) rotate(0.5deg); }
-  90% { transform: translate(-5px, -5px) rotate(0deg); }
+  10% { transform: translate(-2px, -1px) rotate(-0.2deg); }
+  20% { transform: translate(2px, 1px) rotate(0.2deg); }
+  30% { transform: translate(-4px, 2px) rotate(-0.4deg); }
+  40% { transform: translate(4px, -2px) rotate(0.4deg); }
+  50% { transform: translate(-2px, -1px) rotate(-0.2deg); }
+  60% { transform: translate(2px, 2px) rotate(0.2deg); }
+  70% { transform: translate(-2px, 1px) rotate(-0.1deg); }
+  80% { transform: translate(1px, -1px) rotate(0.1deg); }
+  90% { transform: translate(-1px, -1px) rotate(0deg); }
 }
 
 .shake {
-  animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
   transform-origin: center center;
 }
 
@@ -502,11 +501,11 @@ body {
           void document.body.offsetWidth; // Trigger reflow per forzare il riavvio
           document.body.classList.add('shake');
 
-          // Flash rosso solo sugli input invalidi (o su tutti se forziamo l'errore)
+          // Flash rosso sugli input invalidi (più elegante)
           const inputsToFlash = (!emailInput.validity.valid || !pwdInput.validity.valid) ? '.form-group input:invalid' : '.form-group input';
 
           gsap.fromTo(inputsToFlash, 
-            { borderColor: '#E60000', backgroundColor: 'rgba(230, 0, 0, 0.15)' },
+            { borderColor: '#E60000', backgroundColor: 'rgba(230, 0, 0, 0.05)' },
             { borderColor: 'var(--outline)', backgroundColor: '#000', duration: 1.5, ease: 'power2.out' }
           );
         });
