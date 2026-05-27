@@ -83,6 +83,53 @@ body {
   align-items: center;
 }
 
+/* ── BACK BUTTON LOGO ── */
+.back-logo {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.back-logo .logo-icon {
+  position: absolute;
+  height: 36px;
+  width: auto;
+  transition: transform 0.4s var(--ease-expo), opacity 0.4s var(--ease-expo);
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8));
+}
+
+.back-logo .arrow-icon {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  color: var(--text);
+  transform: translateX(30px);
+  opacity: 0;
+  transition: transform 0.4s var(--ease-expo), opacity 0.4s var(--ease-expo), color 0.3s;
+}
+
+.back-logo:hover .logo-icon {
+  transform: translateX(-30px);
+  opacity: 0;
+}
+
+.back-logo:hover .arrow-icon {
+  transform: translateX(0);
+  opacity: 1;
+  color: var(--accent);
+}
+
 /* ── LOGIN CARD ── */
 .login-card {
   width: 100%;
@@ -343,6 +390,14 @@ body {
 </head>
 <body>
 
+  <!-- BACK BUTTON (LOGO -> ARROW) -->
+  <a href="../hompage/index.html" class="back-logo" id="back-btn" title="Ritorna alla Homepage">
+    <img src="../loghi ed immagini/logo.svg" alt="Overline Logo" class="logo-icon">
+    <svg class="arrow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M21 11H6.83l3.58-3.59L9 6l-6 6 6 6 1.41-1.41L6.83 13H21v-2z" fill="currentColor"/>
+    </svg>
+  </a>
+
   <!-- BACKGROUND -->
   <div class="bg-container">
     <img id="bg-image" src="sfondo/sfondo portamaniglie.webp" alt="Background">
@@ -382,7 +437,7 @@ body {
       </form>
 
       <div class="login-footer stagger-item">
-        Non hai un account? <a href="#">Registrati</a>
+        Non hai un account? <a href="../hompage/index.html">Ritorna alla Home</a>
       </div>
     </div>
 
@@ -405,13 +460,21 @@ body {
         ease: 'power2.out'
       }, 0);
 
+      // 2. Ingresso del tasto Back / Logo in alto a sx
+      tl.to('#back-btn', {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out'
+      }, 0.2);
+
       // 3. Fade in e slide su della login card
       tl.to('#card', {
         opacity: 1,
         y: 0,
         duration: 1.2,
         ease: 'expo.out'
-      }, 0.2);
+      }, 0.3);
 
       // 4. Titolo principale svelato dal basso
       tl.to('.reveal-line', {

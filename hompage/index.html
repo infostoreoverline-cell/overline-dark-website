@@ -57,6 +57,10 @@ nav{
 .nav-links{display:flex;gap:40px;font-family:var(--f-mono);font-size:11px;letter-spacing:0.15em;text-transform:uppercase}
 .nav-links a{color:var(--muted);transition:color .3s}
 .nav-links a:hover,.nav-links a.active{color:var(--accent)}
+.nav-links a.nav-login {
+  color: var(--accent);
+  margin-left: 24px;
+}
 .nav-burger{display:none;flex-direction:column;gap:5px;padding:4px}
 .nav-burger span{display:block;width:24px;height:1px;background:var(--text)}
 
@@ -368,6 +372,7 @@ footer{
     <a href="#s1" class="active">Tavoli</a>
     <a href="#s2">Sistemi di Trazione</a>
     <a href="#s6">Filosofia</a>
+    <a href="../login/index.html" class="nav-login">Accesso</a>
   </div>
   <button class="nav-burger"><span></span><span></span><span></span></button>
 </nav>
@@ -453,7 +458,7 @@ footer{
 </section>
 <footer>
   <div class="footer-watermark">OVERLINE</div>
-  <div class="footer-cta"><a href="#s1" class="cta-btn"><span>ACCEDI ALL'ATTREZZATURA</span></a></div>
+  <div class="footer-cta"><a href="../login/index.html" class="cta-btn"><span>ACCEDI ALL'ATTREZZATURA</span></a></div>
   <div class="footer-grid">
     <div><h4>SUPPORTO LOGISTICO</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Technical Support</a></li><li><a href="#">Contattaci</a></li></ul></div>
     <div><h4>COORDINATE HQ</h4><p>OVERLINE ENGINEERING<br>Veneto, Italia<br>Produzione Artigianale</p></div>
