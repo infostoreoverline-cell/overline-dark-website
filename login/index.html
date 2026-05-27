@@ -400,7 +400,11 @@ body {
 
   <!-- BACKGROUND -->
   <div class="bg-container">
-    <img id="bg-image" src="sfondo/sfondo portamaniglie.webp" alt="Background">
+    <img id="bg-image" alt="Background">
+    <script>
+      const bgs = ['sfondo/sfondo portamaniglie.webp', 'sfondo/zigrinatura.webp'];
+      document.getElementById('bg-image').src = bgs[Math.floor(Math.random() * bgs.length)];
+    </script>
   </div>
 
   <!-- LOGIN CONTAINER -->
@@ -408,7 +412,7 @@ body {
     
     <div class="login-card" id="card">
       <div class="login-header">
-        <h1><span class="reveal-wrap"><span class="reveal-line">ACCESSO</span></span></h1>
+        <h1><span class="reveal-wrap"><span class="reveal-line" id="main-title">ACCESSO</span></span></h1>
         <p class="typewriter-text"></p>
       </div>
 
@@ -434,11 +438,49 @@ body {
         <button type="submit" class="cta-btn stagger-item">
           <span>ACCEDI ALL'ATTREZZATURA</span>
         </button>
+
+        <div class="login-footer stagger-item">
+          Non hai un account? <a href="#" id="goto-register">Registrati</a>
+        </div>
       </form>
 
-      <div class="login-footer stagger-item">
-        Non hai un account? <a href="../hompage/index.html">Ritorna alla Home</a>
-      </div>
+      <!-- REGISTER FORM -->
+      <form action="#" method="POST" id="register-form" novalidate style="display: none;">
+        
+        <div class="error-banner" id="reg-error-banner">
+          <span class="icon">⚠</span>
+          <span id="reg-error-text">DATI MANCANTI</span>
+        </div>
+
+        <div class="form-group stagger-reg">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" name="nome" placeholder="Il tuo nome" required>
+        </div>
+        
+        <div class="form-group stagger-reg">
+          <label for="cognome">Cognome</label>
+          <input type="text" id="cognome" name="cognome" placeholder="Il tuo cognome" required>
+        </div>
+
+        <div class="form-group stagger-reg">
+          <label for="reg-email">Email</label>
+          <input type="email" id="reg-email" name="reg-email" placeholder="nome@esempio.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group stagger-reg">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" name="reg-password" placeholder="••••••••" required autocomplete="new-password">
+          <button type="button" class="pwd-toggle" id="toggleRegPassword">MOSTRA</button>
+        </div>
+
+        <button type="submit" class="cta-btn stagger-reg">
+          <span>CREA PROFILO</span>
+        </button>
+
+        <div class="login-footer stagger-reg">
+          Hai già un account? <a href="#" id="goto-login">Accedi</a>
+        </div>
+      </form>
     </div>
 
   </div>
@@ -498,81 +540,112 @@ body {
         0.6
       );
       
-      // 6. Effetti durante la digitazione (Typing Feedback)
+      // 6. Switch dinamico Login/Registrazione
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const mainTitle = document.getElementById('main-title');
+      const subtitleText = document.querySelector('.typewriter-text');
+      
+      let isLogin = true;
+
+      const switchMode = (toRegister) => {
+        if (isLogin === !toRegister) return;
+        isLogin = !toRegister;
+        
+        const currentForm = isLogin ? registerForm : loginForm;
+        const nextForm = isLogin ? loginForm : registerForm;
+        const itemsToHide = currentForm.querySelectorAll(isLogin ? '.stagger-reg' : '.stagger-item');
+        const itemsToShow = nextForm.querySelectorAll(isLogin ? '.stagger-item' : '.stagger-reg');
+        const newTitle = isLogin ? "ACCESSO" : "REGISTRAZIONE";
+        const newSubtitle = isLogin ? "INSERISCI I TUOI DATI_" : "CREA IL TUO PROFILO_";
+
+        // Nasconde il form corrente
+        gsap.to(itemsToHide, {
+          opacity: 0, x: 10, duration: 0.3, stagger: 0.05, ease: 'power2.in',
+          onComplete: () => {
+            currentForm.style.display = 'none';
+            nextForm.style.display = 'block';
+            
+            // Cambia titolo
+            gsap.to(mainTitle, { y: 20, opacity: 0, duration: 0.2, onComplete: () => {
+              mainTitle.textContent = newTitle;
+              gsap.to(mainTitle, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' });
+            }});
+
+            // Effetto macchina da scrivere sul sottotitolo
+            gsap.to(subtitleText, { text: newSubtitle, duration: 0.8, ease: 'none' });
+
+            // Mostra il nuovo form
+            gsap.fromTo(itemsToShow, 
+              { opacity: 0, x: -10 },
+              { opacity: 1, x: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out', delay: 0.2 }
+            );
+          }
+        });
+      };
+
+      document.getElementById('goto-register').addEventListener('click', (e) => { e.preventDefault(); switchMode(true); });
+      document.getElementById('goto-login').addEventListener('click', (e) => { e.preventDefault(); switchMode(false); });
+
+      // 7. Effetti durante la digitazione (Typing Feedback) su tutti gli input
       const inputs = document.querySelectorAll('.form-group input');
       let typingTimer;
       
       inputs.forEach(input => {
         input.addEventListener('input', () => {
-          // Aggiunge la classe per l'effetto "glitch/impulso"
           input.classList.add('is-typing');
-          
-          // Rimuove l'effetto poco dopo che l'utente smette di digitare
           clearTimeout(typingTimer);
-          typingTimer = setTimeout(() => {
-            input.classList.remove('is-typing');
-          }, 150);
+          typingTimer = setTimeout(() => { input.classList.remove('is-typing'); }, 150);
         });
       });
       
-      // 7. Mostra/Nascondi Password
-      const togglePassword = document.getElementById('togglePassword');
-      const passwordInput = document.getElementById('password');
-      if (togglePassword && passwordInput) {
-        togglePassword.addEventListener('click', function () {
-          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-          passwordInput.setAttribute('type', type);
-          this.textContent = type === 'password' ? 'NASCONDI' : 'MOSTRA';
-        });
-      }
+      // 8. Mostra/Nascondi Password (generico per entrambi i form)
+      const setupPwdToggle = (toggleId, inputId) => {
+        const toggleBtn = document.getElementById(toggleId);
+        const pwdIn = document.getElementById(inputId);
+        if (toggleBtn && pwdIn) {
+          toggleBtn.addEventListener('click', function () {
+            const type = pwdIn.getAttribute('type') === 'password' ? 'text' : 'password';
+            pwdIn.setAttribute('type', type);
+            this.textContent = type === 'password' ? 'NASCONDI' : 'MOSTRA';
+          });
+        }
+      };
+      setupPwdToggle('togglePassword', 'password');
+      setupPwdToggle('toggleRegPassword', 'reg-password');
 
-      // 8. Animazione "Screen Shake" e Allarme Custom su errore login
-      const loginForm = document.getElementById('login-form');
-      const emailInput = document.getElementById('email');
-      const pwdInput = document.getElementById('password');
-      const errorBanner = document.getElementById('error-banner');
-      const errorText = document.getElementById('error-text');
-      
-      if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
-          e.preventDefault(); // Previene l'invio reale
+      // 9. Animazione "Screen Shake" e Allarme Custom su errore (per entrambi i form)
+      const setupFormShake = (formId) => {
+        const form = document.getElementById(formId);
+        if (!form) return;
+        
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const inputs = form.querySelectorAll('input');
+          const errorBanner = form.querySelector('.error-banner');
+          const errorText = errorBanner.querySelector('span:not(.icon)');
           
-          let errorMessage = "CREDENZIALI NON VALIDE";
-          let hasError = true;
+          let isValid = true;
+          inputs.forEach(input => { if (!input.validity.valid) isValid = false; });
 
-          if (!emailInput.validity.valid) {
-            errorMessage = emailInput.value === "" ? "INSERISCI UN INDIRIZZO EMAIL" : "FORMATO EMAIL NON VALIDO";
-          } else if (!pwdInput.validity.valid) {
-            errorMessage = "PASSWORD MANCANTE O NON VALIDA";
-          } else {
-            // Se i campi sono validi simuliamo comunque un errore di sistema (visto che è un prototipo)
-            errorMessage = "ACCESSO NEGATO: ATTREZZATURA BLOCCATA";
-          }
-
-          // Mostra il banner d'errore
-          errorText.textContent = errorMessage;
+          errorText.textContent = isValid ? "ERRORE DI SISTEMA: DATABASE INACCESSIBILE" : "COMPILA TUTTI I CAMPI CORRETTAMENTE";
           errorBanner.style.display = 'flex';
           
-          // Anima l'ingresso del banner
-          gsap.fromTo(errorBanner, 
-            { opacity: 0, y: -10 },
-            { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
-          );
+          gsap.fromTo(errorBanner, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
           
-          // Fa tremare l'intera pagina (body)
           document.body.classList.remove('shake');
-          void document.body.offsetWidth; // Trigger reflow per forzare il riavvio
+          void document.body.offsetWidth;
           document.body.classList.add('shake');
 
-          // Flash rosso sugli input invalidi (più elegante)
-          const inputsToFlash = (!emailInput.validity.valid || !pwdInput.validity.valid) ? '.form-group input:invalid' : '.form-group input';
-
+          const inputsToFlash = isValid ? form.querySelectorAll('.form-group input') : form.querySelectorAll('.form-group input:invalid');
           gsap.fromTo(inputsToFlash, 
             { borderColor: '#E60000', backgroundColor: 'rgba(230, 0, 0, 0.05)' },
             { borderColor: 'var(--outline)', backgroundColor: '#000', duration: 1.5, ease: 'power2.out' }
           );
         });
-      }
+      };
+      setupFormShake('login-form');
+      setupFormShake('register-form');
     });
   </script>
 </body>
