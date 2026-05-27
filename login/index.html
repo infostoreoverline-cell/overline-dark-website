@@ -90,7 +90,7 @@ body {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--outline);
-  border-top: 3px solid var(--accent);
+  border-left: 2px solid var(--accent);
   padding: 48px 40px;
   opacity: 0;
   transform: translateY(30px);
@@ -136,19 +136,18 @@ body {
 
 .form-group input {
   width: 100%;
-  background: rgba(3, 3, 3, 0.8);
+  background: #000;
   border: 1px solid var(--outline);
   padding: 16px;
-  font-family: var(--f-body);
+  font-family: var(--f-mono);
   font-size: 14px;
   color: var(--text);
   outline: none;
-  transition: border-color 0.3s ease, background 0.3s ease;
+  transition: border-color 0s;
 }
 
 .form-group input:focus {
   border-color: var(--accent);
-  background: var(--bg);
 }
 
 .form-group input::placeholder {
@@ -238,6 +237,10 @@ body {
   border-bottom-color: var(--accent);
 }
 
+/* ── REVEAL EFFECTS ── */
+.reveal-wrap { overflow: hidden; display: block; }
+.reveal-line { display: block; overflow: hidden; transform: translateY(100%); opacity: 0; }
+
 /* ── RESPONSIVE ── */
 @media(max-width: 480px) {
   .login-card {
@@ -261,8 +264,8 @@ body {
     
     <div class="login-card" id="card">
       <div class="login-header">
-        <h1>ACCESSO</h1>
-        <p>Inserisci i tuoi dati</p>
+        <h1><span class="reveal-wrap"><span class="reveal-line">ACCESSO</span></span></h1>
+        <p><span class="reveal-wrap"><span class="reveal-line">Inserisci i tuoi dati</span></span></p>
       </div>
 
       <form action="#" method="POST" id="login-form">
@@ -308,20 +311,26 @@ body {
         opacity: 1,
         y: 0,
         duration: 1.2,
-        ease: 'power4.out'
+        ease: 'expo.out'
+      }, 0.2);
+
+      // 4. Testi svelati
+      tl.to('.reveal-line', {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'expo.out',
+        stagger: 0.1
       }, 0.4);
 
-      // 4. Elementi interni svelati in sequenza (stagger)
+      // 5. Elementi interni svelati in sequenza "meccanica"
       tl.fromTo('.stagger-item', 
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out' },
-        0.8
+        { opacity: 0, x: -10 },
+        { opacity: 1, x: 0, duration: 0.5, stagger: 0.05, ease: 'power4.out' },
+        0.6
       );
       
-      // 5. Animazione interattiva: Parallasse sottile sul background e tilt 3D sulla card
-      gsap.set('.login-wrapper', { perspective: 1200 });
-      gsap.set('#card', { transformStyle: 'preserve-3d' });
-
+      // 6. Animazione interattiva: solo parallasse, niente 3D
       window.addEventListener('mousemove', (e) => {
         // Calcola la posizione del mouse rispetto al centro (-1 to 1)
         const xPos = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -335,13 +344,11 @@ body {
           ease: 'power2.out'
         });
         
-        // Tilt 3D della card
+        // Parallasse card
         gsap.to('#card', {
-          rotationY: xPos * 4,
-          rotationX: yPos * -4,
           x: xPos * 5,
           y: yPos * 5,
-          duration: 0.8,
+          duration: 1.5,
           ease: 'power2.out'
         });
       });
