@@ -290,16 +290,23 @@ body {
 .reveal-wrap { overflow: hidden; display: block; }
 .reveal-line { display: block; overflow: hidden; transform: translateY(100%); opacity: 0; }
 
-/* ── SHAKE EFFECT ── */
+/* ── SCREEN SHAKE EFFECT ── */
 @keyframes shake {
-  10%, 90% { transform: translateX(-2px); }
-  20%, 80% { transform: translateX(4px); }
-  30%, 50%, 70% { transform: translateX(-8px); }
-  40%, 60% { transform: translateX(8px); }
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  10% { transform: translate(-15px, -15px) rotate(-1deg); }
+  20% { transform: translate(15px, 15px) rotate(1deg); }
+  30% { transform: translate(-20px, 10px) rotate(-2deg); }
+  40% { transform: translate(20px, -10px) rotate(2deg); }
+  50% { transform: translate(-15px, -15px) rotate(-1deg); }
+  60% { transform: translate(15px, 15px) rotate(1deg); }
+  70% { transform: translate(-10px, 5px) rotate(-0.5deg); }
+  80% { transform: translate(10px, -5px) rotate(0.5deg); }
+  90% { transform: translate(-5px, -5px) rotate(0deg); }
 }
 
 .shake {
-  animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
+  animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+  transform-origin: center center;
 }
 
 /* ── RESPONSIVE ── */
@@ -429,18 +436,17 @@ body {
         });
       }
 
-      // 8. Animazione "Shake Effect" su errore login
+      // 8. Animazione "Screen Shake" su errore login
       const loginForm = document.getElementById('login-form');
-      const card = document.getElementById('card');
       
-      if (loginForm && card) {
+      if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
           e.preventDefault(); // Previene l'invio reale per mostrare l'animazione
           
-          // Rimuove e riaggiunge la classe per riprodurre l'animazione più volte
-          card.classList.remove('shake');
-          void card.offsetWidth; // Trigger reflow per forzare il riavvio
-          card.classList.add('shake');
+          // Fa tremare l'intera pagina (body)
+          document.body.classList.remove('shake');
+          void document.body.offsetWidth; // Trigger reflow per forzare il riavvio
+          document.body.classList.add('shake');
 
           // Flash rosso sugli input
           gsap.fromTo('.form-group input', 
