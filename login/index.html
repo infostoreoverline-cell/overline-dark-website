@@ -265,7 +265,7 @@ body {
     <div class="login-card" id="card">
       <div class="login-header">
         <h1><span class="reveal-wrap"><span class="reveal-line">ACCESSO</span></span></h1>
-        <p><span class="reveal-wrap"><span class="reveal-line">Inserisci i tuoi dati</span></span></p>
+        <p class="typewriter-text"></p>
       </div>
 
       <form action="#" method="POST" id="login-form">
@@ -293,7 +293,10 @@ body {
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
   <script>
+    gsap.registerPlugin(TextPlugin);
+
     // Animazioni di ingresso sobrie ma d'impatto (come richiesto)
     window.addEventListener('load', () => {
       
@@ -314,14 +317,20 @@ body {
         ease: 'expo.out'
       }, 0.2);
 
-      // 4. Testi svelati
+      // 4. Titolo principale svelato dal basso
       tl.to('.reveal-line', {
         y: 0,
         opacity: 1,
         duration: 1,
-        ease: 'expo.out',
-        stagger: 0.1
+        ease: 'expo.out'
       }, 0.4);
+
+      // 4b. Effetto macchina da scrivere (terminale) per il sottotitolo
+      tl.to('.typewriter-text', {
+        text: "INSERISCI I TUOI DATI_",
+        duration: 0.8,
+        ease: 'none'
+      }, 0.5);
 
       // 5. Elementi interni svelati in sequenza "meccanica"
       tl.fromTo('.stagger-item', 
@@ -329,29 +338,7 @@ body {
         { opacity: 1, x: 0, duration: 0.5, stagger: 0.05, ease: 'power4.out' },
         0.6
       );
-      
-      // 6. Animazione interattiva: solo parallasse, niente 3D
-      window.addEventListener('mousemove', (e) => {
-        // Calcola la posizione del mouse rispetto al centro (-1 to 1)
-        const xPos = (e.clientX / window.innerWidth - 0.5) * 2;
-        const yPos = (e.clientY / window.innerHeight - 0.5) * 2;
-        
-        // Movimento sfondo
-        gsap.to('#bg-image', {
-          x: xPos * -15,
-          y: yPos * -15,
-          duration: 1.5,
-          ease: 'power2.out'
-        });
-        
-        // Parallasse card
-        gsap.to('#card', {
-          x: xPos * 5,
-          y: yPos * 5,
-          duration: 1.5,
-          ease: 'power2.out'
-        });
-      });
+      // Interattività del mouse rimossa come richiesto
     });
   </script>
 </body>
