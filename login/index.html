@@ -416,6 +416,41 @@ body {
           this.textContent = type === 'password' ? 'NASCONDI' : 'MOSTRA';
         });
       }
+
+      // 8. Animazione "Shock" su errore login
+      const loginForm = document.getElementById('login-form');
+      if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+          e.preventDefault(); // Previene l'invio reale per mostrare l'animazione
+          
+          // Vibrazione meccanica della card
+          gsap.to('#card', {
+            keyframes: [
+              { x: -15, duration: 0.05 },
+              { x: 15, duration: 0.05 },
+              { x: -10, duration: 0.05 },
+              { x: 10, duration: 0.05 },
+              { x: -5, duration: 0.05 },
+              { x: 5, duration: 0.05 },
+              { x: 0, duration: 0.05 }
+            ],
+            ease: "none"
+          });
+
+          // Flash rosso sugli input
+          gsap.fromTo('.form-group input', 
+            { borderColor: '#E60000', backgroundColor: 'rgba(230, 0, 0, 0.15)' },
+            { borderColor: 'var(--outline)', backgroundColor: '#000', duration: 1.5, ease: 'power2.out', delay: 0.2 }
+          );
+          
+          // Scuote anche il bottone
+          gsap.to('.cta-btn', {
+            x: [-5, 5, -5, 5, 0],
+            duration: 0.3,
+            ease: "none"
+          });
+        });
+      }
     });
   </script>
 </body>
