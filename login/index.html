@@ -83,19 +83,6 @@ body {
   align-items: center;
 }
 
-/* ── LOGO ── */
-.logo-container {
-  margin-bottom: 32px;
-  opacity: 0;
-  transform: translateY(-20px);
-}
-
-.logo-container img {
-  height: 120px;
-  width: auto;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
-}
-
 /* ── LOGIN CARD ── */
 .login-card {
   width: 100%;
@@ -272,11 +259,6 @@ body {
   <!-- LOGIN CONTAINER -->
   <div class="login-wrapper">
     
-    <div class="logo-container" id="logo">
-      <!-- Assumendo che il logo sia SVG, se è bianco si adatterà perfettamente -->
-      <img src="../loghi ed immagini/logo.svg" alt="OVERLINE LOGO">
-    </div>
-
     <div class="login-card" id="card">
       <div class="login-header">
         <h1>ACCESSO</h1>
@@ -320,14 +302,6 @@ body {
         duration: 2.5,
         ease: 'power2.out'
       }, 0);
-
-      // 2. Fade in e traslazione del logo
-      tl.to('#logo', {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: 'power3.out'
-      }, 0.2);
 
       // 3. Fade in e slide su della login card
       tl.to('#card', {
