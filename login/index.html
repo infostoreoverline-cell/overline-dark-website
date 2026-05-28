@@ -82,78 +82,102 @@ body {
   padding: 0 24px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-/* ── BACK BUTTON LOGO (100/100 LIQUID METAL & MAGNETIC) ── */
-.back-logo {
+/* ── BACK BUTTON LOGO (ELEGANTE ESPANSIONE A PILLOLA) ── */
+.back-pill {
   position: absolute;
   top: 32px;
   left: 32px;
   z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 90px;  /* Spazio di manovra per l'effetto magnetico */
-  height: 90px;
+  height: 72px;
+  width: 72px;
+  border-radius: 36px;
   text-decoration: none;
   cursor: pointer;
-  /* Glow rosso che si accende al passaggio */
-  filter: drop-shadow(0 0 0 rgba(230,0,0,0));
-  transition: filter 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  display: flex;
+  align-items: center;
+  transition: width 0.5s cubic-bezier(0.25, 1, 0.3, 1);
 }
 
-.back-logo:hover {
-  filter: drop-shadow(0 0 15px rgba(230,0,0,0.8));
+.pill-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 36px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
-.morph-wrapper {
+.pill-content {
   position: relative;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  border-radius: 36px;
+  overflow: hidden;
 }
 
-.back-logo .logo-icon {
+.back-pill .logo-icon {
   position: absolute;
-  height: 48px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  height: 40px;
   width: auto;
   opacity: 1;
-  /* Stato base */
-  transform: scale(1) rotate(0deg);
-  filter: sepia(0) saturate(100%) brightness(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 
-.back-logo .arrow-icon {
+.arrow-text-group {
   position: absolute;
-  width: 44px;
-  height: 44px;
-  color: var(--accent);
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  white-space: nowrap;
   opacity: 0;
-  /* Compresso al centro per esplodere fondendosi */
-  transform: scale(0.1) rotate(90deg);
-  filter: blur(4px);
-  transition: all 0.4s cubic-bezier(0.5, 0, 0, 1);
+  transform: translateX(-30px);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
 }
 
-/* ── HOVER: MORPHING DINAMICO ── */
-.back-logo:hover .logo-icon {
-  /* Implode diventando rosso acceso */
-  transform: scale(0.1) rotate(-90deg);
-  filter: sepia(1) hue-rotate(330deg) saturate(300) brightness(1.5) blur(4px);
-  opacity: 0;
-  transition: all 0.3s cubic-bezier(0.5, 0, 0, 1);
+.arrow-text-group .arrow-icon {
+  width: 24px;
+  height: 24px;
+  color: #fff;
 }
 
-.back-logo:hover .arrow-icon {
-  /* Si espande dal centro */
+.arrow-text-group .back-text {
+  font-family: var(--f-display);
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  color: #fff;
+  padding-top: 2px; /* Allineamento ottico font Anton */
+}
+
+/* ── HOVER: ESPANSIONE ELEGANTE ── */
+.back-pill:hover {
+  width: 190px;
+}
+
+.back-pill:hover .pill-bg {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 8px 32px rgba(230,0,0,0.5);
+}
+
+.back-pill:hover .logo-icon {
+  transform: translate(60px, -50%) scale(0.5);
+  opacity: 0;
+}
+
+.back-pill:hover .arrow-text-group {
   opacity: 1;
-  transform: scale(1) rotate(0deg);
-  filter: blur(0px);
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s;
+  transform: translateX(0);
 }
 
 /* ── LOGIN CARD ── */
@@ -416,13 +440,18 @@ body {
 </head>
 <body>
 
-  <!-- BACK BUTTON (MAGNETIC MORPH) -->
-  <a href="../hompage/index.html" class="back-logo" id="back-btn" title="Ritorna alla Homepage">
-    <div class="morph-wrapper">
+  <!-- BACK BUTTON (ELEGANT PILL EXPANSION) -->
+  <a href="../hompage/index.html" class="back-pill" title="Ritorna alla Homepage">
+    <div class="pill-bg"></div>
+    <div class="pill-content">
       <img src="../loghi ed immagini/logo.svg" alt="Overline Logo" class="logo-icon">
-      <svg class="arrow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M21 11H6.83l3.58-3.59L9 6l-6 6 6 6 1.41-1.41L6.83 13H21v-2z" fill="currentColor"/>
-      </svg>
+      <div class="arrow-text-group">
+        <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span class="back-text">HOMEPAGE</span>
+      </div>
     </div>
   </a>
 
@@ -681,34 +710,6 @@ body {
         { scale: 1.25, opacity: 0 }, 
         { scale: 1.15, opacity: 0.8, duration: 2.5, ease: 'power2.out' }
       );
-
-      /* ── EFFETTO MAGNETICO 100/100 PER IL PULSANTE BACK ── */
-      const backBtn = document.getElementById('back-btn');
-      const morphWrapper = backBtn.querySelector('.morph-wrapper');
-
-      if (backBtn && morphWrapper) {
-        backBtn.addEventListener('mousemove', (e) => {
-          const rect = backBtn.getBoundingClientRect();
-          const x = (e.clientX - rect.left) - rect.width / 2;
-          const y = (e.clientY - rect.top) - rect.height / 2;
-          
-          gsap.to(morphWrapper, {
-            x: x * 0.4, // Attrazione magnetica morbida verso il mouse
-            y: y * 0.4,
-            duration: 0.4,
-            ease: 'power2.out'
-          });
-        });
-
-        backBtn.addEventListener('mouseleave', () => {
-          gsap.to(morphWrapper, {
-            x: 0,
-            y: 0,
-            duration: 0.8,
-            ease: 'elastic.out(1, 0.3)' // Rimbalzo elastico molto appagante
-          });
-        });
-      }
     });
   </script>
 </body>
