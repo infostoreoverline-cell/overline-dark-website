@@ -114,8 +114,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Il filtro SVG 'goo' crea l'effetto di fusione liquida tra gli elementi */
-  filter: url('#goo');
 }
 
 .back-logo .logo-icon {
@@ -124,9 +122,9 @@ body {
   width: auto;
   opacity: 1;
   /* Stato base */
-  transform: scale(1) translateZ(0);
-  filter: sepia(0) saturate(100%) brightness(1);
-  transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  transform: scale(1) rotate(0deg);
+  filter: sepia(0) saturate(100%) brightness(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .back-logo .arrow-icon {
@@ -136,22 +134,26 @@ body {
   color: var(--accent);
   opacity: 0;
   /* Compresso al centro per esplodere fondendosi */
-  transform: scale(0.1) translateZ(0);
-  transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  transform: scale(0.1) rotate(90deg);
+  filter: blur(4px);
+  transition: all 0.4s cubic-bezier(0.5, 0, 0, 1);
 }
 
-/* ── HOVER: FUSIONE LIQUIDA ── */
+/* ── HOVER: MORPHING DINAMICO ── */
 .back-logo:hover .logo-icon {
-  /* Implode diventando rosso acceso, fondendosi con la freccia */
-  transform: scale(0.1);
-  filter: sepia(1) hue-rotate(330deg) saturate(300) brightness(1.5);
+  /* Implode diventando rosso acceso */
+  transform: scale(0.1) rotate(-90deg);
+  filter: sepia(1) hue-rotate(330deg) saturate(300) brightness(1.5) blur(4px);
   opacity: 0;
+  transition: all 0.3s cubic-bezier(0.5, 0, 0, 1);
 }
 
 .back-logo:hover .arrow-icon {
-  /* Si espande dalla pozza liquida */
+  /* Si espande dal centro */
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1) rotate(0deg);
+  filter: blur(0px);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s;
 }
 
 /* ── LOGIN CARD ── */
@@ -414,7 +416,7 @@ body {
 </head>
 <body>
 
-  <!-- BACK BUTTON (LIQUID METAL & MAGNETIC) -->
+  <!-- BACK BUTTON (MAGNETIC MORPH) -->
   <a href="../hompage/index.html" class="back-logo" id="back-btn" title="Ritorna alla Homepage">
     <div class="morph-wrapper">
       <img src="../loghi ed immagini/logo.svg" alt="Overline Logo" class="logo-icon">
@@ -422,16 +424,6 @@ body {
         <path d="M21 11H6.83l3.58-3.59L9 6l-6 6 6 6 1.41-1.41L6.83 13H21v-2z" fill="currentColor"/>
       </svg>
     </div>
-    <!-- SVG Filter invisibile per effetto Liquid Metal (Gooey) -->
-    <svg style="visibility: hidden; position: absolute;" width="0" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1">
-        <defs>
-            <filter id="goo">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
-                <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
-            </filter>
-        </defs>
-    </svg>
   </a>
 
   <!-- BACKGROUND -->
