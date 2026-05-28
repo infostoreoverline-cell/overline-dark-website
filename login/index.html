@@ -56,9 +56,9 @@ body {
   height: 100%;
   object-fit: cover;
   object-position: 25% center;
-  /* Effetto vedo-non-vedo ad alta atmosfera */
-  filter: blur(8px) grayscale(30%) brightness(0.8);
-  opacity: 0.65;
+  /* Via di mezzo per l'atmosfera perfetta */
+  filter: blur(4px) grayscale(20%) brightness(0.95);
+  opacity: 0.8;
   transform: scale(1.15); /* Slight zoom to hide blur edges */
 }
 
@@ -66,10 +66,10 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  /* Gradiente scuro per fondere l'immagine con lo sfondo nero */
+  /* Gradiente scuro medio */
   background: 
-    radial-gradient(ellipse at center, rgba(3,3,3,0.2) 0%, rgba(3,3,3,0.85) 100%),
-    linear-gradient(to bottom, rgba(3,3,3,0.3) 0%, rgba(3,3,3,0.95) 100%);
+    radial-gradient(ellipse at center, rgba(3,3,3,0.1) 0%, rgba(3,3,3,0.7) 100%),
+    linear-gradient(to bottom, rgba(3,3,3,0.2) 0%, rgba(3,3,3,0.8) 100%);
   z-index: 1;
 }
 
@@ -85,7 +85,7 @@ body {
   align-items: center;
 }
 
-/* ── BACK BUTTON LOGO (TRANSIZIONE ELEGANTE E FLUIDA) ── */
+/* ── BACK BUTTON LOGO (100/100 LIQUID METAL & MAGNETIC) ── */
 .back-logo {
   position: absolute;
   top: 32px;
@@ -94,10 +94,28 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
+  width: 90px;  /* Spazio di manovra per l'effetto magnetico */
+  height: 90px;
   text-decoration: none;
   cursor: pointer;
+  /* Glow rosso che si accende al passaggio */
+  filter: drop-shadow(0 0 0 rgba(230,0,0,0));
+  transition: filter 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.back-logo:hover {
+  filter: drop-shadow(0 0 15px rgba(230,0,0,0.8));
+}
+
+.morph-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Il filtro SVG 'goo' crea l'effetto di fusione liquida tra gli elementi */
+  filter: url('#goo');
 }
 
 .back-logo .logo-icon {
@@ -105,35 +123,35 @@ body {
   height: 48px;
   width: auto;
   opacity: 1;
-  transform: scale(1) translateX(0);
-  filter: blur(0px) drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  /* Stato base */
+  transform: scale(1) translateZ(0);
+  filter: sepia(0) saturate(100%) brightness(1);
+  transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 .back-logo .arrow-icon {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   color: var(--accent);
   opacity: 0;
-  transform: scale(0.8) translateX(-15px);
-  filter: blur(8px);
-  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  /* Compresso al centro per esplodere fondendosi */
+  transform: scale(0.1) translateZ(0);
+  transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-/* ── HOVER: DISSOLVENZA CINEMATOGRAFICA ── */
+/* ── HOVER: FUSIONE LIQUIDA ── */
 .back-logo:hover .logo-icon {
+  /* Implode diventando rosso acceso, fondendosi con la freccia */
+  transform: scale(0.1);
+  filter: sepia(1) hue-rotate(330deg) saturate(300) brightness(1.5);
   opacity: 0;
-  /* Scivola dolcemente sfuocandosi */
-  transform: scale(1.1) translateX(15px);
-  filter: blur(8px);
 }
 
 .back-logo:hover .arrow-icon {
+  /* Si espande dalla pozza liquida */
   opacity: 1;
-  /* Entra dolcemente mettendo a fuoco */
-  transform: scale(1) translateX(0);
-  filter: blur(0px) drop-shadow(0 0 10px rgba(230,0,0,0.6));
+  transform: scale(1);
 }
 
 /* ── LOGIN CARD ── */
@@ -396,11 +414,23 @@ body {
 </head>
 <body>
 
-  <!-- BACK BUTTON (LOGO -> FRECCIA FLUIDA) -->
+  <!-- BACK BUTTON (LIQUID METAL & MAGNETIC) -->
   <a href="../hompage/index.html" class="back-logo" id="back-btn" title="Ritorna alla Homepage">
-    <img src="../loghi ed immagini/logo.svg" alt="Overline Logo" class="logo-icon">
-    <svg class="arrow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M21 11H6.83l3.58-3.59L9 6l-6 6 6 6 1.41-1.41L6.83 13H21v-2z" fill="currentColor"/>
+    <div class="morph-wrapper">
+      <img src="../loghi ed immagini/logo.svg" alt="Overline Logo" class="logo-icon">
+      <svg class="arrow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 11H6.83l3.58-3.59L9 6l-6 6 6 6 1.41-1.41L6.83 13H21v-2z" fill="currentColor"/>
+      </svg>
+    </div>
+    <!-- SVG Filter invisibile per effetto Liquid Metal (Gooey) -->
+    <svg style="visibility: hidden; position: absolute;" width="0" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+            </filter>
+        </defs>
     </svg>
   </a>
 
@@ -638,6 +668,7 @@ body {
           errorBanner.style.display = 'flex';
           
           gsap.fromTo(errorBanner, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
+
           
           document.body.classList.remove('shake');
           void document.body.offsetWidth;
@@ -652,6 +683,40 @@ body {
       };
       setupFormShake('login-form');
       setupFormShake('register-form');
+
+      /* ── ANIMAZIONE BACKGROUND RANDOM ── */
+      gsap.fromTo('.bg-container img', 
+        { scale: 1.25, opacity: 0 }, 
+        { scale: 1.15, opacity: 0.8, duration: 2.5, ease: 'power2.out' }
+      );
+
+      /* ── EFFETTO MAGNETICO 100/100 PER IL PULSANTE BACK ── */
+      const backBtn = document.getElementById('back-btn');
+      const morphWrapper = backBtn.querySelector('.morph-wrapper');
+
+      if (backBtn && morphWrapper) {
+        backBtn.addEventListener('mousemove', (e) => {
+          const rect = backBtn.getBoundingClientRect();
+          const x = (e.clientX - rect.left) - rect.width / 2;
+          const y = (e.clientY - rect.top) - rect.height / 2;
+          
+          gsap.to(morphWrapper, {
+            x: x * 0.4, // Attrazione magnetica morbida verso il mouse
+            y: y * 0.4,
+            duration: 0.4,
+            ease: 'power2.out'
+          });
+        });
+
+        backBtn.addEventListener('mouseleave', () => {
+          gsap.to(morphWrapper, {
+            x: 0,
+            y: 0,
+            duration: 0.8,
+            ease: 'elastic.out(1, 0.3)' // Rimbalzo elastico molto appagante
+          });
+        });
+      }
     });
   </script>
 </body>
