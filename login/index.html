@@ -131,7 +131,7 @@ body {
   color: var(--accent);
   opacity: 0;
   /* Entra roteando e rimpicciolendosi da grandissimo */
-  transform: scale(2) rotate(45deg) translateX(0);
+  transform: scale(2) rotate(45deg) translate(0, -6px);
   filter: blur(10px);
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -148,8 +148,8 @@ body {
 .back-wow:hover .arrow-icon {
   /* Esplode sbattendo sul display e mettendosi a fuoco */
   opacity: 1;
-  /* Traslazione di 4px a destra per la centratura ottica della freccia asimmetrica */
-  transform: scale(1) rotate(0deg) translateX(4px);
+  /* Traslazione a destra (4px) e in alto (-6px) per centratura ottica millimetrica */
+  transform: scale(1) rotate(0deg) translate(4px, -6px);
   filter: blur(0px) drop-shadow(0 0 25px rgba(230,0,0,0.9));
   transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s;
 }
