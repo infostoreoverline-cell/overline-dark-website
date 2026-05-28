@@ -82,102 +82,75 @@ body {
   padding: 0 24px;
   display: flex;
   flex-direction: column;
-/* ── BACK BUTTON LOGO (ELEGANTE ESPANSIONE A PILLOLA) ── */
-.back-pill {
+}
+
+/* ── BACK BUTTON LOGO (MINIMAL & ELEGANTE) ── */
+.back-minimal {
   position: absolute;
   top: 32px;
   left: 32px;
   z-index: 50;
-  height: 72px;
-  width: 72px;
-  border-radius: 36px;
+  width: 64px;
+  height: 64px;
   text-decoration: none;
   cursor: pointer;
   display: flex;
   align-items: center;
-  transition: width 0.5s cubic-bezier(0.25, 1, 0.3, 1);
+  justify-content: center;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.5s ease;
 }
 
-.pill-bg {
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 36px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+.back-minimal:hover {
+  background: rgba(255, 255, 255, 0.03); /* leggerissimo alone di feedback */
 }
 
-.pill-content {
+.minimal-wrapper {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
-  border-radius: 36px;
-  overflow: hidden;
+  justify-content: center;
 }
 
-.back-pill .logo-icon {
+.minimal-icon {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.back-minimal .logo-icon {
+  height: 100%;
   width: auto;
+  transform: translateY(0) scale(1);
   opacity: 1;
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 
-.arrow-text-group {
-  position: absolute;
-  left: 0;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 24px;
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateX(-30px);
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
-}
-
-.arrow-text-group .arrow-icon {
-  width: 24px;
-  height: 24px;
-  color: #fff;
-}
-
-.arrow-text-group .back-text {
-  font-family: var(--f-display);
-  font-size: 1.3rem;
-  letter-spacing: 1px;
-  color: #fff;
-  padding-top: 2px; /* Allineamento ottico font Anton */
-}
-
-/* ── HOVER: ESPANSIONE ELEGANTE ── */
-.back-pill:hover {
-  width: 190px;
-}
-
-.back-pill:hover .pill-bg {
-  background: var(--accent);
-  border-color: var(--accent);
-  box-shadow: 0 8px 32px rgba(230,0,0,0.5);
-}
-
-.back-pill:hover .logo-icon {
-  transform: translate(60px, -50%) scale(0.5);
+.back-minimal .arrow-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--accent);
+  transform: translateY(15px) scale(0.9);
   opacity: 0;
 }
 
-.back-pill:hover .arrow-text-group {
+/* ── HOVER: TRANSIZIONE VERTICALE MORBIDA ── */
+.back-minimal:hover .logo-icon {
+  transform: translateY(-15px) scale(0.9);
+  opacity: 0;
+}
+
+.back-minimal:hover .arrow-icon {
+  transform: translateY(0) scale(1);
   opacity: 1;
-  transform: translateX(0);
+  filter: drop-shadow(0 0 8px rgba(230,0,0,0.5));
 }
 
 /* ── LOGIN CARD ── */
@@ -440,18 +413,14 @@ body {
 </head>
 <body>
 
-  <!-- BACK BUTTON (ELEGANT PILL EXPANSION) -->
-  <a href="../hompage/index.html" class="back-pill" title="Ritorna alla Homepage">
-    <div class="pill-bg"></div>
-    <div class="pill-content">
-      <img src="../loghi ed immagini/logo.svg" alt="Overline Logo" class="logo-icon">
-      <div class="arrow-text-group">
-        <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12"></line>
-          <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-        <span class="back-text">HOMEPAGE</span>
-      </div>
+  <!-- BACK BUTTON (MINIMAL) -->
+  <a href="../hompage/index.html" class="back-minimal" title="Ritorna alla Homepage">
+    <div class="minimal-wrapper">
+      <img src="../loghi ed immagini/logo.svg" alt="Overline Logo" class="minimal-icon logo-icon">
+      <svg class="minimal-icon arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
     </div>
   </a>
 
