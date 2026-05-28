@@ -83,78 +83,64 @@ body {
   align-items: center;
 }
 
-/* ── BACK BUTTON LOGO ── */
+/* ── BACK BUTTON LOGO (MORPH ANIMATION) ── */
 .back-logo {
   position: absolute;
-  top: 40px;
-  left: 40px;
+  top: 32px;
+  left: 32px;
   z-index: 50;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
-  background: rgba(3, 3, 3, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  width: 60px;
+  height: 60px;
   text-decoration: none;
   cursor: pointer;
   opacity: 0;
-  overflow: hidden;
-  transition: background 0.3s ease, border-color 0.3s ease;
-}
-
-/* Linea rossa laterale in puro stile brutalista */
-.back-logo::after {
-  content: '';
-  position: absolute;
-  left: 0; top: 0;
-  width: 3px; height: 100%;
-  background: var(--accent);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
-}
-
-.back-logo:hover {
-  background: rgba(3, 3, 3, 0.9);
-  border-color: rgba(230, 0, 0, 0.2);
-}
-
-.back-logo:hover::after {
-  transform: scaleY(1);
-}
-
-.back-logo .logo-icon, .back-logo .arrow-icon {
-  position: absolute;
-  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
 }
 
 .back-logo .logo-icon {
+  position: absolute;
   height: 36px;
   width: auto;
   opacity: 1;
-  transform: translateY(0);
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+  transform: scale(1) rotate(0deg);
+  filter: brightness(1) sepia(0) drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  /* Transizione per il ritorno allo stato originale */
+  transition: all 0.4s cubic-bezier(0.5, 0, 0, 1) 0.1s;
 }
 
 .back-logo .arrow-icon {
-  width: 28px;
-  height: 28px;
+  position: absolute;
+  width: 32px;
+  height: 32px;
   color: var(--accent);
   opacity: 0;
-  transform: translateY(40px);
+  /* Parte nascosta, piccola e spostata a destra */
+  transform: scale(0) rotate(90deg) translateX(20px);
+  filter: drop-shadow(0 0 0px rgba(230,0,0,0));
+  /* Transizione per il ritorno allo stato originale */
+  transition: all 0.3s cubic-bezier(0.5, 0, 0, 1);
 }
 
-/* Movimento verticale a "scatto meccanico" */
+/* ── HOVER: IL LOGO SI TRAMUTA IN FRECCIA ROSSA ── */
 .back-logo:hover .logo-icon {
-  transform: translateY(-40px);
+  /* Si rimpicciolisce girando su se stesso */
+  transform: scale(0) rotate(-180deg);
+  /* Diventa rosso incandescente nel mentre */
+  filter: brightness(0.5) sepia(1) hue-rotate(330deg) saturate(100) drop-shadow(0 0 20px #E60000);
   opacity: 0;
+  /* Animazione veloce e senza delay in entrata */
+  transition: all 0.3s cubic-bezier(0.5, 0, 0, 1);
 }
 
 .back-logo:hover .arrow-icon {
-  transform: translateY(0);
   opacity: 1;
+  /* Esplode fuori al posto del logo con effetto rimbalzo */
+  transform: scale(1) rotate(0deg) translateX(0);
+  filter: drop-shadow(0 0 12px rgba(230,0,0,0.8));
+  /* Delay di 0.15s per farla uscire 'dalle ceneri' del logo */
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.15s;
 }
 
 /* ── LOGIN CARD ── */
