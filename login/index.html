@@ -84,73 +84,70 @@ body {
   flex-direction: column;
 }
 
-/* ── BACK BUTTON LOGO (MINIMAL & ELEGANTE) ── */
-.back-minimal {
+/* ── BACK BUTTON LOGO (ZOOM-THROUGH WOW, 2x SIZE) ── */
+.back-wow {
   position: absolute;
-  top: 32px;
-  left: 32px;
+  top: 40px;
+  left: 40px;
   z-index: 50;
-  width: 64px;
-  height: 64px;
+  width: 120px;
+  height: 120px;
   text-decoration: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  background: transparent;
-  transition: background 0.5s ease;
+  background: transparent; /* Niente palla di sfondo */
 }
 
-.back-minimal:hover {
-  background: rgba(255, 255, 255, 0.03); /* leggerissimo alone di feedback */
-}
-
-.minimal-wrapper {
+.wow-wrapper {
   position: relative;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.minimal-icon {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100%;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.back-minimal .logo-icon {
-  height: 100%;
+.wow-icon {
+  position: absolute;
+}
+
+.back-wow .logo-icon {
+  height: 80px; /* Raddoppiato */
   width: auto;
-  transform: translateY(0) scale(1);
   opacity: 1;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  transform: scale(1);
+  filter: blur(0px) drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.back-minimal .arrow-icon {
-  width: 28px;
-  height: 28px;
+.back-wow .arrow-icon {
+  width: 72px; /* Raddoppiato */
+  height: 72px;
   color: var(--accent);
-  transform: translateY(15px) scale(0.9);
   opacity: 0;
+  /* Entra roteando e rimpicciolendosi da grandissimo */
+  transform: scale(2) rotate(45deg);
+  filter: blur(10px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ── HOVER: TRANSIZIONE VERTICALE MORBIDA ── */
-.back-minimal:hover .logo-icon {
-  transform: translateY(-15px) scale(0.9);
+/* ── HOVER: ZOOM-THROUGH WOW ── */
+.back-wow:hover .logo-icon {
+  /* Vola in avanti "passando attraverso lo schermo" e scompare */
+  transform: scale(3);
   opacity: 0;
+  filter: blur(15px);
+  transition: all 0.4s cubic-bezier(0.5, 0, 0, 1);
 }
 
-.back-minimal:hover .arrow-icon {
-  transform: translateY(0) scale(1);
+.back-wow:hover .arrow-icon {
+  /* Esplode sbattendo sul display e mettendosi a fuoco */
   opacity: 1;
-  filter: drop-shadow(0 0 8px rgba(230,0,0,0.5));
+  transform: scale(1) rotate(0deg);
+  filter: blur(0px) drop-shadow(0 0 25px rgba(230,0,0,0.9));
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s;
 }
 
 /* ── LOGIN CARD ── */
@@ -413,11 +410,11 @@ body {
 </head>
 <body>
 
-  <!-- BACK BUTTON (MINIMAL) -->
-  <a href="../hompage/index.html" class="back-minimal" title="Ritorna alla Homepage">
-    <div class="minimal-wrapper">
-      <img src="../loghi ed immagini/logo.svg" alt="Overline Logo" class="minimal-icon logo-icon">
-      <svg class="minimal-icon arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- BACK BUTTON (ZOOM-THROUGH WOW) -->
+  <a href="../hompage/index.html" class="back-wow" title="Ritorna alla Homepage">
+    <div class="wow-wrapper">
+      <img src="../loghi ed immagini/logo.svg" alt="Overline Logo" class="wow-icon logo-icon">
+      <svg class="wow-icon arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="19" y1="12" x2="5" y2="12"></line>
         <polyline points="12 19 5 12 12 5"></polyline>
       </svg>
