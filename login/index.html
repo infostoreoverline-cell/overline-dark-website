@@ -111,6 +111,9 @@ body {
 
 .wow-icon {
   position: absolute;
+  /* Centratura matematica assoluta */
+  inset: 0;
+  margin: auto;
 }
 
 .back-wow .logo-icon {
@@ -123,12 +126,12 @@ body {
 }
 
 .back-wow .arrow-icon {
-  width: 72px; /* Raddoppiato */
-  height: 72px;
+  width: 52px; /* Ridotta la dimensione per bilanciare la massa visiva */
+  height: 52px;
   color: var(--accent);
   opacity: 0;
   /* Entra roteando e rimpicciolendosi da grandissimo */
-  transform: scale(2) rotate(45deg);
+  transform: scale(2) rotate(45deg) translateX(0);
   filter: blur(10px);
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -136,7 +139,7 @@ body {
 /* ── HOVER: ZOOM-THROUGH WOW ── */
 .back-wow:hover .logo-icon {
   /* Vola in avanti "passando attraverso lo schermo" e scompare */
-  transform: scale(3);
+  transform: scale(3) translateZ(0);
   opacity: 0;
   filter: blur(15px);
   transition: all 0.4s cubic-bezier(0.5, 0, 0, 1);
@@ -145,7 +148,8 @@ body {
 .back-wow:hover .arrow-icon {
   /* Esplode sbattendo sul display e mettendosi a fuoco */
   opacity: 1;
-  transform: scale(1) rotate(0deg);
+  /* Traslazione di 4px a destra per la centratura ottica della freccia asimmetrica */
+  transform: scale(1) rotate(0deg) translateX(4px);
   filter: blur(0px) drop-shadow(0 0 25px rgba(230,0,0,0.9));
   transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s;
 }
