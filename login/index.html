@@ -402,12 +402,34 @@ body {
 }
 
 /* ── RESPONSIVE ── */
-@media(max-width: 480px) {
+@media(max-width: 768px) {
   .login-card {
-    padding: 40px 24px;
+    padding: 32px 24px;
   }
   .login-header h1 {
-    font-size: 32px;
+    font-size: 28px;
+  }
+  .login-header p {
+    font-size: 14px;
+  }
+  .bg-container img {
+    /* Ripristina la centratura per le immagini portrait su mobile */
+    object-position: center;
+  }
+  /* Ridimensiona il bottone WOW per non coprire lo schermo mobile */
+  .back-wow {
+    width: 64px;
+    height: 64px;
+    top: 24px;
+    left: 24px;
+  }
+  .back-wow .logo-icon {
+    height: 48px;
+  }
+  .back-wow .arrow-icon {
+    width: 36px;
+    height: 36px;
+    margin-left: 20px;
   }
 }
 </style>
@@ -677,9 +699,11 @@ body {
       setupFormShake('register-form');
 
       /* ── ANIMAZIONE BACKGROUND RANDOM ── */
+      // Evitiamo il super-zoom eccessivo su schermi mobile
+      const isMobile = window.innerWidth <= 768;
       gsap.fromTo('.bg-container img', 
-        { scale: 1.25, opacity: 0 }, 
-        { scale: 1.15, opacity: 0.8, duration: 2.5, ease: 'power2.out' }
+        { scale: isMobile ? 1.05 : 1.25, opacity: 0 }, 
+        { scale: isMobile ? 1.0 : 1.15, opacity: 0.8, duration: 2.5, ease: 'power2.out' }
       );
     });
   </script>
