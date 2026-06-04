@@ -416,40 +416,109 @@ nav {
   .btn-home{ padding:16px 32px; font-size:10px; }
 }
 
-/* ══ PRELOADER ══ */
+/* ══ PRELOADER PREMIUM ══ */
 #loader{
   position:fixed; inset:0; z-index:9999;
   background:#030303;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1);
+  display:flex; align-items:center; justify-content:center;
 }
-#loader.fade-out{ opacity:0; pointer-events:none; }
-.loader-logo{
-  font-family:var(--f-display); font-size:22px;
-  letter-spacing:0.35em; color:rgba(255,255,255,0.9);
-  animation:loaderPulse 2s ease-in-out infinite;
+#loader::before,#loader::after{
+  content:''; position:absolute; left:0; width:100%;
+  background:#030303;
+  transition:transform 0.75s cubic-bezier(0.76,0,0.24,1);
+  z-index:1;
 }
-.loader-bar-wrap{
-  width:180px; height:1px;
+#loader::before{ top:0; height:51%; transform:translateY(0); }
+#loader::after { bottom:0; height:51%; transform:translateY(0); }
+#loader.exit::before{ transform:translateY(-100%); }
+#loader.exit::after { transform:translateY(100%); }
+.ld-corner{
+  position:absolute; width:28px; height:28px;
+  opacity:0; animation:ldCornerIn 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+}
+.ld-corner.tl{ top:28px; left:28px; border-top:1px solid rgba(255,255,255,0.2); border-left:1px solid rgba(255,255,255,0.2); }
+.ld-corner.tr{ top:28px; right:28px; border-top:1px solid rgba(255,255,255,0.2); border-right:1px solid rgba(255,255,255,0.2); }
+.ld-corner.bl{ bottom:28px; left:28px; border-bottom:1px solid rgba(255,255,255,0.2); border-left:1px solid rgba(255,255,255,0.2); }
+.ld-corner.br{ bottom:28px; right:28px; border-bottom:1px solid rgba(255,255,255,0.2); border-right:1px solid rgba(255,255,255,0.2); }
+@keyframes ldCornerIn{
+  from{ opacity:0; transform:scale(0.5); }
+  to  { opacity:1; transform:scale(1); }
+}
+.ld-center{
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; align-items:center;
+  transition:opacity 0.2s ease;
+}
+#loader.exit .ld-center{ opacity:0; }
+.ld-eyebrow{
+  font-family:var(--f-mono); font-size:9px; letter-spacing:0.3em;
+  color:#E60000; text-transform:uppercase; margin-bottom:20px;
+  opacity:0; animation:ldFadeUp 0.6s ease 0.3s forwards;
+}
+.ld-logo{
+  font-family:var(--f-display); font-size:clamp(40px,10vw,72px);
+  letter-spacing:0.15em; color:#ffffff;
+  clip-path:inset(0 100% 0 0);
+  animation:ldLogoReveal 0.9s cubic-bezier(0.16,1,0.3,1) 0.5s forwards;
+}
+@keyframes ldLogoReveal{
+  to{ clip-path:inset(0 0% 0 0); }
+}
+.ld-bar-wrap{
+  position:relative;
+  width:min(260px,55vw); height:1px;
   background:rgba(255,255,255,0.08);
-  margin-top:28px; overflow:hidden;
+  margin-top:36px; overflow:visible;
 }
-.loader-bar-fill{
+.ld-bar-fill{
   height:100%; width:0%;
   background:#E60000;
-  transition:width 0.25s ease;
 }
-@keyframes loaderPulse{
-  0%,100%{ opacity:1; }
-  50%     { opacity:0.3; }
+.ld-bar-glow{
+  position:absolute; top:-4px; left:0%;
+  width:24px; height:9px;
+  background:radial-gradient(ellipse at center,rgba(230,0,0,0.9) 0%,transparent 70%);
+  transform:translateX(-50%);
+  opacity:0; transition:opacity 0.3s;
+  pointer-events:none;
 }
-</style>
+.ld-meta{
+  display:flex; justify-content:space-between; align-items:center;
+  width:min(260px,55vw); margin-top:14px;
+  opacity:0; animation:ldFadeUp 0.5s ease 0.9s forwards;
+}
+.ld-pct{
+  font-family:var(--f-display); font-size:12px;
+  color:#E60000; letter-spacing:0.1em;
+}
+.ld-status{
+  font-family:var(--f-mono); font-size:9px;
+  color:rgba(255,255,255,0.3); letter-spacing:0.18em;
+  text-transform:uppercase;
+}
+@keyframes ldFadeUp{
+  from{ opacity:0; transform:translateY(8px); }
+  to  { opacity:1; transform:translateY(0); }
+}</style>
 </head>
 <body>
 <div id="loader">
-  <div class="loader-logo">OVERLINE</div>
-  <div class="loader-bar-wrap"><div class="loader-bar-fill" id="loader-fill"></div></div>
+  <div class="ld-corner tl"></div>
+  <div class="ld-corner tr"></div>
+  <div class="ld-corner bl"></div>
+  <div class="ld-corner br"></div>
+  <div class="ld-center">
+    <div class="ld-eyebrow">SISTEMA DI CARICAMENTO</div>
+    <div class="ld-logo" id="ld-logo">OVERLINE</div>
+    <div class="ld-bar-wrap">
+      <div class="ld-bar-fill" id="ld-fill"></div>
+      <div class="ld-bar-glow" id="ld-glow"></div>
+    </div>
+    <div class="ld-meta">
+      <span class="ld-pct" id="ld-pct">0%</span>
+      <span class="ld-status" id="ld-status">INIZIALIZZAZIONE...</span>
+    </div>
+  </div>
 </div>
 
 <div class="bg-ambient"></div>
@@ -655,15 +724,59 @@ const TG_CHAT_ID = '1047472487';
 
 /* ── PRELOADER ── */
 async function preload() {
-  const fill = document.getElementById('loader-fill');
-  let loaded = 0;
-  // No images on this page — wait only for fonts
+  const ldFill   = document.getElementById('ld-fill');
+  const ldGlow   = document.getElementById('ld-glow');
+  const ldPct    = document.getElementById('ld-pct');
+  const ldStatus = document.getElementById('ld-status');
+  const ldLogo   = document.getElementById('ld-logo');
+  const loader   = document.getElementById('loader');
+
+  // Scramble text sul logo
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@!';
+  const FINAL = 'OVERLINE';
+  let iter = 0;
+  const scramble = setInterval(() => {
+    ldLogo.textContent = FINAL.split('').map((c, i) =>
+      i < iter ? c : CHARS[Math.floor(Math.random() * CHARS.length)]
+    ).join('');
+    if (iter >= FINAL.length) clearInterval(scramble);
+    iter += 0.4;
+  }, 40);
+
+  // Barra: su questa pagina non ci sono immagini, aspetta solo i font
+  const ldFillEl = ldFill;
+  let displayPct = 0;
+  let rafId;
+
+  function animateToFull() {
+    displayPct += (100 - displayPct) * 0.05;
+    const pct = Math.min(displayPct, 100);
+    ldFillEl.style.width = pct.toFixed(2) + '%';
+    ldGlow.style.left  = pct.toFixed(2) + '%';
+    ldPct.textContent  = Math.round(pct) + '%';
+    if (pct < 99.5) rafId = requestAnimationFrame(animateToFull);
+    else onReady();
+  }
+
+  setTimeout(() => { ldGlow.style.opacity = '1'; }, 600);
   await document.fonts.ready;
-  fill.style.width = '100%';
-  await new Promise(r => setTimeout(r, 300));
-  const loader = document.getElementById('loader');
-  loader.classList.add('fade-out');
-  setTimeout(() => loader.remove(), 900);
+  requestAnimationFrame(animateToFull);
+
+  async function onReady() {
+    cancelAnimationFrame(rafId);
+    ldFillEl.style.width = '100%';
+    ldGlow.style.left  = '100%';
+    ldPct.textContent  = '100%';
+    ldStatus.textContent = 'PRONTO.';
+
+    ldGlow.style.transition = 'width 0.3s ease, opacity 0.4s ease';
+    ldGlow.style.width = '100%';
+    await new Promise(r => setTimeout(r, 400));
+
+    loader.classList.add('exit');
+    await new Promise(r => setTimeout(r, 800));
+    loader.remove();
+  }
 }
 
 preload();

@@ -806,8 +806,22 @@ footer {
 </head>
 <body>
 <div id="loader">
-  <div class="loader-logo">OVERLINE</div>
-  <div class="loader-bar-wrap"><div class="loader-bar-fill" id="loader-fill"></div></div>
+  <div class="ld-corner tl"></div>
+  <div class="ld-corner tr"></div>
+  <div class="ld-corner bl"></div>
+  <div class="ld-corner br"></div>
+  <div class="ld-center">
+    <div class="ld-eyebrow">SISTEMA DI CARICAMENTO</div>
+    <div class="ld-logo" id="ld-logo">OVERLINE</div>
+    <div class="ld-bar-wrap">
+      <div class="ld-bar-fill" id="ld-fill"></div>
+      <div class="ld-bar-glow" id="ld-glow"></div>
+    </div>
+    <div class="ld-meta">
+      <span class="ld-pct" id="ld-pct">0%</span>
+      <span class="ld-status" id="ld-status">INIZIALIZZAZIONE...</span>
+    </div>
+  </div>
 </div>
 
 <div id="progress"></div>
@@ -1363,31 +1377,85 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 /* ── PRELOADER ── */
 async function preload() {
-  const fill = document.getElementById('loader-fill');
+  const ldFill   = document.getElementById('ld-fill');
+  const ldGlow   = document.getElementById('ld-glow');
+  const ldPct    = document.getElementById('ld-pct');
+  const ldStatus = document.getElementById('ld-status');
+  const ldLogo   = document.getElementById('ld-logo');
+  const loader   = document.getElementById('loader');
+
+  // Scramble text sul logo
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@!';
+  const FINAL = 'OVERLINE';
+  let iter = 0;
+  const scramble = setInterval(() => {
+    ldLogo.textContent = FINAL.split('').map((c, i) =>
+      i < iter ? c : CHARS[Math.floor(Math.random() * CHARS.length)]
+    ).join('');
+    if (iter >= FINAL.length) clearInterval(scramble);
+    iter += 0.4;
+  }, 40);
+
+  // Barra interpolata via rAF
+  let targetPct  = 0;
+  let displayPct = 0;
+  let rafId;
+  const STATUSES = [
+    'INIZIALIZZAZIONE...', 'CARICAMENTO ASSETS...',
+    'VERIFICA STRUTTURA...', 'OTTIMIZZAZIONE...', 'PRONTO.'
+  ];
+
+  setTimeout(() => { ldGlow.style.opacity = '1'; }, 900);
+
+  function animateBar() {
+    displayPct += (targetPct - displayPct) * 0.06;
+    const pct = Math.min(displayPct, 100);
+    ldFill.style.width = pct.toFixed(2) + '%';
+    ldGlow.style.left  = pct.toFixed(2) + '%';
+    ldPct.textContent  = Math.round(pct) + '%';
+    ldStatus.textContent = STATUSES[Math.min(Math.floor(pct / 20), 4)];
+    rafId = requestAnimationFrame(animateBar);
+  }
+  rafId = requestAnimationFrame(animateBar);
+
+  // Tracciamento risorse
   const imgs = Array.from(document.images);
   let loaded = 0;
   const total = imgs.length + 1;
-
-  const updateBar = () => {
-    loaded++;
-    fill.style.width = Math.round((loaded / total) * 100) + '%';
-  };
+  const updateTarget = () => { loaded++; targetPct = Math.round((loaded / total) * 100); };
 
   const imgPromises = imgs.map(img => {
-    if (img.complete && img.naturalWidth > 0) { updateBar(); return Promise.resolve(); }
-    return new Promise(resolve => {
-      img.addEventListener('load',  () => { updateBar(); resolve(); }, { once: true });
-      img.addEventListener('error', () => { updateBar(); resolve(); }, { once: true });
+    if (img.complete && img.naturalWidth > 0) { updateTarget(); return Promise.resolve(); }
+    return new Promise(r => {
+      img.addEventListener('load',  () => { updateTarget(); r(); }, { once: true });
+      img.addEventListener('error', () => { updateTarget(); r(); }, { once: true });
     });
   });
-
-  const fontPromise = document.fonts.ready.then(updateBar);
+  const fontPromise = document.fonts.ready.then(updateTarget);
   await Promise.all([...imgPromises, fontPromise]);
-  await new Promise(r => setTimeout(r, 350));
 
-  const loader = document.getElementById('loader');
-  loader.classList.add('fade-out');
-  setTimeout(() => loader.remove(), 900);
+  // Aspetta che la barra raggiunga visivamente 100%
+  targetPct = 100;
+  await new Promise(resolve => {
+    const check = () => displayPct >= 99.5 ? resolve() : requestAnimationFrame(check);
+    check();
+  });
+
+  cancelAnimationFrame(rafId);
+  ldFill.style.width = '100%';
+  ldGlow.style.left  = '100%';
+  ldPct.textContent  = '100%';
+  ldStatus.textContent = 'PRONTO.';
+
+  // Flash glow finale
+  ldGlow.style.transition = 'width 0.3s ease, opacity 0.4s ease';
+  ldGlow.style.width = '100%';
+  await new Promise(r => setTimeout(r, 400));
+
+  // Curtain split exit
+  loader.classList.add('exit');
+  await new Promise(r => setTimeout(r, 800));
+  loader.remove();
 }
 
 /* ── AVVIO ── */
