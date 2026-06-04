@@ -391,7 +391,7 @@ section::after {
 ═══════════════════════════════════════════ */
 #s-product-wrap { position:relative; }
 #s-product {
-  height:100vh; display:flex; align-items:center; justify-content:center;
+  height:100svh; display:flex; align-items:center; justify-content:center;
   background:var(--bg); overflow:hidden; position:relative;
 }
 .product-bg { position:absolute; inset:0; z-index:0; }
@@ -749,9 +749,9 @@ footer {
   .data-row{ grid-template-columns:auto 1fr; gap:10px 14px; }
 
   /* S-Product */
-  .product-tagline { top: 35%; padding: 0 20px; }
+  .product-tagline { top: 50%; padding: 0 20px; }
   .product-tagline .big-quote{ font-size:clamp(40px,12vw,70px); margin-bottom:12px; }
-  .product-ui{ bottom:32px; width:calc(100% - 40px); }
+  .product-ui{ bottom:40px; width:calc(100% - 40px); }
   .color-swatch-group{ flex-direction:column; width:100%; gap:12px; }
   .color-swatch{ min-width:unset; width:100%; padding:14px 20px; }
   .swatch-circle{ width:28px; height:28px; }
@@ -1180,60 +1180,50 @@ dataNums.forEach(el => {
 /* ──────────────────────────────────────────
    S-PRODUCT — INTERAZIONE SCROLL E CONFIGURATORE
 ────────────────────────────────────────── */
-let mm = gsap.matchMedia();
-
-mm.add("(min-width: 992px)", () => {
-  ScrollTrigger.create({
-    trigger: '#s-product-wrap',
-    pin: '#s-product',
-    start: 'top top',
-    end: '+=150%',
-    anticipatePin: 1,
-    onUpdate: (self) => {
-      const progress = self.progress;
-      const tagline = document.getElementById('prod-tagline');
-      const ui = document.getElementById('prod-ui');
-      
-      if (progress < 0.3) {
-        gsap.to(tagline, { opacity: 1, y: 0, duration: 0.5, overwrite: 'auto' });
-        gsap.to(ui, { opacity: 0, y: 30, duration: 0.5, overwrite: 'auto' });
-        ui.classList.remove('active');
-      } else if (progress >= 0.3 && progress < 0.5) {
-        gsap.to(tagline, { opacity: 0, y: -40, duration: 0.5, overwrite: 'auto' });
-        gsap.to(ui, { opacity: 0, y: 30, duration: 0.5, overwrite: 'auto' });
-        ui.classList.remove('active');
-      } else if (progress >= 0.5) {
-        gsap.to(tagline, { opacity: 0, y: -40, duration: 0.5, overwrite: 'auto' });
-        gsap.to(ui, { opacity: 1, y: 0, duration: 0.5, overwrite: 'auto' });
-        ui.classList.add('active');
-      }
+ScrollTrigger.create({
+  trigger: '#s-product-wrap',
+  pin: '#s-product',
+  start: 'top top',
+  end: '+=150%',
+  anticipatePin: 1,
+  onUpdate: (self) => {
+    // Fase 1: 0 -> 0.3: Il testo è visibile, poi sfuma
+    // Fase 2: 0.5 -> 1.0: L'UI appare
+    const progress = self.progress;
+    
+    const tagline = document.getElementById('prod-tagline');
+    const ui = document.getElementById('prod-ui');
+    
+    if (progress < 0.3) {
+      // Testo entra/rimane
+      gsap.to(tagline, { opacity: 1, y: 0, duration: 0.5, overwrite: 'auto' });
+      gsap.to(ui, { opacity: 0, y: 30, duration: 0.5, overwrite: 'auto' });
+      ui.classList.remove('active');
+    } else if (progress >= 0.3 && progress < 0.5) {
+      // Entrambi nascosti in transizione
+      gsap.to(tagline, { opacity: 0, y: -40, duration: 0.5, overwrite: 'auto' });
+      gsap.to(ui, { opacity: 0, y: 30, duration: 0.5, overwrite: 'auto' });
+      ui.classList.remove('active');
+    } else if (progress >= 0.5) {
+      // UI entra
+      gsap.to(tagline, { opacity: 0, y: -40, duration: 0.5, overwrite: 'auto' });
+      gsap.to(ui, { opacity: 1, y: 0, duration: 0.5, overwrite: 'auto' });
+      ui.classList.add('active');
     }
-  });
-
-  gsap.set('#prod-tagline', { opacity: 0, y: 40 });
-  gsap.set('#prod-ui', { opacity: 0, y: 30 });
-
-  ScrollTrigger.create({
-    trigger: '#s-product-wrap',
-    start: 'top 60%',
-    onEnter: () => {
-      gsap.to('#prod-tagline', { opacity: 1, y: 0, duration: 1.4, ease: 'expo.out' });
-    }
-  });
-
-  return () => {
-    gsap.set('#prod-tagline', { clearProps: "all" });
-    gsap.set('#prod-ui', { clearProps: "all" });
-  };
+  }
 });
 
-mm.add("(max-width: 991px)", () => {
-  gsap.set('#prod-tagline', { opacity: 1, y: 0 });
-  gsap.set('#prod-ui', { opacity: 1, y: 0 });
-  document.getElementById('prod-ui').classList.add('active');
+// Setup iniziale animazioni
+gsap.set('#prod-tagline', { opacity: 0, y: 40 });
+gsap.set('#prod-ui', { opacity: 0, y: 30 });
 
-  gsap.from('#prod-tagline', { opacity: 0, y: 20, duration: 1, scrollTrigger: { trigger: '#s-product-wrap', start: 'top 75%' }});
-  gsap.from('#prod-ui', { opacity: 0, y: 30, duration: 1, delay: 0.2, scrollTrigger: { trigger: '#s-product-wrap', start: 'top 75%' }});
+// Trigger iniziale per il testo quando entra nello schermo prima del pin
+ScrollTrigger.create({
+  trigger: '#s-product-wrap',
+  start: 'top 60%',
+  onEnter: () => {
+    gsap.to('#prod-tagline', { opacity: 1, y: 0, duration: 1.4, ease: 'expo.out' });
+  }
 });
 
 // Swatch click handler per transizione immagine
