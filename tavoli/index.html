@@ -5,7 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>OVERLINE — Tavoli da Braccio di Ferro</title>
 <meta name="description" content="Tavoli da braccio di ferro Overline: acciaio massiccio, smontabilità ingegneristica, pad cuciti a mano. Costruiti per non cedere mai."/>
+<!-- Preconnect risorse esterne -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com"/>
+<link rel="preconnect" href="https://cdn.jsdelivr.net"/>
+<!-- Preload immagini principali -->
+<link rel="preload" as="image" href="immagini/saldatura 2.webp" fetchpriority="high"/>
+<link rel="preload" as="image" href="immagini/tavolo_garage.png"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"/>
 <style>
 /* ── DESIGN TOKENS ── */
@@ -817,7 +824,7 @@ footer {
   S2 — L'ARTIGIANATO / SALDATURA
 ═══════════════════════════════════════════════════ -->
 <section id="s2">
-  <div class="section-bg"><img src="immagini/saldatura 2.webp" alt="Operatore che salda il telaio del tavolo Overline" id="s2-img"/></div>
+  <div class="section-bg"><img src="immagini/saldatura 2.webp" alt="Operatore che salda il telaio del tavolo Overline" id="s2-img" fetchpriority="high" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="section-inner" style="padding:0 var(--margin-h);max-width:580px">
     <div class="label-tag"><span class="dot"></span>L'ARTIGIANATO</div>
@@ -837,7 +844,7 @@ footer {
   S3 — I MATERIALI / LEGNO
 ═══════════════════════════════════════════════════ -->
 <section id="s3">
-  <div class="section-bg"><img src="immagini/legno.webp" alt="Piano in legno del tavolo Overline" id="s3-img"/></div>
+  <div class="section-bg"><img src="immagini/legno.webp" alt="Piano in legno del tavolo Overline" id="s3-img" loading="lazy" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="section-inner">
     <div class="bracket-card" id="s3-card">
@@ -852,7 +859,7 @@ footer {
   S4 — LA LAVORAZIONE / CUCITURA
 ═══════════════════════════════════════════════════ -->
 <section id="s4">
-  <div class="section-bg"><img src="immagini/macchina da cucire.webp" alt="Macchina da cucire industriale che lavora i pad del tavolo Overline" id="s4-img"/></div>
+  <div class="section-bg"><img src="immagini/macchina da cucire.webp" alt="Macchina da cucire industriale che lavora i pad del tavolo Overline" id="s4-img" loading="lazy" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="section-inner" style="display:flex;align-items:center;justify-content:center;height:100%">
     <div class="center-card" id="s4-card">
@@ -872,7 +879,7 @@ footer {
 ═══════════════════════════════════════════════════ -->
 <section id="s5">
   <div id="s5-img">
-    <img src="immagini/steel_fit_joint.png" alt="Due tubolari in acciaio che si incastrano con precisione ingegneristica"/>
+    <img src="immagini/steel_fit_joint.png" alt="Due tubolari in acciaio che si incastrano con precisione ingegneristica" loading="lazy" decoding="async"/>
   </div>
   <div id="s5-text">
     <div class="label-tag"><span class="dot"></span>INGEGNERIA</div>
@@ -891,7 +898,7 @@ footer {
   [Immagine generata: macro acciaio]
 ═══════════════════════════════════════════════════ -->
 <section id="s6">
-  <div class="section-bg"><img src="immagini/steel_macro_detail.png" alt="Dettaglio macro di acciaio lavorato con precisione laser"/></div>
+  <div class="section-bg"><img src="immagini/steel_macro_detail.png" alt="Dettaglio macro di acciaio lavorato con precisione laser" loading="lazy" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="section-inner">
     <div class="label-tag"><span class="dot"></span>DETTAGLIO</div>
@@ -932,8 +939,8 @@ footer {
   <section id="s-product">
     <!-- Immagini di sfondo in crossfade -->
     <div class="product-bg">
-      <img src="immagini/tavolo_garage.png" class="p-img p-black visible" alt="Tavolo Nero" />
-      <img src="immagini/tavolo_garage_white.png" class="p-img p-white hidden" alt="Tavolo Bianco" />
+      <img src="immagini/tavolo_garage.png" class="p-img p-black visible" alt="Tavolo Nero" decoding="async"/>
+      <img src="immagini/tavolo_garage_white.png" class="p-img p-white hidden" alt="Tavolo Bianco" loading="lazy" decoding="async"/>
       <div class="overlay"></div>
     </div>
     
