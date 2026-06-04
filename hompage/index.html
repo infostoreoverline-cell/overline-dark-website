@@ -516,11 +516,11 @@ footer{
 .ld-logo{
   font-family:var(--f-display); font-size:clamp(40px,10vw,72px);
   letter-spacing:0.15em; color:#ffffff;
-  clip-path:inset(0 100% 0 0);
-  animation:ldLogoReveal 0.9s cubic-bezier(0.16,1,0.3,1) 0.5s forwards;
+  opacity:0; filter:blur(10px);
+  animation:ldLogoReveal 0.6s cubic-bezier(0.25,1,0.5,1) 0.2s forwards;
 }
 @keyframes ldLogoReveal{
-  to{ clip-path:inset(0 0% 0 0); }
+  to{ opacity:1; filter:blur(0); }
 }
 .ld-bar-wrap{
   position:relative;
@@ -707,19 +707,6 @@ async function preload() {
   const ldStatus = document.getElementById('ld-status');
   const ldLogo   = document.getElementById('ld-logo');
   const loader   = document.getElementById('loader');
-
-  // Scramble text sul logo
-  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@!';
-  const FINAL = 'OVERLINE';
-  let iter = 0;
-  const scramble = setInterval(() => {
-    ldLogo.textContent = FINAL.split('').map((c, i) =>
-      i < iter ? c : CHARS[Math.floor(Math.random() * CHARS.length)]
-    ).join('');
-    if (iter >= FINAL.length) clearInterval(scramble);
-    iter += 0.4;
-  }, 40);
-
   // Barra interpolata via rAF
   let targetPct  = 0;
   let displayPct = 0;
