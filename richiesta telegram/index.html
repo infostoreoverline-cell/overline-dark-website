@@ -336,11 +336,80 @@ nav {
 }
 .btn-home:hover { border-color: var(--accent); color: var(--accent); }
 
-@media(max-width: 600px) {
-  .selection-grid { grid-template-columns: 1fr; }
-  .field input { font-size: 18px; }
-  .recap-box { padding: 24px; }
-  .btn-next, .btn-submit { padding: 16px 32px; font-size: 16px; }
+/* ══ 1199px — Tablet orizzontale / Laptop piccolo ══ */
+@media(max-width:1199px){
+  :root{ --margin-h:40px; }
+}
+
+/* ══ 991px — Tablet verticale ══ */
+@media(max-width:991px){
+  :root{ --margin-h:32px; }
+  nav{ padding:0 32px; }
+  .form-container{ padding:100px 24px 60px; }
+  .step-title{ font-size:clamp(40px,8vw,64px); }
+  .step-desc{ font-size:11px; }
+}
+
+/* ══ 767px — Smartphone orizzontale ══ */
+@media(max-width:767px){
+  :root{ --margin-h:24px; }
+  .form-container{ padding:96px 20px 56px; }
+  .selection-grid{ flex-wrap:wrap; justify-content:center; }
+  .color-card{ min-width:140px; flex:1; }
+  .radio-chips{ gap:8px; }
+  .btn-next, .btn-submit{ padding:18px 36px; font-size:18px; }
+  .recap-box{ padding:32px 24px; }
+}
+
+/* ══ 576px — Smartphone verticale ══ */
+@media(max-width:576px){
+  :root{ --margin-h:20px; }
+
+  nav{ height:56px; padding:0 20px; }
+  .nav-logo{ font-size:18px; }
+  .nav-links-order{ display:none; }
+  .nav-close{ padding-left:0; border-left:none; font-size:10px; }
+
+  .form-container{ padding:80px 16px 48px; }
+  .form-inner{ max-width:100%; }
+
+  .step-title{ font-size:clamp(36px,12vw,56px); }
+  .step-desc{ font-size:11px; }
+  .step-header{ margin-bottom:40px; }
+
+  .field input, .field textarea{ font-size:17px; padding:16px 16px; }
+  .field input::placeholder, .field textarea::placeholder{ font-size:15px; }
+  .field-group{ gap:32px; margin-bottom:40px; }
+
+  /* Selezione colore — impilate verticalmente */
+  .selection-grid{ flex-direction:column; align-items:center; gap:16px; }
+  .color-card{ width:100%; max-width:320px; padding:24px 20px; }
+
+  /* Chip utilizzo */
+  .radio-chips{ gap:8px; justify-content:flex-start; }
+  .chip{ padding:12px 18px; font-size:10px; }
+
+  /* Bottoni navigazione */
+  .btn-next, .btn-submit{
+    width:100%; justify-content:center;
+    padding:18px 24px; font-size:18px;
+  }
+  .btn-back{ font-size:10px; }
+  .form-nav{ flex-direction:row; gap:12px; align-items:center; }
+
+  /* Riepilogo */
+  .recap-box{ padding:24px 16px; }
+  .recap-key{ font-size:9px; }
+  .recap-val{ font-size:12px; }
+  .recap-note{ font-size:12px; }
+
+  /* Privacy */
+  .privacy-text{ font-size:10px; }
+
+  /* Success screen */
+  .success-title{ font-size:clamp(40px,12vw,72px); }
+  .success-sub{ font-size:12px; }
+  .btn-home{ padding:16px 32px; font-size:10px; }
 }
 </style>
 </head>

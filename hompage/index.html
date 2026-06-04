@@ -354,29 +354,118 @@ footer{
 .footer-right .copy{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;color:rgba(255,255,255,.25)}
 
 /* ── RESPONSIVE ── */
-@media(max-width:900px){
-  :root{--margin-h:24px;--section-gap:100px}
-  nav{padding:16px 24px}
-  .nav-links{display:none}
-  .nav-burger{display:flex}
-  
-  /* Ridurre le altezze delle sezioni per non croppare troppo le immagini in orizzontale */
-  #hero { height: 85vh; }
-  #s1, #s2, #s4, #s6 { height: 75vh; }
-  #s3 { min-height: 75vh; }
-  
-  #s5-sticky{grid-template-columns:1fr}
-  #s5-left{display:block;position:absolute;inset:0;z-index:0}
-  #s5-left img{opacity:0.8;object-position:20% center}
-  #s5-left::after{background:rgba(3,3,3,0.5)}
-  #s5-right{background:transparent;z-index:10}
-  .progress-line{left:24px}
-  .s5-panel{padding:40px 24px 40px 56px}
-  .center-card{padding:40px 28px}
-  .quote-card{padding:32px 28px}
-  .footer-grid{grid-template-columns:1fr;gap:32px}
-  .footer-right{text-align:left}
-  .footer-watermark{font-size:80px}
+
+/* ══ 1199px — Tablet orizzontale / Laptop piccolo ══ */
+@media(max-width:1199px){
+  :root{ --margin-h:40px; }
+  #s5-right{ padding:48px 56px; }
+  .s5-panel{ padding:48px 56px; }
+  .quote-card{ padding:40px 44px; }
+  .footer-grid{ gap:32px; }
+}
+
+/* ══ 991px — Tablet verticale ══ */
+@media(max-width:991px){
+  :root{ --margin-h:32px; --section-gap:100px; }
+  nav{ padding:0 32px; }
+  .nav-links{ display:none; }
+  .nav-burger{ display:flex; }
+
+  #hero{ height:100svh; }
+  .hero-title{ font-size:clamp(52px,11vw,90px); }
+  .hero-sub{ max-width:100%; }
+
+  #s1{ height:auto; min-height:80vh; }
+  #s2{ height:auto; min-height:80vh; }
+  #s3{ min-height:80vh; }
+  #s6{ height:auto; min-height:80vh; }
+
+  .center-card{ padding:40px 32px; max-width:90vw; }
+  .bracket-card{ width:min(440px,88vw); padding:32px; }
+
+  /* S5 — 1 colonna: immagine assoluta come sfondo, testo in overlay */
+  #s5-sticky{ grid-template-columns:1fr; }
+  #s5-left{ display:block; position:absolute; inset:0; z-index:0; }
+  #s5-left img{ opacity:0.7; object-position:center; }
+  #s5-left::after{ background:rgba(3,3,3,0.55); }
+  #s5-right{ background:transparent; z-index:10; }
+  .progress-line{ left:32px; }
+  .s5-panel{ padding:48px 32px 48px 64px; }
+
+  .quote-card{ padding:32px 28px; }
+  .quote-card p{ font-size:16px; }
+
+  footer{ padding:100px var(--margin-h) 48px; }
+  .footer-grid{ grid-template-columns:1fr 1fr; gap:32px; }
+  .footer-right{ text-align:left; }
+  .footer-watermark{ font-size:clamp(60px,12vw,120px); }
+}
+
+/* ══ 767px — Smartphone orizzontale ══ */
+@media(max-width:767px){
+  :root{ --margin-h:24px; }
+
+  #hero{ height:100svh; }
+  .hero-title{ font-size:clamp(48px,13vw,80px); }
+
+  #s1,#s2,#s3,#s6{ min-height:80vw; }
+
+  .center-card{ padding:32px 24px; max-width:88vw; }
+  .s5-panel{ padding:40px 24px 40px 52px; }
+  .progress-line{ left:24px; }
+
+  #s4 .pin-title{ font-size:clamp(38px,9vw,72px); }
+  .quote-card{ padding:28px 20px; }
+}
+
+/* ══ 576px — Smartphone verticale ══ */
+@media(max-width:576px){
+  :root{ --margin-h:20px; --section-gap:80px; }
+
+  nav{ height:56px; padding:0 20px; }
+  .nav-logo{ font-size:18px; }
+
+  #hero{ height:100svh; }
+  .hero-title{ font-size:clamp(44px,14vw,72px); }
+  .hero-sub{ font-size:11px; max-width:100%; padding-left:14px; }
+  .scroll-cue{ bottom:28px; }
+
+  #s1{ height:auto; min-height:75vh; }
+  #s2{ height:auto; min-height:75vh; }
+  #s3{ min-height:75vh; }
+  #s6{ height:auto; min-height:75vh; }
+
+  /* Overlay riadattati su asse verticale per mobile portrait */
+  #s1 .overlay{
+    background:linear-gradient(to bottom,rgba(0,0,0,.85) 0%,rgba(0,0,0,.45) 55%,transparent 100%);
+  }
+  #s3 .overlay{
+    background:linear-gradient(to bottom,rgba(3,3,3,.9) 0%,rgba(3,3,3,.55) 60%,transparent 100%);
+  }
+  #s3 .section-inner{ padding-bottom:60px; justify-content:flex-start; }
+  .bracket-card{ width:100%; padding:24px 20px; }
+
+  .center-card{ padding:28px 20px; max-width:95vw; }
+  .center-card .big-title{ font-size:clamp(36px,11vw,60px); margin-bottom:20px; }
+  .center-card p{ font-size:12px; }
+
+  #s4 .pin-title{ font-size:clamp(32px,11vw,64px); padding:0 20px; }
+
+  /* S5 — pannelli ridotti per mobile portrait */
+  .s5-panel{ padding:32px 20px 32px 44px; }
+  .s5-panel h2{ font-size:clamp(32px,9vw,48px); }
+  .s5-panel p{ font-size:11px; }
+  .progress-line{ left:20px; }
+
+  .quote-card{ padding:24px 16px; }
+  .quote-card p{ font-size:15px; }
+
+  footer{ padding:80px var(--margin-h) 40px; }
+  .footer-grid{ grid-template-columns:1fr; gap:28px; }
+  .footer-right{ text-align:left; }
+  .footer-watermark{ font-size:clamp(48px,14vw,80px); }
+  .footer-cta{ margin-bottom:48px; display:flex; flex-direction:column; align-items:center; gap:12px; }
+  .cta-btn{ padding:16px 32px; font-size:11px; display:block; text-align:center; }
 }
 </style>
 </head><body>
