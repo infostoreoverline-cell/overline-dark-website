@@ -773,10 +773,42 @@ footer {
   .footer-grid{ grid-template-columns:1fr; gap:28px; }
   .footer-right{ text-align:left; }
   .footer-watermark{ font-size:clamp(48px,14vw,80px); }
+
+/* ══ PRELOADER ══ */
+#loader{
+  position:fixed; inset:0; z-index:9999;
+  background:#030303;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+#loader.fade-out{ opacity:0; pointer-events:none; }
+.loader-logo{
+  font-family:var(--f-display); font-size:22px;
+  letter-spacing:0.35em; color:rgba(255,255,255,0.9);
+  animation:loaderPulse 2s ease-in-out infinite;
+}
+.loader-bar-wrap{
+  width:180px; height:1px;
+  background:rgba(255,255,255,0.08);
+  margin-top:28px; overflow:hidden;
+}
+.loader-bar-fill{
+  height:100%; width:0%;
+  background:#E60000;
+  transition:width 0.25s ease;
+}
+@keyframes loaderPulse{
+  0%,100%{ opacity:1; }
+  50%     { opacity:0.3; }
 }
 </style>
 </head>
 <body>
+<div id="loader">
+  <div class="loader-logo">OVERLINE</div>
+  <div class="loader-bar-wrap"><div class="loader-bar-fill" id="loader-fill"></div></div>
+</div>
 
 <div id="progress"></div>
 
@@ -844,7 +876,7 @@ footer {
   S3 — I MATERIALI / LEGNO
 ═══════════════════════════════════════════════════ -->
 <section id="s3">
-  <div class="section-bg"><img src="immagini/legno.webp" alt="Piano in legno del tavolo Overline" id="s3-img" loading="lazy" decoding="async"/></div>
+  <div class="section-bg"><img src="immagini/legno.webp" alt="Piano in legno del tavolo Overline" id="s3-img" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="section-inner">
     <div class="bracket-card" id="s3-card">
@@ -859,7 +891,7 @@ footer {
   S4 — LA LAVORAZIONE / CUCITURA
 ═══════════════════════════════════════════════════ -->
 <section id="s4">
-  <div class="section-bg"><img src="immagini/macchina da cucire.webp" alt="Macchina da cucire industriale che lavora i pad del tavolo Overline" id="s4-img" loading="lazy" decoding="async"/></div>
+  <div class="section-bg"><img src="immagini/macchina da cucire.webp" alt="Macchina da cucire industriale che lavora i pad del tavolo Overline" id="s4-img" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="section-inner" style="display:flex;align-items:center;justify-content:center;height:100%">
     <div class="center-card" id="s4-card">
@@ -879,7 +911,7 @@ footer {
 ═══════════════════════════════════════════════════ -->
 <section id="s5">
   <div id="s5-img">
-    <img src="immagini/steel_fit_joint.png" alt="Due tubolari in acciaio che si incastrano con precisione ingegneristica" loading="lazy" decoding="async"/>
+    <img src="immagini/steel_fit_joint.png" alt="Due tubolari in acciaio che si incastrano con precisione ingegneristica" decoding="async"/>
   </div>
   <div id="s5-text">
     <div class="label-tag"><span class="dot"></span>INGEGNERIA</div>
@@ -898,7 +930,7 @@ footer {
   [Immagine generata: macro acciaio]
 ═══════════════════════════════════════════════════ -->
 <section id="s6">
-  <div class="section-bg"><img src="immagini/steel_macro_detail.png" alt="Dettaglio macro di acciaio lavorato con precisione laser" loading="lazy" decoding="async"/></div>
+  <div class="section-bg"><img src="immagini/steel_macro_detail.png" alt="Dettaglio macro di acciaio lavorato con precisione laser" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="section-inner">
     <div class="label-tag"><span class="dot"></span>DETTAGLIO</div>
@@ -940,7 +972,7 @@ footer {
     <!-- Immagini di sfondo in crossfade -->
     <div class="product-bg">
       <img src="immagini/tavolo_garage.png" class="p-img p-black visible" alt="Tavolo Nero" decoding="async"/>
-      <img src="immagini/tavolo_garage_white.png" class="p-img p-white hidden" alt="Tavolo Bianco" loading="lazy" decoding="async"/>
+      <img src="immagini/tavolo_garage_white.png" class="p-img p-white hidden" alt="Tavolo Bianco" decoding="async"/>
       <div class="overlay"></div>
     </div>
     
@@ -1049,6 +1081,9 @@ gsap.ticker.lagSmoothing(0);
 lenis.on('scroll', ({ progress }) => {
   document.getElementById('progress').style.width = (progress * 100) + '%';
 });
+
+/* ── ANIMAZIONI ── */
+function initAnimations() {
 
 /* ── NAV ENTRANCE ── */
 gsap.to('#nav', { opacity: 1, y: 0, duration: 1.2, ease: 'power4.out', delay: 0.3 });
@@ -1324,8 +1359,39 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-/* ── REFRESH on LOAD ── */
-window.addEventListener('load', () => { ScrollTrigger.refresh(); });
+} /* fine initAnimations */
+
+/* ── PRELOADER ── */
+async function preload() {
+  const fill = document.getElementById('loader-fill');
+  const imgs = Array.from(document.images);
+  let loaded = 0;
+  const total = imgs.length + 1;
+
+  const updateBar = () => {
+    loaded++;
+    fill.style.width = Math.round((loaded / total) * 100) + '%';
+  };
+
+  const imgPromises = imgs.map(img => {
+    if (img.complete && img.naturalWidth > 0) { updateBar(); return Promise.resolve(); }
+    return new Promise(resolve => {
+      img.addEventListener('load',  () => { updateBar(); resolve(); }, { once: true });
+      img.addEventListener('error', () => { updateBar(); resolve(); }, { once: true });
+    });
+  });
+
+  const fontPromise = document.fonts.ready.then(updateBar);
+  await Promise.all([...imgPromises, fontPromise]);
+  await new Promise(r => setTimeout(r, 350));
+
+  const loader = document.getElementById('loader');
+  loader.classList.add('fade-out');
+  setTimeout(() => loader.remove(), 900);
+}
+
+/* ── AVVIO ── */
+preload().then(() => initAnimations());
 </script>
 </body>
 </html>

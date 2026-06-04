@@ -473,8 +473,41 @@ footer{
   .footer-cta{ margin-bottom:48px; display:flex; flex-direction:column; align-items:center; gap:12px; }
   .cta-btn{ padding:16px 32px; font-size:11px; display:block; text-align:center; }
 }
+
+/* ══ PRELOADER ══ */
+#loader{
+  position:fixed; inset:0; z-index:9999;
+  background:#030303;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+#loader.fade-out{ opacity:0; pointer-events:none; }
+.loader-logo{
+  font-family:var(--f-display); font-size:22px;
+  letter-spacing:0.35em; color:rgba(255,255,255,0.9);
+  animation:loaderPulse 2s ease-in-out infinite;
+}
+.loader-bar-wrap{
+  width:180px; height:1px;
+  background:rgba(255,255,255,0.08);
+  margin-top:28px; overflow:hidden;
+}
+.loader-bar-fill{
+  height:100%; width:0%;
+  background:#E60000;
+  transition:width 0.25s ease;
+}
+@keyframes loaderPulse{
+  0%,100%{ opacity:1; }
+  50%     { opacity:0.3; }
+}
 </style>
 </head><body>
+<div id="loader">
+  <div class="loader-logo">OVERLINE</div>
+  <div class="loader-bar-wrap"><div class="loader-bar-fill" id="loader-fill"></div></div>
+</div>
 <div id="progress"></div>
 <nav id="nav">
   <a href="#s1" class="nav-logo">OVERLINE</a>
@@ -499,7 +532,7 @@ footer{
   <div class="scroll-cue"><div class="line"></div><span>SCOPRI OVERLINE</span></div>
 </header>
 <section id="s1">
-  <div class="section-bg"><img src="immage/pad.webp" alt="Pad in pelle cucita a mano" loading="lazy" decoding="async"/></div>
+  <div class="section-bg"><img src="immage/pad.webp" alt="Pad in pelle cucita a mano" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="section-inner" style="padding:0 var(--margin-h);max-width:600px">
     <div class="label-tag"><span class="dot"></span>MATERIALI</div>
@@ -515,7 +548,7 @@ footer{
   </div>
 </section>
 <section id="s2">
-  <div class="section-bg"><img src="immage/bach.webp" alt="Struttura tubolare in acciaio" loading="lazy" decoding="async"/></div>
+  <div class="section-bg"><img src="immage/bach.webp" alt="Struttura tubolare in acciaio" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="section-inner" style="display:flex;align-items:center;justify-content:center;height:100%">
     <div class="center-card">
@@ -528,7 +561,7 @@ footer{
   </div>
 </section>
 <section id="s3">
-  <div class="section-bg"><img src="immage/pulley.webp" alt="Meccanismo di trazione Overline" loading="lazy" decoding="async"/></div>
+  <div class="section-bg"><img src="immage/pulley.webp" alt="Meccanismo di trazione Overline" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="section-inner">
     <div class="bracket-card">
@@ -540,14 +573,14 @@ footer{
 </section>
 <div id="s4-wrap">
 <section id="s4">
-  <div class="section-bg"><img src="immage/bach.webp" alt="Finitura acciaio Overline" loading="lazy" decoding="async"/></div>
+  <div class="section-bg"><img src="immage/bach.webp" alt="Finitura acciaio Overline" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="pin-title">LA TUA FORZA.<br><span>LA NOSTRA BASE.</span></div>
 </section>
 </div>
 <div class="s5-scroll-panels">
 <div id="s5-sticky">
-  <div id="s5-left"><img src="immage/pomello accaio.webp" alt="Pomello zigrinato in acciaio Overline" loading="lazy" decoding="async"/></div>
+  <div id="s5-left"><img src="immage/pomello accaio.webp" alt="Pomello zigrinato in acciaio Overline" decoding="async"/></div>
   <div id="s5-right">
     <div class="progress-line" id="s5-prog"></div>
     <div class="s5-panel" id="p1"><div class="panel-num">01 / 03 - TAVOLI</div><h2>IL TERRENO<br>DI SCONTRO.</h2><p>Struttura in acciaio massiccio, smontabile in pochi minuti. Piani in ecopelle premium. Costruito per resistere a ogni sessione.</p></div>
@@ -557,7 +590,7 @@ footer{
 </div>
 </div>
 <section id="s6">
-  <div class="section-bg"><img src="immage/Sfondo.webp" alt="Sfondo filosofia Overline" loading="lazy" decoding="async"/></div>
+  <div class="section-bg"><img src="immage/Sfondo.webp" alt="Sfondo filosofia Overline" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="philosophy-inner">
     <span class="section-label">LA NOSTRA FILOSOFIA</span>
@@ -585,203 +618,229 @@ footer{
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-// Lenis smooth scroll
+/* ── LENIS SMOOTH SCROLL ── */
 const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
 lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add((t) => lenis.raf(t * 1000));
 gsap.ticker.lagSmoothing(0);
-
-// Init all reveal-lines hidden via GSAP
-gsap.set('.reveal-line', { y: 80, opacity: 0 });
 
 // Progress bar
 lenis.on('scroll', ({progress}) => {
   document.getElementById('progress').style.width = (progress*100)+'%';
 });
 
-// NAV entrance
-gsap.to('#nav', { opacity:1, y:0, duration:1.2, ease:'power4.out', delay:0.3 });
+/* ── PRELOADER ── */
+async function preload() {
+  const fill = document.getElementById('loader-fill');
+  const imgs = Array.from(document.images);
+  let loaded = 0;
+  const total = imgs.length + 1; // +1 per i font
 
-// Hero text reveal
-gsap.fromTo('#hero .reveal-line',
-  { y: 80, opacity: 0 },
-  { y: 0, opacity: 1, duration: 1.4, ease: 'expo.out', stagger: 0.2, delay: 0.7 }
-);
-gsap.fromTo('#hero .hero-sub',
-  { opacity: 0, y: 20 },
-  { opacity: 1, y: 0, duration: 1.1, ease: 'power4.out', delay: 1.6 }
-);
-gsap.fromTo('#hero .scroll-cue',
-  { opacity: 0 },
-  { opacity: 1, duration: 1, ease: 'power2.out', delay: 2.4 }
-);
+  const updateBar = () => {
+    loaded++;
+    fill.style.width = Math.round((loaded / total) * 100) + '%';
+  };
 
-// Hero BG parallax
-gsap.to('#hero .bg', {
-  yPercent: 20,
-  ease:'none',
-  scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:1 }
-});
-
-// S1 reveal
-gsap.fromTo('#s1 .reveal-line',
-  { y: 80, opacity: 0 },
-  { y: 0, opacity: 1, duration: 1.2, ease: 'expo.out', stagger: 0.16,
-    scrollTrigger: { trigger: '#s1', start: 'top 75%', toggleActions: 'play none none none' }
-  }
-);
-gsap.to('#s1 .spec-card', {
-  opacity:1, y:0, duration:1, ease:'power4.out',
-  scrollTrigger:{ trigger:'#s1 .spec-card', start:'top 80%', toggleActions:'play none none none' }
-});
-gsap.to('#s1 .section-bg img', {
-  yPercent:15, ease:'none',
-  scrollTrigger:{ trigger:'#s1', start:'top bottom', end:'bottom top', scrub:1.5 }
-});
-
-// S2 reveal
-gsap.fromTo('#s2 .reveal-line',
-  { y: 80, opacity: 0 },
-  { y: 0, opacity: 1, duration: 1.3, ease: 'expo.out', stagger: 0.18,
-    scrollTrigger: { trigger: '#s2', start: 'top 70%', toggleActions: 'play none none none' }
-  }
-);
-
-// S3 bracket card
-gsap.fromTo('#s3 .bracket-card',
-  { opacity:0, x:60 },
-  { opacity:1, x:0, duration:1.2, ease:'expo.out',
-    scrollTrigger:{ trigger:'#s3', start:'top 70%', toggleActions:'play none none none' }
-  }
-);
-gsap.to('#s3 .section-bg img', {
-  yPercent:12, ease:'none',
-  scrollTrigger:{ trigger:'#s3', start:'top bottom', end:'bottom top', scrub:1 }
-});
-
-// S4 pin + scale title
-ScrollTrigger.create({
-  trigger:'#s4-wrap', pin:'#s4', start:'top top', end:'+=100%',
-  scrub:1.5, anticipatePin:1,
-  onUpdate:(self)=>{
-    const s = 0.7 + self.progress * 0.3;
-    document.querySelector('#s4 .pin-title').style.transform = 'scale('+s+')';
-  }
-});
-gsap.from('#s4 .pin-title', {
-  opacity:0, duration:1,
-  scrollTrigger:{ trigger:'#s4', start:'top 80%', toggleActions:'play none none none' }
-});
-
-// S5 dual-panel — CSS sticky handles the pin.
-// 3 ScrollTriggers: each panel activates at its scroll zone within the 300vh container.
-const s5Els = ['#p1','#p2','#p3'];
-
-// Set initial state: only p1 visible
-gsap.set('#p1', { opacity:1, y:0 });
-gsap.set('#p2, #p3', { opacity:0, y:40 });
-
-// Panel 1 → Panel 2 transition — fires when 1/3 of the scroll container reaches the viewport center
-ScrollTrigger.create({
-  trigger: '.s5-scroll-panels',
-  start: 'top+=33% center',
-  onEnter: () => {
-    gsap.to('#p1', { opacity:0, y:-40, duration:0.5, ease:'power4.inOut', overwrite:true });
-    gsap.to('#p2', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
-  },
-  onLeaveBack: () => {
-    gsap.to('#p2', { opacity:0, y:40,  duration:0.5, ease:'power4.inOut', overwrite:true });
-    gsap.to('#p1', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
-  }
-});
-
-// Panel 2 → Panel 3 transition — fires at 2/3 of the scroll container
-ScrollTrigger.create({
-  trigger: '.s5-scroll-panels',
-  start: 'top+=66% center',
-  onEnter: () => {
-    gsap.to('#p2', { opacity:0, y:-40, duration:0.5, ease:'power4.inOut', overwrite:true });
-    gsap.to('#p3', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
-  },
-  onLeaveBack: () => {
-    gsap.to('#p3', { opacity:0, y:40,  duration:0.5, ease:'power4.inOut', overwrite:true });
-    gsap.to('#p2', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
-  }
-});
-
-// Progress line driven by scroll within S5
-ScrollTrigger.create({
-  trigger: '.s5-scroll-panels',
-  start: 'top top',
-  end: 'bottom bottom',
-  scrub: true,
-  onUpdate: (self) => {
-    const p = document.querySelector('#s5-prog');
-    if(p) p.style.setProperty('--h', (self.progress * 100) + '%');
-  }
-});
-
-// S6 quote
-gsap.fromTo('#s6 .quote-card',
-  { opacity:0, y:50 },
-  { opacity:1, y:0, duration:1.4, ease:'expo.out',
-    scrollTrigger:{ trigger:'#s6', start:'top 70%', toggleActions:'play none none none' }
-  }
-);
-gsap.fromTo('#s6 .section-label',
-  { opacity:0, letterSpacing:'0.4em' },
-  { opacity:1, letterSpacing:'0.2em', duration:1.2, ease:'power4.out',
-    scrollTrigger:{ trigger:'#s6', start:'top 75%', toggleActions:'play none none none' }
-  }
-);
-
-// Footer watermark parallax
-gsap.to('.footer-watermark', {
-  y: -60, ease:'none',
-  scrollTrigger:{ trigger:'footer', start:'top bottom', end:'bottom top', scrub:1 }
-});
-
-// Nav active link highlight on scroll
-const sections = ['s1','s2','s6'];
-sections.forEach(id => {
-  ScrollTrigger.create({
-    trigger:'#'+id, start:'top center', end:'bottom center',
-    onEnter:()=>setActive(id), onEnterBack:()=>setActive(id)
+  const imgPromises = imgs.map(img => {
+    if (img.complete && img.naturalWidth > 0) { updateBar(); return Promise.resolve(); }
+    return new Promise(resolve => {
+      img.addEventListener('load',  () => { updateBar(); resolve(); }, { once: true });
+      img.addEventListener('error', () => { updateBar(); resolve(); }, { once: true });
+    });
   });
-});
-function setActive(id){
-  document.querySelectorAll('.nav-links a').forEach(a=>{
-    a.classList.toggle('active', a.getAttribute('href')==='#'+id);
-  });
+
+  const fontPromise = document.fonts.ready.then(updateBar);
+  await Promise.all([...imgPromises, fontPromise]);
+  await new Promise(r => setTimeout(r, 350));
+
+  const loader = document.getElementById('loader');
+  loader.classList.add('fade-out');
+  setTimeout(() => loader.remove(), 900);
 }
 
-// Mobile nav toggle
-document.querySelector('.nav-burger').addEventListener('click', ()=>{
-  const nl = document.querySelector('.nav-links');
-  nl.style.display = nl.style.display==='flex' ? 'none' : 'flex';
-  nl.style.flexDirection = 'column';
-  nl.style.position = 'absolute';
-  nl.style.top = '60px';
-  nl.style.left = '0';
-  nl.style.width = '100%';
-  nl.style.background = 'rgba(3,3,3,0.97)';
-  nl.style.padding = '24px';
-  nl.style.gap = '20px';
-});
+/* ── ANIMAZIONI ── */
+function initAnimations() {
 
-// Smooth anchor scroll via Lenis
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click', e=>{
-    e.preventDefault();
-    const t = document.querySelector(a.getAttribute('href'));
-    if(t) lenis.scrollTo(t, { offset:-80, duration:2, easing:(x)=>1-Math.pow(1-x,4) });
+  // Init all reveal-lines hidden via GSAP
+  gsap.set('.reveal-line', { y: 80, opacity: 0 });
+
+  // NAV entrance
+  gsap.to('#nav', { opacity:1, y:0, duration:1.2, ease:'power4.out', delay:0.3 });
+
+  // Hero text reveal
+  gsap.fromTo('#hero .reveal-line',
+    { y: 80, opacity: 0 },
+    { y: 0, opacity: 1, duration: 1.4, ease: 'expo.out', stagger: 0.2, delay: 0.7 }
+  );
+  gsap.fromTo('#hero .hero-sub',
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 1.1, ease: 'power4.out', delay: 1.6 }
+  );
+  gsap.fromTo('#hero .scroll-cue',
+    { opacity: 0 },
+    { opacity: 1, duration: 1, ease: 'power2.out', delay: 2.4 }
+  );
+
+  // Hero BG parallax
+  gsap.to('#hero .bg', {
+    yPercent: 20,
+    ease:'none',
+    scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:1 }
   });
-});
 
-// Refresh ScrollTrigger after everything is set
-window.addEventListener('load', () => {
+  // S1 reveal
+  gsap.fromTo('#s1 .reveal-line',
+    { y: 80, opacity: 0 },
+    { y: 0, opacity: 1, duration: 1.2, ease: 'expo.out', stagger: 0.16,
+      scrollTrigger: { trigger: '#s1', start: 'top 75%', toggleActions: 'play none none none' }
+    }
+  );
+  gsap.to('#s1 .spec-card', {
+    opacity:1, y:0, duration:1, ease:'power4.out',
+    scrollTrigger:{ trigger:'#s1 .spec-card', start:'top 80%', toggleActions:'play none none none' }
+  });
+  gsap.to('#s1 .section-bg img', {
+    yPercent:15, ease:'none',
+    scrollTrigger:{ trigger:'#s1', start:'top bottom', end:'bottom top', scrub:1.5 }
+  });
+
+  // S2 reveal
+  gsap.fromTo('#s2 .reveal-line',
+    { y: 80, opacity: 0 },
+    { y: 0, opacity: 1, duration: 1.3, ease: 'expo.out', stagger: 0.18,
+      scrollTrigger: { trigger: '#s2', start: 'top 70%', toggleActions: 'play none none none' }
+    }
+  );
+
+  // S3 bracket card
+  gsap.fromTo('#s3 .bracket-card',
+    { opacity:0, x:60 },
+    { opacity:1, x:0, duration:1.2, ease:'expo.out',
+      scrollTrigger:{ trigger:'#s3', start:'top 70%', toggleActions:'play none none none' }
+    }
+  );
+  gsap.to('#s3 .section-bg img', {
+    yPercent:12, ease:'none',
+    scrollTrigger:{ trigger:'#s3', start:'top bottom', end:'bottom top', scrub:1 }
+  });
+
+  // S4 pin + scale title
+  ScrollTrigger.create({
+    trigger:'#s4-wrap', pin:'#s4', start:'top top', end:'+=100%',
+    scrub:1.5, anticipatePin:1,
+    onUpdate:(self)=>{
+      const s = 0.7 + self.progress * 0.3;
+      document.querySelector('#s4 .pin-title').style.transform = 'scale('+s+')';
+    }
+  });
+  gsap.from('#s4 .pin-title', {
+    opacity:0, duration:1,
+    scrollTrigger:{ trigger:'#s4', start:'top 80%', toggleActions:'play none none none' }
+  });
+
+  // S5 dual-panel
+  gsap.set('#p1', { opacity:1, y:0 });
+  gsap.set('#p2, #p3', { opacity:0, y:40 });
+
+  ScrollTrigger.create({
+    trigger: '.s5-scroll-panels',
+    start: 'top+=33% center',
+    onEnter: () => {
+      gsap.to('#p1', { opacity:0, y:-40, duration:0.5, ease:'power4.inOut', overwrite:true });
+      gsap.to('#p2', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
+    },
+    onLeaveBack: () => {
+      gsap.to('#p2', { opacity:0, y:40,  duration:0.5, ease:'power4.inOut', overwrite:true });
+      gsap.to('#p1', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
+    }
+  });
+
+  ScrollTrigger.create({
+    trigger: '.s5-scroll-panels',
+    start: 'top+=66% center',
+    onEnter: () => {
+      gsap.to('#p2', { opacity:0, y:-40, duration:0.5, ease:'power4.inOut', overwrite:true });
+      gsap.to('#p3', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
+    },
+    onLeaveBack: () => {
+      gsap.to('#p3', { opacity:0, y:40,  duration:0.5, ease:'power4.inOut', overwrite:true });
+      gsap.to('#p2', { opacity:1, y:0,   duration:0.6, ease:'expo.out', delay:0.1, overwrite:true });
+    }
+  });
+
+  ScrollTrigger.create({
+    trigger: '.s5-scroll-panels',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: true,
+    onUpdate: (self) => {
+      const p = document.querySelector('#s5-prog');
+      if(p) p.style.setProperty('--h', (self.progress * 100) + '%');
+    }
+  });
+
+  // S6 quote
+  gsap.fromTo('#s6 .quote-card',
+    { opacity:0, y:50 },
+    { opacity:1, y:0, duration:1.4, ease:'expo.out',
+      scrollTrigger:{ trigger:'#s6', start:'top 70%', toggleActions:'play none none none' }
+    }
+  );
+  gsap.fromTo('#s6 .section-label',
+    { opacity:0, letterSpacing:'0.4em' },
+    { opacity:1, letterSpacing:'0.2em', duration:1.2, ease:'power4.out',
+      scrollTrigger:{ trigger:'#s6', start:'top 75%', toggleActions:'play none none none' }
+    }
+  );
+
+  // Footer watermark parallax
+  gsap.to('.footer-watermark', {
+    y: -60, ease:'none',
+    scrollTrigger:{ trigger:'footer', start:'top bottom', end:'bottom top', scrub:1 }
+  });
+
+  // Nav active link highlight on scroll
+  const sections = ['s1','s2','s6'];
+  sections.forEach(id => {
+    ScrollTrigger.create({
+      trigger:'#'+id, start:'top center', end:'bottom center',
+      onEnter:()=>setActive(id), onEnterBack:()=>setActive(id)
+    });
+  });
+  function setActive(id){
+    document.querySelectorAll('.nav-links a').forEach(a=>{
+      a.classList.toggle('active', a.getAttribute('href')==='#'+id);
+    });
+  }
+
+  // Mobile nav toggle
+  document.querySelector('.nav-burger').addEventListener('click', ()=>{
+    const nl = document.querySelector('.nav-links');
+    nl.style.display = nl.style.display==='flex' ? 'none' : 'flex';
+    nl.style.flexDirection = 'column';
+    nl.style.position = 'absolute';
+    nl.style.top = '60px';
+    nl.style.left = '0';
+    nl.style.width = '100%';
+    nl.style.background = 'rgba(3,3,3,0.97)';
+    nl.style.padding = '24px';
+    nl.style.gap = '20px';
+  });
+
+  // Smooth anchor scroll via Lenis
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if(t) lenis.scrollTo(t, { offset:-80, duration:2, easing:(x)=>1-Math.pow(1-x,4) });
+    });
+  });
+
   ScrollTrigger.refresh();
-});
+}
+
+/* ── AVVIO ── */
+preload().then(() => initAnimations());
 </script>
 </body>
 </html>

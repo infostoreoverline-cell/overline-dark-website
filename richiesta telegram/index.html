@@ -415,9 +415,42 @@ nav {
   .success-sub{ font-size:12px; }
   .btn-home{ padding:16px 32px; font-size:10px; }
 }
+
+/* ══ PRELOADER ══ */
+#loader{
+  position:fixed; inset:0; z-index:9999;
+  background:#030303;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+#loader.fade-out{ opacity:0; pointer-events:none; }
+.loader-logo{
+  font-family:var(--f-display); font-size:22px;
+  letter-spacing:0.35em; color:rgba(255,255,255,0.9);
+  animation:loaderPulse 2s ease-in-out infinite;
+}
+.loader-bar-wrap{
+  width:180px; height:1px;
+  background:rgba(255,255,255,0.08);
+  margin-top:28px; overflow:hidden;
+}
+.loader-bar-fill{
+  height:100%; width:0%;
+  background:#E60000;
+  transition:width 0.25s ease;
+}
+@keyframes loaderPulse{
+  0%,100%{ opacity:1; }
+  50%     { opacity:0.3; }
+}
 </style>
 </head>
 <body>
+<div id="loader">
+  <div class="loader-logo">OVERLINE</div>
+  <div class="loader-bar-wrap"><div class="loader-bar-fill" id="loader-fill"></div></div>
+</div>
 
 <div class="bg-ambient"></div>
 <img src="../loghi ed immagini/logo.svg" alt="" class="watermark-center" />
@@ -620,6 +653,22 @@ nav {
 const TG_TOKEN   = '8854471177:AAHlWvLn5jRBt_ehSo-tupSzUo_BFVvnNf4';
 const TG_CHAT_ID = '1047472487';
 
+/* ── PRELOADER ── */
+async function preload() {
+  const fill = document.getElementById('loader-fill');
+  let loaded = 0;
+  // No images on this page — wait only for fonts
+  await document.fonts.ready;
+  fill.style.width = '100%';
+  await new Promise(r => setTimeout(r, 300));
+  const loader = document.getElementById('loader');
+  loader.classList.add('fade-out');
+  setTimeout(() => loader.remove(), 900);
+}
+
+preload();
+
+/* ── FORM STATE ── */
 let currentStep = 1;
 let privacyChecked = false;
 const state = { telaio: 'Nero Opaco', pad: 'Nero', utilizzo: 'Uso personale / Home Gym' };
