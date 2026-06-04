@@ -44,24 +44,39 @@ button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
 nav{
   position:fixed;top:0;left:0;width:100%;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
-  padding:20px var(--margin-h);
-  background:rgba(3,3,3,0.75);
+  padding:0 var(--margin-h);
+  height:64px;
+  background:rgba(3,3,3,0.85);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(255,255,255,0.04);
+  border-bottom:1px solid rgba(255,255,255,0.05);
   opacity:0;transform:translateY(-20px);
 }
 .nav-logo{
-  font-family:var(--f-display);font-size:24px;
-  letter-spacing:0.06em;text-transform:uppercase;
+  font-family:var(--f-display);font-size:22px;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--text);
 }
-.nav-links{display:flex;gap:40px;font-family:var(--f-mono);font-size:11px;letter-spacing:0.15em;text-transform:uppercase}
-.nav-links a{color:var(--muted);transition:color .3s}
-.nav-links a:hover,.nav-links a.active{color:var(--accent)}
+.nav-links{
+  display:flex; align-items:center; gap:32px;
+  font-family:var(--f-mono);font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+}
+.nav-links a{color:var(--muted);transition:color .3s;}
+.nav-links a:hover{color:var(--text);}
+.nav-links a.active{color:var(--text);}
 .nav-links a.nav-login {
-  color: var(--accent);
-  margin-left: 24px;
+  color:var(--muted);
+  padding-left:32px;
+  border-left:1px solid var(--outline);
 }
-.nav-burger{display:none;flex-direction:column;gap:5px;padding:4px}
+.nav-links a.nav-cta {
+  color:#fff;
+  background:var(--accent);
+  padding:10px 24px;
+  letter-spacing:.12em;
+  transition:background .3s, transform .2s;
+}
+.nav-links a.nav-cta:hover { background:#cc0000; transform:translateY(-1px); }
+.nav-burger{display:none;flex-direction:column;gap:5px;padding:4px;}
 .nav-burger span{display:block;width:24px;height:1px;background:var(--text)}
 
 /* ── TEXT REVEAL ── */
@@ -367,12 +382,13 @@ footer{
 </head><body>
 <div id="progress"></div>
 <nav id="nav">
-  <div class="nav-logo">OVERLINE</div>
+  <a href="#s1" class="nav-logo">OVERLINE</a>
   <div class="nav-links">
-    <a href="#s1" class="active">Tavoli</a>
-    <a href="#s2">Sistemi di Trazione</a>
+    <a href="../tavoli/index.html">Tavoli</a>
+    <a href="#s2">Trazione</a>
     <a href="#s6">Filosofia</a>
     <a href="../login/index.html" class="nav-login">Accesso</a>
+    <a href="../richiesta telegram/index.html" class="nav-cta">PRENOTA</a>
   </div>
   <button class="nav-burger"><span></span><span></span><span></span></button>
 </nav>
@@ -458,7 +474,10 @@ footer{
 </section>
 <footer>
   <div class="footer-watermark">OVERLINE</div>
-  <div class="footer-cta"><a href="../login/index.html" class="cta-btn"><span>ACCEDI ALL'ATTREZZATURA</span></a></div>
+  <div class="footer-cta">
+    <a href="../tavoli/index.html" class="cta-btn"><span>SCOPRI I TAVOLI</span></a>
+    <a href="../richiesta telegram/index.html" class="cta-btn" style="background:transparent;border:1px solid var(--outline);margin-top:16px;"><span>PRENOTA IL TUO TAVOLO →</span></a>
+  </div>
   <div class="footer-grid">
     <div><h4>SUPPORTO LOGISTICO</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Technical Support</a></li><li><a href="#">Contattaci</a></li></ul></div>
     <div><h4>COORDINATE HQ</h4><p>OVERLINE ENGINEERING<br>Veneto, Italia<br>Produzione Artigianale</p></div>

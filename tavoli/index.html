@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>OVERLINE — Tavoli da Braccio di Ferro</title>
+<meta name="description" content="Tavoli da braccio di ferro Overline: acciaio massiccio, smontabilità ingegneristica, pad cuciti a mano. Costruiti per non cedere mai."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"/>
+<style>
+/* ── DESIGN TOKENS ── */
+:root {
+  --bg:          #030303;
+  --surface:     #0d0d0d;
+  --text:        #F0F0F0;
+  --muted:       #888;
+  --accent:      #E60000;
+  --outline:     #2A2A2A;
+  --f-display:   'Anton', sans-serif;
+  --f-mono:      'JetBrains Mono', monospace;
+  --f-body:      'Hanken Grotesk', sans-serif;
+  --ease-expo:   cubic-bezier(0.16,1,0.3,1);
+  --ease-heavy:  cubic-bezier(0.76,0,0.24,1);
+  --margin-h:    64px;
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:auto; }
+body {
+  background:var(--bg); color:var(--text);
+  font-family:var(--f-body); overflow-x:hidden;
+}
+img { display:block; max-width:100%; }
+a { color:inherit; text-decoration:none; }
+button { cursor:pointer; background:none; border:none; font:inherit; color:inherit; }
+
+/* ── PROGRESS BAR ── */
+#progress {
+  position:fixed; top:0; left:0; height:2px;
+  background:var(--accent); width:0%; z-index:200;
+  transform-origin:left;
+  box-shadow: 0 0 8px rgba(230,0,0,0.6);
+}
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; width:100%; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 var(--margin-h);
+  height:64px;
+  background:rgba(3,3,3,0.85);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  opacity:0; transform:translateY(-20px);
+}
+.nav-logo {
+  font-family:var(--f-display); font-size:22px;
+  letter-spacing:0.08em; text-transform:uppercase; color:var(--text);
+}
+.nav-links {
+  display:flex; align-items:center; gap:32px;
+  font-family:var(--f-mono); font-size:11px; letter-spacing:0.15em; text-transform:uppercase;
+}
+.nav-links a { color:var(--muted); transition:color .3s; }
+.nav-links a:hover { color:var(--text); }
+.nav-links a.active { color:var(--text); }
+.nav-links a.nav-cta {
+  color:#fff; background:var(--accent); padding:10px 24px;
+  letter-spacing:.12em; transition: background .3s, transform .2s;
+}
+.nav-links a.nav-cta:hover { background:#cc0000; transform:translateY(-1px); }
+.nav-burger { display:none; flex-direction:column; gap:5px; padding:4px; }
+.nav-burger span { display:block; width:24px; height:1px; background:var(--text); }
+
+/* ── TEXT REVEAL ── */
+.reveal-wrap { overflow:hidden; display:block; }
+.reveal-line { display:block; overflow:hidden; }
+
+/* ── SECTION BASE ── */
+section { position:relative; width:100%; overflow:hidden; }
+.section-bg { position:absolute; inset:0; z-index:0; }
+.section-bg img { width:100%; height:100%; object-fit:cover; }
+
+/* ── EDGE FADES ── */
+section::before, section::after {
+  content:''; position:absolute; left:0; width:100%; z-index:8; pointer-events:none;
+}
+section::before {
+  top:0; height:20%;
+  background:linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+}
+section::after {
+  bottom:0; height:20%;
+  background:linear-gradient(to top, var(--bg) 0%, transparent 100%);
+}
+.section-inner { position:relative; z-index:10; }
+
+/* ── LABEL TAG ── */
+.label-tag {
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:20px;
+}
+.label-tag .dot {
+  width:8px; height:8px; background:var(--accent);
+  border-radius:50%; animation:pulse 2s infinite;
+  flex-shrink:0;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.s-title {
+  font-family:var(--f-display); font-size:clamp(40px,5.5vw,72px);
+  text-transform:uppercase; letter-spacing:0.03em; line-height:1.0;
+  margin-bottom:28px;
+}
+.s-body {
+  font-family:var(--f-mono); font-size:12px; letter-spacing:.04em;
+  color:var(--muted); line-height:2; max-width:440px;
+  border-left:2px solid var(--accent); padding-left:20px;
+}
+
+/* ═══════════════════════════════════════════
+   SEZIONE 1 — HERO PLACEHOLDER TELAIO
+═══════════════════════════════════════════ */
+#s1-hero {
+  position:relative; width:100%; height:100vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  overflow:hidden; background:var(--bg);
+}
+/* Placeholder strutturato con vignettatura scura */
+.hero-placeholder {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 60% 50%, rgba(40,40,40,0.4) 0%, rgba(3,3,3,0.9) 55%, #030303 100%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 59px,
+      rgba(255,255,255,0.015) 60px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 59px,
+      rgba(255,255,255,0.015) 60px
+    );
+  z-index:0;
+}
+.hero-placeholder::before {
+  content:'';
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(3,3,3,0.85) 100%);
+  z-index:1;
+}
+/* Indicatore placeholder */
+.placeholder-badge {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  z-index:2; text-align:center; pointer-events:none;
+  opacity:0.18;
+}
+.placeholder-badge .ph-icon {
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.25em;
+  text-transform:uppercase; color:var(--text);
+  border:1px solid rgba(255,255,255,0.15); padding:10px 20px;
+  display:inline-block;
+}
+/* Linee angoli tipo "frame" fotografico */
+.placeholder-badge .frame-tl,
+.placeholder-badge .frame-br {
+  position:absolute; width:40px; height:40px;
+}
+.placeholder-badge .frame-tl {
+  top:-12px; left:-12px;
+  border-top:2px solid rgba(255,255,255,0.25);
+  border-left:2px solid rgba(255,255,255,0.25);
+}
+.placeholder-badge .frame-br {
+  bottom:-12px; right:-12px;
+  border-bottom:2px solid rgba(255,255,255,0.25);
+  border-right:2px solid rgba(255,255,255,0.25);
+}
+
+#s1-hero .hero-content {
+  position:relative; z-index:10; text-align:center; padding:0 20px; max-width:860px;
+}
+.hero-eyebrow {
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:28px;
+  display:flex; align-items:center; justify-content:center; gap:12px;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content:''; display:block; width:40px; height:1px; background:var(--accent); opacity:.5;
+}
+.hero-title {
+  font-family:var(--f-display); font-size:clamp(64px,12vw,140px);
+  line-height:.88; letter-spacing:0.02em; text-transform:uppercase;
+  margin-bottom:36px;
+}
+.hero-title .accent { color:var(--accent); }
+.hero-sub {
+  font-family:var(--f-mono); font-size:13px; letter-spacing:.06em;
+  color:var(--muted); max-width:480px; margin:0 auto;
+  border-left:1px solid var(--accent); padding-left:20px; text-align:left;
+  line-height:1.9; opacity:0;
+}
+.scroll-cue {
+  position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+  z-index:10; display:flex; flex-direction:column; align-items:center; gap:12px;
+  opacity:0;
+}
+.scroll-cue .line {
+  width:1px; height:60px; background:rgba(255,255,255,.12); overflow:hidden; position:relative;
+}
+.scroll-cue .line::after {
+  content:''; position:absolute; top:-100%; left:0; width:100%; height:50%;
+  background:var(--accent); animation:scrollline 2s ease-in-out infinite;
+}
+@keyframes scrollline { to { top:200%; } }
+.scroll-cue span {
+  font-family:var(--f-mono); font-size:10px; letter-spacing:.2em; color:rgba(255,255,255,.35);
+}
+/* Vignette bottom */
+#s1-hero::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:30%;
+  background:linear-gradient(to top, var(--bg) 0%, transparent 100%);
+  z-index:9; pointer-events:none;
+}
+
+/* ═══════════════════════════════════════════
+   SEZIONE 2 — SALDATURA
+═══════════════════════════════════════════ */
+#s2 {
+  height:100vh; display:flex; align-items:center;
+}
+#s2 .section-bg img {
+  opacity:.7;
+  filter: grayscale(20%) brightness(0.95) contrast(1.1);
+}
+#s2 .overlay {
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(to right, rgba(3,3,3,.9) 0%, rgba(3,3,3,.55) 55%, rgba(3,3,3,.1) 100%);
+}
+#s2 .section-inner {
+  padding:0 var(--margin-h); max-width:580px;
+}
+.spec-card {
+  border-left:2px solid var(--accent); padding:24px 28px;
+  background:rgba(3,3,3,.6); backdrop-filter:blur(14px);
+  font-family:var(--f-mono); font-size:12px; line-height:2; color:var(--muted);
+  opacity:0; transform:translateY(40px);
+}
+.spec-card strong {
+  color:var(--text); display:block; margin-bottom:10px; font-size:13px;
+  letter-spacing:.08em;
+}
+.spec-note {
+  margin-top:16px; padding-top:16px; border-top:1px solid var(--outline);
+  color:rgba(255,255,255,.3); font-size:11px;
+}
+
+/* ═══════════════════════════════════════════
+   SEZIONE 3 — LEGNO
+═══════════════════════════════════════════ */
+#s3 {
+  min-height:90vh; display:flex; align-items:flex-end; justify-content:flex-end;
+}
+#s3 .section-bg img {
+  opacity:.65;
+  filter: saturate(0.5) brightness(0.9) contrast(1.15);
+}
+#s3 .overlay {
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(to left, rgba(3,3,3,.92) 0%, rgba(3,3,3,.45) 55%, transparent 100%);
+}
+#s3 .section-inner {
+  padding:0 var(--margin-h); padding-bottom:100px;
+  width:100%; display:flex; justify-content:flex-end;
+}
+.bracket-card {
+  width:min(500px,92vw); border:1px solid var(--outline);
+  padding:44px 48px; background:rgba(3,3,3,.85); backdrop-filter:blur(16px);
+  opacity:0; transform:translateX(60px);
+}
+.bracket-card .bc-title {
+  font-family:var(--f-display); font-size:clamp(36px,4.5vw,56px);
+  text-transform:uppercase; letter-spacing:.03em; line-height:1.0;
+  margin-bottom:20px; border-left:2px solid var(--accent); padding-left:18px;
+}
+.bracket-card p {
+  font-family:var(--f-mono); font-size:12px; color:var(--muted); line-height:2;
+}
+
+/* ═══════════════════════════════════════════
+   SEZIONE 4 — MACCHINA DA CUCIRE
+═══════════════════════════════════════════ */
+#s4 {
+  height:100vh; display:flex; align-items:center; justify-content:center;
+}
+#s4 .section-bg img {
+  opacity:.65;
+  filter: grayscale(15%) brightness(0.9) contrast(1.15);
+}
+#s4 .overlay {
+  position:absolute; inset:0; z-index:1;
+  background:rgba(3,3,3,.35);
+}
+.center-card {
+  border:1px solid rgba(255,255,255,0.08); padding:64px 80px;
+  background:rgba(3,3,3,.05); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  text-align:center; max-width:740px;
+  opacity:0; transform:scale(0.96);
+}
+.center-card .big-title {
+  font-family:var(--f-display); font-size:clamp(48px,7vw,100px);
+  text-transform:uppercase; letter-spacing:0.03em; line-height:.9;
+  margin-bottom:32px;
+}
+.center-card p {
+  font-family:var(--f-mono); font-size:13px; letter-spacing:.06em;
+  color:var(--muted); line-height:2;
+}
+
+/* ═══════════════════════════════════════════
+   SEZIONE 5 — FIT ACCIAIO (generata)
+═══════════════════════════════════════════ */
+#s5 { height:100vh; display:grid; grid-template-columns:1fr 1fr; }
+#s5-img {
+  position:relative; overflow:hidden;
+}
+#s5-img img {
+  width:100%; height:100%; object-fit:cover;
+  filter: brightness(1.0) contrast(1.1);
+}
+#s5-img::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to right, transparent 60%, var(--bg) 100%);
+}
+#s5-text {
+  display:flex; flex-direction:column; justify-content:center;
+  padding:60px 64px; background:var(--bg);
+}
+#s5-text .s-body {
+  opacity:0; transform:translateY(30px);
+}
+#s5-text .s-title {
+  opacity:0; transform:translateY(40px);
+}
+
+/* ═══════════════════════════════════════════
+   SEZIONE 6 — MACRO DETTAGLI (generata)
+═══════════════════════════════════════════ */
+#s6 { height:100vh; display:flex; align-items:center; }
+#s6 .section-bg img {
+  opacity:.75;
+  filter: brightness(0.9) contrast(1.2) saturate(0.7);
+}
+#s6 .overlay {
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(to right, rgba(3,3,3,.92) 0%, rgba(3,3,3,.5) 55%, rgba(3,3,3,.15) 100%);
+}
+#s6 .section-inner { padding:0 var(--margin-h); max-width:600px; }
+.data-block {
+  display:flex; flex-direction:column; gap:24px; margin-top:36px;
+  opacity:0; transform:translateY(30px);
+}
+.data-row {
+  display:grid; grid-template-columns:auto 1fr; gap:16px 24px;
+  align-items:baseline;
+  border-bottom:1px solid var(--outline); padding-bottom:20px;
+}
+.data-row:last-child { border-bottom:none; padding-bottom:0; }
+.data-num {
+  font-family:var(--f-display); font-size:clamp(36px,4vw,54px);
+  color:var(--accent); line-height:1;
+}
+.data-label {
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--muted);
+}
+.data-desc {
+  grid-column:2; font-family:var(--f-mono); font-size:11px;
+  color:rgba(255,255,255,.35); line-height:1.7; margin-top:4px;
+}
+
+/* ═══════════════════════════════════════════
+   S-PRODUCT — TAVOLO & CONFIGURATORE
+═══════════════════════════════════════════ */
+#s-product-wrap { position:relative; }
+#s-product {
+  height:100vh; display:flex; align-items:center; justify-content:center;
+  background:var(--bg); overflow:hidden; position:relative;
+}
+.product-bg { position:absolute; inset:0; z-index:0; }
+.product-bg .p-img {
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  opacity:0; transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1);
+  filter: brightness(0.9) contrast(1.15);
+}
+.product-bg .p-img.visible { opacity:0.75; }
+.product-bg .overlay {
+  position:absolute; inset:0; z-index:1;
+  background:radial-gradient(ellipse at center, transparent 30%, rgba(3,3,3,.7) 100%);
+}
+.product-tagline {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  z-index:10; text-align:center; width:100%; max-width:700px; padding:0 40px;
+}
+.product-tagline .big-quote {
+  font-family:var(--f-display); font-size:clamp(52px,8vw,104px);
+  text-transform:uppercase; letter-spacing:.02em; line-height:.9;
+  margin-bottom:32px;
+}
+.product-tagline .big-quote span { color:var(--accent); }
+.product-tagline p {
+  font-family:var(--f-mono); font-size:13px; letter-spacing:.06em;
+  color:var(--muted); line-height:2;
+}
+.product-ui {
+  position:absolute; bottom:60px; left:50%; transform:translateX(-50%);
+  z-index:20; display:flex; flex-direction:column; gap:20px; align-items:center;
+  opacity:0; pointer-events:none;
+}
+.product-ui.active { pointer-events:auto; }
+.config-label-right {
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:8px;
+}
+.color-swatch-group { display:flex; gap:16px; }
+.color-swatch {
+  display:flex; align-items:center; gap:18px;
+  cursor:pointer; padding:14px 20px;
+  border:1px solid var(--outline);
+  background:rgba(3,3,3,.6); backdrop-filter:blur(10px);
+  transition: border-color .3s, background .3s;
+  position:relative; overflow:hidden;
+  min-width: 240px;
+}
+.color-swatch::before {
+  content:''; position:absolute; inset:0;
+  background:var(--accent); opacity:0;
+  transition:opacity .3s;
+}
+.color-swatch:hover { border-color:rgba(255,255,255,.2); }
+.color-swatch.active { border-color:var(--accent); }
+.color-swatch.active::before { opacity:0.06; }
+.swatch-circle {
+  width:32px; height:32px; border-radius:50%; flex-shrink:0;
+  position:relative; z-index:1;
+}
+.swatch-circle.white {
+  background:#F5F5F5;
+  box-shadow:0 0 0 1px rgba(255,255,255,.2), 0 0 16px rgba(255,255,255,0.15);
+}
+.swatch-circle.black {
+  background:#111;
+  box-shadow:0 0 0 1px rgba(255,255,255,.15), 0 0 0 2px rgba(255,255,255,.06);
+}
+.swatch-info { flex:1; position:relative; z-index:1; text-align:left; }
+.swatch-name {
+  font-family:var(--f-mono); font-size:12px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--text); display:block;
+}
+.swatch-detail {
+  font-family:var(--f-mono); font-size:10px; letter-spacing:.08em;
+  color:var(--muted); margin-top:3px; display:block;
+}
+.swatch-check {
+  width:16px; height:16px; border:1px solid rgba(255,255,255,.2);
+  border-radius:50%; flex-shrink:0; position:relative; z-index:1;
+  display:flex; align-items:center; justify-content:center;
+  transition: border-color .3s, background .3s;
+}
+.color-swatch.active .swatch-check {
+  background:var(--accent); border-color:var(--accent);
+}
+.color-swatch.active .swatch-check::after {
+  content:''; display:block; width:6px; height:6px;
+  background:#fff; border-radius:50%;
+}
+
+@media(max-width:900px) {
+  .color-swatch-group { flex-direction:column; }
+  .product-ui { bottom:40px; }
+}
+
+/* ═══════════════════════════════════════════
+   SEZIONE 9 — CTA FINALE
+═══════════════════════════════════════════ */
+#s9 {
+  min-height:100vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  background:var(--bg); position:relative; overflow:hidden;
+}
+/* Sfondo watermark */
+.cta-watermark {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-family:var(--f-display); font-size:clamp(100px,22vw,260px);
+  color:var(--text); opacity:.03; pointer-events:none; white-space:nowrap;
+  letter-spacing:.06em; user-select:none;
+}
+/* Linea decorativa */
+.cta-line-top {
+  width:1px; height:80px; background:var(--accent); margin-bottom:48px;
+  opacity:0; transform:scaleY(0); transform-origin:top;
+}
+.cta-inner {
+  position:relative; z-index:10; text-align:center; padding:0 var(--margin-h);
+  max-width:900px;
+}
+.cta-eyebrow {
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:32px; display:block;
+  opacity:0; transform:translateY(20px);
+}
+.cta-headline {
+  font-family:var(--f-display); font-size:clamp(56px,9vw,120px);
+  text-transform:uppercase; letter-spacing:.02em; line-height:.9;
+  margin-bottom:48px; opacity:0; transform:translateY(50px);
+}
+.cta-sub {
+  font-family:var(--f-mono); font-size:13px; letter-spacing:.06em;
+  color:var(--muted); line-height:2; max-width:520px; margin:0 auto 56px;
+  opacity:0; transform:translateY(20px);
+}
+/* IL BOTTONE */
+.cta-btn-primary {
+  display:inline-block;
+  background:var(--accent); color:#fff;
+  padding:24px 72px;
+  font-family:var(--f-display); font-size:clamp(18px,2.5vw,24px);
+  letter-spacing:.08em; text-transform:uppercase;
+  border-radius:0; border:none;
+  position:relative; overflow:hidden;
+  transition: background .3s, transform .2s;
+  cursor:pointer;
+  opacity:0; transform:translateY(30px);
+}
+.cta-btn-primary::before {
+  content:''; position:absolute; inset:0;
+  background:rgba(255,255,255,.12);
+  transform:translateX(-100%);
+  transition:transform .5s var(--ease-expo);
+}
+.cta-btn-primary:hover::before { transform:translateX(0); }
+.cta-btn-primary:hover { transform:scale(1.02); }
+.cta-btn-primary:active { transform:scale(0.98); }
+
+/* Dettagli CTA */
+.cta-details {
+  margin-top:36px; display:flex; gap:40px; justify-content:center;
+  opacity:0; transform:translateY(20px);
+}
+.cta-detail-item {
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+}
+.cta-detail-num {
+  font-family:var(--f-display); font-size:28px; color:var(--accent);
+}
+.cta-detail-label {
+  font-family:var(--f-mono); font-size:10px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--muted);
+}
+
+/* ── FOOTER ── */
+footer {
+  position:relative; padding:120px var(--margin-h) 48px;
+  background:var(--bg); overflow:hidden;
+  border-top:1px solid var(--outline);
+}
+.footer-watermark {
+  position:absolute; top:40px; left:50%; transform:translateX(-50%);
+  font-family:var(--f-display); font-size:clamp(80px,18vw,220px);
+  color:var(--text); opacity:.04; pointer-events:none; white-space:nowrap;
+  letter-spacing:.06em;
+}
+.footer-cta {
+  position:relative; z-index:2; text-align:center; margin-bottom:80px;
+}
+.footer-btn {
+  display:inline-block; border:1px solid var(--text);
+  padding:18px 48px; font-family:var(--f-mono); font-size:12px;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--text);
+  position:relative; overflow:hidden; transition:color .4s var(--ease-expo);
+}
+.footer-btn::before {
+  content:''; position:absolute; inset:0; background:var(--accent);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .5s var(--ease-expo);
+}
+.footer-btn:hover::before { transform:scaleX(1); }
+.footer-btn:hover { color:#fff; border-color:var(--accent); }
+.footer-btn span { position:relative; z-index:1; }
+.footer-grid {
+  position:relative; z-index:2; display:grid;
+  grid-template-columns:repeat(3,1fr); gap:48px;
+  border-top:1px solid var(--outline); padding-top:48px;
+}
+.footer-grid h4 {
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:20px;
+}
+.footer-grid ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.footer-grid a {
+  font-family:var(--f-mono); font-size:12px; color:var(--muted);
+  transition:color .3s; letter-spacing:.05em;
+}
+.footer-grid a:hover { color:var(--text); }
+.footer-grid p { font-family:var(--f-mono); font-size:12px; color:var(--muted); line-height:1.9; }
+.footer-right { text-align:right; display:flex; flex-direction:column; justify-content:space-between; }
+.footer-right .tagline { font-family:var(--f-mono); font-size:11px; letter-spacing:.1em; color:var(--muted); opacity:.5; }
+.footer-right .copy { font-family:var(--f-mono); font-size:10px; letter-spacing:.08em; color:rgba(255,255,255,.25); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px) {
+  .configurator-inner { grid-template-columns:1fr; gap:48px; }
+  .config-left { padding-right:0; }
+  .config-right { padding-left:0; flex-direction:row; flex-wrap:wrap; gap:12px; }
+  .color-swatch-group { flex-direction:row; }
+  .table-visual { width:240px; height:300px; margin:0 auto; }
+}
+@media(max-width:900px) {
+  :root { --margin-h:24px; }
+  nav { padding:16px 24px; }
+  .nav-links { display:none; }
+  .nav-burger { display:flex; }
+  #s1-hero { height:85vh; }
+  #s2, #s4, #s5, #s6, #s7 { height:75vh; }
+  #s5 { grid-template-columns:1fr; }
+  #s5-img { position:absolute; inset:0; z-index:0; }
+  #s5-img img { opacity:0.55; }
+  #s5-img::after { background:rgba(3,3,3,.5); }
+  #s5-text { background:transparent; z-index:10; }
+  .center-card { padding:36px 28px; max-width:95vw; }
+  .cta-details { flex-wrap:wrap; gap:24px; }
+  .footer-grid { grid-template-columns:1fr; gap:32px; }
+  .footer-right { text-align:left; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="../hompage/index.html" class="nav-logo">OVERLINE</a>
+  <div class="nav-links">
+    <a href="../hompage/index.html">Home</a>
+    <a href="#s2" class="active">Tavoli</a>
+    <a href="../richiesta telegram/index.html" id="nav-cta-link" class="nav-cta">PRENOTA</a>
+  </div>
+  <button class="nav-burger" id="nav-burger"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════
+  S1 — HERO / DETTAGLIO TELAIO
+  [Placeholder predisposto per foto ad alto contrasto]
+═══════════════════════════════════════════════════ -->
+<header id="s1-hero">
+  <!-- Placeholder strutturato -->
+  <div class="hero-placeholder"></div>
+  <div class="placeholder-badge">
+    <div style="position:relative;display:inline-block">
+      <div class="frame-tl" style="position:absolute;top:-12px;left:-12px;width:40px;height:40px;border-top:2px solid rgba(255,255,255,0.2);border-left:2px solid rgba(255,255,255,0.2)"></div>
+      <div style="position:absolute;bottom:-12px;right:-12px;width:40px;height:40px;border-bottom:2px solid rgba(255,255,255,0.2);border-right:2px solid rgba(255,255,255,0.2)"></div>
+      <div class="ph-icon">FOTO TELAIO — COMING SOON</div>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="hero-eyebrow">OVERLINE — TAVOLI DA BRACCIO DI FERRO</div>
+    <h1 class="hero-title">
+      <span class="reveal-wrap"><span class="reveal-line">ACCIAIO</span></span>
+      <span class="reveal-wrap"><span class="reveal-line">E <span class="accent">VOLONTÀ.</span></span></span>
+    </h1>
+    <p class="hero-sub" id="hero-sub">Struttura massiccia. Smontabilità ingegneristica.<br>Pad cuciti a mano. Costruito per non cedere mai.</p>
+  </div>
+  <div class="scroll-cue" id="scroll-cue">
+    <div class="line"></div>
+    <span>SCOPRI LA COSTRUZIONE</span>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════
+  S2 — L'ARTIGIANATO / SALDATURA
+═══════════════════════════════════════════════════ -->
+<section id="s2">
+  <div class="section-bg"><img src="immagini/saldatura 2.webp" alt="Operatore che salda il telaio del tavolo Overline" id="s2-img"/></div>
+  <div class="overlay"></div>
+  <div class="section-inner" style="padding:0 var(--margin-h);max-width:580px">
+    <div class="label-tag"><span class="dot"></span>L'ARTIGIANATO</div>
+    <h2 class="s-title">
+      <span class="reveal-wrap"><span class="reveal-line">SALDATO</span></span>
+      <span class="reveal-wrap"><span class="reveal-line">A MANO.</span></span>
+    </h2>
+    <div class="spec-card" id="s2-card">
+      <strong>TELAIO IN ACCIAIO MASSICCIO</strong>
+      <p>Ogni giunto è saldato a mano con elettrodo, non assemblatoa freddo. Il calore del metallo che fonde è la garanzia che non si smonta da solo.</p>
+      <p class="spec-note">Ogni cordone di saldatura viene ispezionato manualmente prima della verniciatura.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+  S3 — I MATERIALI / LEGNO
+═══════════════════════════════════════════════════ -->
+<section id="s3">
+  <div class="section-bg"><img src="immagini/legno.webp" alt="Piano in legno del tavolo Overline" id="s3-img"/></div>
+  <div class="overlay"></div>
+  <div class="section-inner">
+    <div class="bracket-card" id="s3-card">
+      <div class="label-tag"><span class="dot"></span>I MATERIALI</div>
+      <h2 class="bc-title">IL PIANO<br>CHE REGGE<br>LA BATTAGLIA.</h2>
+      <p>Legno massiccio selezionato, trattato in superficie per resistere a sudore, attrito e pressione. Non cede. Non si deforma. Resta lì, sessione dopo sessione.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+  S4 — LA LAVORAZIONE / CUCITURA
+═══════════════════════════════════════════════════ -->
+<section id="s4">
+  <div class="section-bg"><img src="immagini/macchina da cucire.webp" alt="Macchina da cucire industriale che lavora i pad del tavolo Overline" id="s4-img"/></div>
+  <div class="overlay"></div>
+  <div class="section-inner" style="display:flex;align-items:center;justify-content:center;height:100%">
+    <div class="center-card" id="s4-card">
+      <div class="big-title">
+        <span class="reveal-wrap"><span class="reveal-line">CUCITO</span></span>
+        <span class="reveal-wrap"><span class="reveal-line">PUNTO</span></span>
+        <span class="reveal-wrap"><span class="reveal-line">PER PUNTO.</span></span>
+      </div>
+      <p>Macchina industriale. Filo rinforzato. I pad in ecopelle premium vengono cuciti con una precisione che nessuna colla può replicare. Resistenza all'usura: oltre 50.000 cicli di contatto.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+  S5 — INGEGNERIA E SMONTABILITÀ
+  [Immagine generata: fit tubolari acciaio]
+═══════════════════════════════════════════════════ -->
+<section id="s5">
+  <div id="s5-img">
+    <img src="immagini/steel_fit_joint.png" alt="Due tubolari in acciaio che si incastrano con precisione ingegneristica"/>
+  </div>
+  <div id="s5-text">
+    <div class="label-tag"><span class="dot"></span>INGEGNERIA</div>
+    <h2 class="s-title" id="s5-title">
+      <span class="reveal-wrap"><span class="reveal-line">FIT</span></span>
+      <span class="reveal-wrap"><span class="reveal-line">PERFETTO.</span></span>
+    </h2>
+    <p class="s-body" id="s5-body">
+      Smontabile in cinque minuti. Riassemblato con la stessa precisione ogni volta. I tubolari quadrati si incastrano con tolleranze di produzione che eliminano qualsiasi gioco. Nessun bullone che si allenta. Nessuna vibrazione. Solo acciaio su acciaio.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+  S6 — RICERCA DEI DETTAGLI
+  [Immagine generata: macro acciaio]
+═══════════════════════════════════════════════════ -->
+<section id="s6">
+  <div class="section-bg"><img src="immagini/steel_macro_detail.png" alt="Dettaglio macro di acciaio lavorato con precisione laser"/></div>
+  <div class="overlay"></div>
+  <div class="section-inner">
+    <div class="label-tag"><span class="dot"></span>DETTAGLIO</div>
+    <h2 class="s-title" id="s6-title">
+      <span class="reveal-wrap"><span class="reveal-line">LA PERFEZIONE</span></span>
+      <span class="reveal-wrap"><span class="reveal-line">NEI MICRON.</span></span>
+    </h2>
+    <div class="data-block" id="s6-data">
+      <div class="data-row">
+        <div class="data-num">±0.1</div>
+        <div>
+          <div class="data-label">Tolleranza di taglio laser</div>
+          <div class="data-desc">Ogni profilo in acciaio viene tagliato con margine di errore sub-millimetrico.</div>
+        </div>
+      </div>
+      <div class="data-row">
+        <div class="data-num">S235</div>
+        <div>
+          <div class="data-label">Qualità acciaio strutturale</div>
+          <div class="data-desc">Acciaio da costruzione ad alta duttilità. Telaio che non si frattura, si deforma.</div>
+        </div>
+      </div>
+      <div class="data-row">
+        <div class="data-num">60μm</div>
+        <div>
+          <div class="data-label">Spessore verniciatura a polvere</div>
+          <div class="data-desc">Coating poliestere termoindurente. Resistente ad abrasione, UV e solventi.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+  S-PRODUCT — IL TAVOLO & CONFIGURATORE
+═══════════════════════════════════════════════════ -->
+<div id="s-product-wrap">
+  <section id="s-product">
+    <!-- Immagini di sfondo in crossfade -->
+    <div class="product-bg">
+      <img src="immagini/tavolo_garage.png" class="p-img p-black visible" alt="Tavolo Nero" />
+      <img src="immagini/tavolo_garage_white.png" class="p-img p-white hidden" alt="Tavolo Bianco" />
+      <div class="overlay"></div>
+    </div>
+    
+    <!-- Testo 1 (Il tuo ring privato) -->
+    <div class="product-tagline" id="prod-tagline">
+      <p class="big-quote">IL TUO<br><span>RING</span><br>PRIVATO.</p>
+      <p>Non serve una palestra. Serve il tavolo giusto.<br>Overline trasforma qualsiasi spazio in un'arena professionale.</p>
+    </div>
+
+    <!-- UI Configurator -->
+    <div class="product-ui" id="prod-ui">
+      <div class="config-label-right">SELEZIONA RIVESTIMENTO</div>
+      <div class="color-swatch-group">
+        <div class="color-swatch active" data-color="black" role="button" tabindex="0">
+          <div class="swatch-circle black"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">Nero Assoluto</span>
+            <span class="swatch-detail">Ecopelle Premium</span>
+          </div>
+          <div class="swatch-check"></div>
+        </div>
+        <div class="color-swatch" data-color="white" role="button" tabindex="0">
+          <div class="swatch-circle white"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">Bianco Ghiaccio</span>
+            <span class="swatch-detail">Ecopelle Premium</span>
+          </div>
+          <div class="swatch-check"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+  S9 — CLIMAX: CALL TO ACTION
+═══════════════════════════════════════════════════ -->
+<section id="s9">
+  <div class="cta-watermark">OVERLINE</div>
+  <div class="cta-inner">
+    <div class="cta-line-top" id="cta-line"></div>
+    <span class="cta-eyebrow" id="cta-eyebrow">OVERLINE — PRODUZIONE ARTIGIANALE ITALIANA</span>
+    <h2 class="cta-headline" id="cta-headline">
+      PRENOTA<br>IL TUO<br>TAVOLO.
+    </h2>
+    <p class="cta-sub" id="cta-sub">Ogni tavolo viene prodotto su ordine. I tempi di consegna variano tra le 2 e le 4 settimane. Contattaci per discutere la tua configurazione.</p>
+    <a href="../richiesta telegram/index.html" class="cta-btn-primary" id="cta-btn">PRENOTA IL TUO TAVOLO</a>
+    <div class="cta-details" id="cta-details">
+      <div class="cta-detail-item">
+        <span class="cta-detail-num">100%</span>
+        <span class="cta-detail-label">Made in Italy</span>
+      </div>
+      <div class="cta-detail-item">
+        <span class="cta-detail-num">2–4</span>
+        <span class="cta-detail-label">Settimane consegna</span>
+      </div>
+      <div class="cta-detail-item">
+        <span class="cta-detail-num">∞</span>
+        <span class="cta-detail-label">Durata garantita</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-watermark">OVERLINE</div>
+  <div class="footer-cta">
+    <a href="../hompage/index.html" class="footer-btn"><span>TORNA ALLA HOME</span></a>
+  </div>
+  <div class="footer-grid">
+    <div>
+      <h4>SUPPORTO LOGISTICO</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Technical Support</a></li>
+        <li><a href="#">Contattaci</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>COORDINATE HQ</h4>
+      <p>OVERLINE ENGINEERING<br>Veneto, Italia<br>Produzione Artigianale</p>
+    </div>
+    <div class="footer-right">
+      <p class="tagline">PROGETTATO E CALIBRATO PER LA FORZA.</p>
+      <p class="copy">&copy; 2025 OVERLINE. ALL RIGHTS RESERVED.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ── LIBS ── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── LENIS SMOOTH SCROLL ── */
+const lenis = new Lenis({ lerp: 0.07, smoothWheel: true });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((t) => lenis.raf(t * 1000));
+gsap.ticker.lagSmoothing(0);
+
+/* ── PROGRESS BAR ── */
+lenis.on('scroll', ({ progress }) => {
+  document.getElementById('progress').style.width = (progress * 100) + '%';
+});
+
+/* ── NAV ENTRANCE ── */
+gsap.to('#nav', { opacity: 1, y: 0, duration: 1.2, ease: 'power4.out', delay: 0.3 });
+
+/* ──────────────────────────────────────────
+   S1 — HERO ANIMATIONS
+────────────────────────────────────────── */
+// Eyebrow
+gsap.fromTo('#hero-eyebrow',
+  { opacity: 0, letterSpacing: '0.5em' },
+  { opacity: 1, letterSpacing: '0.3em', duration: 1.4, ease: 'power4.out', delay: 0.6 }
+);
+// Title lines
+gsap.fromTo('#s1-hero .reveal-line',
+  { y: 100, opacity: 0 },
+  { y: 0, opacity: 1, duration: 1.5, ease: 'expo.out', stagger: 0.2, delay: 0.9 }
+);
+// Subtitle
+gsap.fromTo('#hero-sub',
+  { opacity: 0, y: 24 },
+  { opacity: 1, y: 0, duration: 1.2, ease: 'power4.out', delay: 1.8 }
+);
+// Scroll cue
+gsap.fromTo('#scroll-cue',
+  { opacity: 0 },
+  { opacity: 1, duration: 1, ease: 'power2.out', delay: 2.6 }
+);
+
+/* ──────────────────────────────────────────
+   S2 — SALDATURA
+────────────────────────────────────────── */
+// Parallax immagine
+gsap.to('#s2-img', {
+  yPercent: 18, ease: 'none',
+  scrollTrigger: { trigger: '#s2', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
+});
+// Testo
+gsap.fromTo('#s2 .reveal-line',
+  { y: 80, opacity: 0 },
+  { y: 0, opacity: 1, duration: 1.3, ease: 'expo.out', stagger: 0.16,
+    scrollTrigger: { trigger: '#s2', start: 'top 72%', toggleActions: 'play none none none' }
+  }
+);
+// Card spec
+gsap.to('#s2-card', {
+  opacity: 1, y: 0, duration: 1.1, ease: 'power4.out',
+  scrollTrigger: { trigger: '#s2-card', start: 'top 82%', toggleActions: 'play none none none' }
+});
+
+/* ──────────────────────────────────────────
+   S3 — LEGNO
+────────────────────────────────────────── */
+gsap.to('#s3-img', {
+  yPercent: 14, ease: 'none',
+  scrollTrigger: { trigger: '#s3', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
+});
+gsap.to('#s3-card', {
+  opacity: 1, x: 0, duration: 1.3, ease: 'expo.out',
+  scrollTrigger: { trigger: '#s3', start: 'top 70%', toggleActions: 'play none none none' }
+});
+
+/* ──────────────────────────────────────────
+   S4 — MACCHINA DA CUCIRE
+────────────────────────────────────────── */
+gsap.to('#s4-img', {
+  yPercent: 15, ease: 'none',
+  scrollTrigger: { trigger: '#s4', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
+});
+gsap.fromTo('#s4 .reveal-line',
+  { y: 80, opacity: 0 },
+  { y: 0, opacity: 1, duration: 1.3, ease: 'expo.out', stagger: 0.15,
+    scrollTrigger: { trigger: '#s4', start: 'top 70%', toggleActions: 'play none none none' }
+  }
+);
+gsap.to('#s4-card', {
+  opacity: 1, scale: 1, duration: 1.2, ease: 'expo.out',
+  scrollTrigger: { trigger: '#s4', start: 'top 72%', toggleActions: 'play none none none' }
+});
+
+/* ──────────────────────────────────────────
+   S5 — FIT ACCIAIO
+────────────────────────────────────────── */
+gsap.fromTo('#s5 .reveal-line',
+  { y: 80, opacity: 0 },
+  { y: 0, opacity: 1, duration: 1.2, ease: 'expo.out', stagger: 0.16,
+    scrollTrigger: { trigger: '#s5', start: 'top 70%', toggleActions: 'play none none none' }
+  }
+);
+gsap.to('#s5-title', {
+  opacity: 1, y: 0, duration: 1.2, ease: 'expo.out',
+  scrollTrigger: { trigger: '#s5', start: 'top 70%', toggleActions: 'play none none none' }
+});
+gsap.to('#s5-body', {
+  opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', delay: 0.2,
+  scrollTrigger: { trigger: '#s5', start: 'top 70%', toggleActions: 'play none none none' }
+});
+// Parallax immagine
+gsap.to('#s5-img img', {
+  yPercent: 10, ease: 'none',
+  scrollTrigger: { trigger: '#s5', start: 'top bottom', end: 'bottom top', scrub: 1.2 }
+});
+
+/* ──────────────────────────────────────────
+   S6 — MACRO DETTAGLI
+────────────────────────────────────────── */
+gsap.to('#s6 .section-bg img', {
+  yPercent: 12, ease: 'none',
+  scrollTrigger: { trigger: '#s6', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
+});
+gsap.fromTo('#s6 .reveal-line',
+  { y: 80, opacity: 0 },
+  { y: 0, opacity: 1, duration: 1.2, ease: 'expo.out', stagger: 0.15,
+    scrollTrigger: { trigger: '#s6', start: 'top 72%', toggleActions: 'play none none none' }
+  }
+);
+gsap.to('#s6-data', {
+  opacity: 1, y: 0, duration: 1.2, ease: 'power4.out',
+  scrollTrigger: { trigger: '#s6-data', start: 'top 80%', toggleActions: 'play none none none' }
+});
+// Numeri contatore
+const dataNums = document.querySelectorAll('.data-num');
+dataNums.forEach(el => {
+  ScrollTrigger.create({
+    trigger: el,
+    start: 'top 85%',
+    once: true,
+    onEnter: () => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 30, color: 'rgba(230,0,0,0.3)' },
+        { opacity: 1, y: 0, color: '#E60000', duration: 0.8, ease: 'expo.out' }
+      );
+    }
+  });
+});
+
+/* ──────────────────────────────────────────
+   S-PRODUCT — INTERAZIONE SCROLL E CONFIGURATORE
+────────────────────────────────────────── */
+ScrollTrigger.create({
+  trigger: '#s-product-wrap',
+  pin: '#s-product',
+  start: 'top top',
+  end: '+=150%',
+  anticipatePin: 1,
+  onUpdate: (self) => {
+    // Fase 1: 0 -> 0.3: Il testo è visibile, poi sfuma
+    // Fase 2: 0.5 -> 1.0: L'UI appare
+    const progress = self.progress;
+    
+    const tagline = document.getElementById('prod-tagline');
+    const ui = document.getElementById('prod-ui');
+    
+    if (progress < 0.3) {
+      // Testo entra/rimane
+      gsap.to(tagline, { opacity: 1, y: 0, duration: 0.5, overwrite: 'auto' });
+      gsap.to(ui, { opacity: 0, y: 30, duration: 0.5, overwrite: 'auto' });
+      ui.classList.remove('active');
+    } else if (progress >= 0.3 && progress < 0.5) {
+      // Entrambi nascosti in transizione
+      gsap.to(tagline, { opacity: 0, y: -40, duration: 0.5, overwrite: 'auto' });
+      gsap.to(ui, { opacity: 0, y: 30, duration: 0.5, overwrite: 'auto' });
+      ui.classList.remove('active');
+    } else if (progress >= 0.5) {
+      // UI entra
+      gsap.to(tagline, { opacity: 0, y: -40, duration: 0.5, overwrite: 'auto' });
+      gsap.to(ui, { opacity: 1, y: 0, duration: 0.5, overwrite: 'auto' });
+      ui.classList.add('active');
+    }
+  }
+});
+
+// Setup iniziale animazioni
+gsap.set('#prod-tagline', { opacity: 0, y: 40 });
+gsap.set('#prod-ui', { opacity: 0, y: 30 });
+
+// Trigger iniziale per il testo quando entra nello schermo prima del pin
+ScrollTrigger.create({
+  trigger: '#s-product-wrap',
+  start: 'top 60%',
+  onEnter: () => {
+    gsap.to('#prod-tagline', { opacity: 1, y: 0, duration: 1.4, ease: 'expo.out' });
+  }
+});
+
+// Swatch click handler per transizione immagine
+document.querySelectorAll('#s-product .color-swatch').forEach(sw => {
+  const activate = () => {
+    const color = sw.dataset.color;
+    // Aggiorna classi active swatches
+    document.querySelectorAll('#s-product .color-swatch').forEach(s => s.classList.remove('active'));
+    sw.classList.add('active');
+    
+    // Crossfade immagini vere
+    const imgBlack = document.querySelector('.product-bg .p-black');
+    const imgWhite = document.querySelector('.product-bg .p-white');
+    
+    if (color === 'black') {
+      imgWhite.classList.remove('visible');
+      imgBlack.classList.add('visible');
+    } else {
+      imgBlack.classList.remove('visible');
+      imgWhite.classList.add('visible');
+    }
+    
+    // Micro-feedback
+    gsap.fromTo(sw, { scale: 0.97 }, { scale: 1, duration: 0.4, ease: 'expo.out' });
+  };
+  sw.addEventListener('click', activate);
+  sw.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+});
+
+/* ──────────────────────────────────────────
+   S9 — CTA
+────────────────────────────────────────── */
+gsap.to('#cta-line', {
+  opacity: 1, scaleY: 1, duration: 1.2, ease: 'expo.out',
+  scrollTrigger: { trigger: '#s9', start: 'top 75%', toggleActions: 'play none none none' }
+});
+gsap.to('#cta-eyebrow', {
+  opacity: 1, y: 0, duration: 1, ease: 'power4.out', delay: 0.15,
+  scrollTrigger: { trigger: '#s9', start: 'top 75%', toggleActions: 'play none none none' }
+});
+gsap.to('#cta-headline', {
+  opacity: 1, y: 0, duration: 1.4, ease: 'expo.out', delay: 0.25,
+  scrollTrigger: { trigger: '#s9', start: 'top 72%', toggleActions: 'play none none none' }
+});
+gsap.to('#cta-sub', {
+  opacity: 1, y: 0, duration: 1.1, ease: 'power4.out', delay: 0.35,
+  scrollTrigger: { trigger: '#s9', start: 'top 72%', toggleActions: 'play none none none' }
+});
+gsap.to('#cta-btn', {
+  opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', delay: 0.5,
+  scrollTrigger: { trigger: '#s9', start: 'top 72%', toggleActions: 'play none none none' }
+});
+gsap.to('#cta-details', {
+  opacity: 1, y: 0, duration: 1, ease: 'power4.out', delay: 0.7,
+  scrollTrigger: { trigger: '#s9', start: 'top 72%', toggleActions: 'play none none none' }
+});
+
+// Watermark parallax
+gsap.to('.cta-watermark', {
+  y: -80, ease: 'none',
+  scrollTrigger: { trigger: '#s9', start: 'top bottom', end: 'bottom top', scrub: 1.2 }
+});
+gsap.to('.footer-watermark', {
+  y: -60, ease: 'none',
+  scrollTrigger: { trigger: 'footer', start: 'top bottom', end: 'bottom top', scrub: 1 }
+});
+
+/* ── MOBILE NAV ── */
+document.getElementById('nav-burger').addEventListener('click', () => {
+  const nl = document.querySelector('.nav-links');
+  const isOpen = nl.style.display === 'flex';
+  nl.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) {
+    Object.assign(nl.style, {
+      flexDirection: 'column',
+      position: 'absolute',
+      top: '60px', left: '0',
+      width: '100%',
+      background: 'rgba(3,3,3,0.97)',
+      padding: '24px', gap: '20px'
+    });
+  }
+});
+
+/* ── SMOOTH ANCHOR SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) lenis.scrollTo(t, { offset: -80, duration: 2, easing: x => 1 - Math.pow(1 - x, 4) });
+  });
+});
+
+/* ── REFRESH on LOAD ── */
+window.addEventListener('load', () => { ScrollTrigger.refresh(); });
+</script>
+</body>
+</html>
