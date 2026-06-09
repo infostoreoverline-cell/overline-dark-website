@@ -235,7 +235,7 @@ section::after {
   line-height:1.9; opacity:0;
 }
 .scroll-cue {
-  position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+  position:absolute; bottom:40px; left:0; width:100%;
   z-index:10; display:flex; flex-direction:column; align-items:center; gap:12px;
   opacity:0;
 }
@@ -262,7 +262,7 @@ section::after {
    SEZIONE 2 — SALDATURA
 ═══════════════════════════════════════════ */
 #s2 {
-  height:100dvh; display:flex; align-items:center;
+  height:100dvh; display:flex; align-items:flex-end;
 }
 #s2 .section-bg img {
   opacity:.85;
@@ -273,7 +273,7 @@ section::after {
   background:linear-gradient(to right, rgba(3,3,3,.8) 0%, rgba(3,3,3,.4) 55%, rgba(3,3,3,0) 100%);
 }
 #s2 .section-inner {
-  padding:0 var(--margin-h); max-width:580px;
+  padding:0 var(--margin-h); max-width:580px; width:100%; padding-bottom:15dvh;
 }
 .spec-card {
   border-left:2px solid var(--accent); padding:24px 28px;
@@ -330,7 +330,7 @@ section::after {
 }
 #s4 .section-bg img {
   opacity:.85;
-  filter: grayscale(15%) brightness(var(--img-brightness)) contrast(1.15);
+  filter: grayscale(15%) brightness(calc(var(--img-brightness) - 0.15)) contrast(1.15);
   object-position: center 80%;
 }
 #s4 .overlay {
