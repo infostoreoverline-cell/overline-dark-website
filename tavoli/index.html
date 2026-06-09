@@ -13,6 +13,7 @@
 <!-- Preload immagini principali -->
 <link rel="preload" as="image" href="immagini/saldatura 2.webp" fetchpriority="high"/>
 <link rel="preload" as="image" href="immagini/tavolo_garage.png"/>
+<link rel="preload" as="image" href="immagini/tavolo_garage_white.png"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"/>
 <style>
 /* ── DESIGN TOKENS ── */
@@ -44,9 +45,10 @@ button { cursor:pointer; background:none; border:none; font:inherit; color:inher
 /* ── PROGRESS BAR ── */
 #progress {
   position:fixed; top:0; left:0; height:2px;
-  background:var(--accent); width:0%; z-index:200;
-  transform-origin:left;
+  background:var(--accent); width:100%; z-index:200;
+  transform:scaleX(0); transform-origin:left;
   box-shadow: 0 0 8px rgba(230,0,0,0.6);
+  will-change:transform;
 }
 
 /* ── NAV ── */
@@ -82,6 +84,27 @@ nav {
 /* ── TEXT REVEAL ── */
 .reveal-wrap { overflow:hidden; display:block; }
 .reveal-line { display:block; overflow:hidden; }
+
+.io-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1.2s var(--ease-expo), transform 1.2s var(--ease-expo);
+  will-change: transform, opacity;
+}
+.io-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.io-reveal-line {
+  opacity: 0;
+  transform: translateY(80px);
+  transition: opacity 1.2s var(--ease-expo), transform 1.2s var(--ease-expo);
+  will-change: transform, opacity;
+}
+.io-reveal-line.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* ── SECTION BASE ── */
 section { position:relative; width:100%; overflow:hidden; }
@@ -130,7 +153,7 @@ section::after {
    SEZIONE 1 — HERO PLACEHOLDER TELAIO
 ═══════════════════════════════════════════ */
 #s1-hero {
-  position:relative; width:100%; height:100vh;
+  position:relative; width:100%; height:100dvh;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   overflow:hidden; background:var(--bg);
 }
@@ -219,10 +242,11 @@ section::after {
   width:1px; height:60px; background:rgba(255,255,255,.12); overflow:hidden; position:relative;
 }
 .scroll-cue .line::after {
-  content:''; position:absolute; top:-100%; left:0; width:100%; height:50%;
+  content:''; position:absolute; top:0; left:0; width:100%; height:50%;
   background:var(--accent); animation:scrollline 2s ease-in-out infinite;
+  transform:translateY(-100%);
 }
-@keyframes scrollline { to { top:200%; } }
+@keyframes scrollline { to { transform:translateY(200%); } }
 .scroll-cue span {
   font-family:var(--f-mono); font-size:10px; letter-spacing:.2em; color:rgba(255,255,255,.35);
 }
@@ -237,15 +261,15 @@ section::after {
    SEZIONE 2 — SALDATURA
 ═══════════════════════════════════════════ */
 #s2 {
-  height:100vh; display:flex; align-items:center;
+  height:100dvh; display:flex; align-items:center;
 }
 #s2 .section-bg img {
-  opacity:.7;
-  filter: grayscale(20%) brightness(0.95) contrast(1.1);
+  opacity:.85;
+  filter: grayscale(20%) brightness(1.05) contrast(1.1);
 }
 #s2 .overlay {
   position:absolute; inset:0; z-index:1;
-  background:linear-gradient(to right, rgba(3,3,3,.9) 0%, rgba(3,3,3,.55) 55%, rgba(3,3,3,.1) 100%);
+  background:linear-gradient(to right, rgba(3,3,3,.8) 0%, rgba(3,3,3,.4) 55%, rgba(3,3,3,0) 100%);
 }
 #s2 .section-inner {
   padding:0 var(--margin-h); max-width:580px;
@@ -269,15 +293,15 @@ section::after {
    SEZIONE 3 — LEGNO
 ═══════════════════════════════════════════ */
 #s3 {
-  min-height:90vh; display:flex; align-items:flex-end; justify-content:flex-end;
+  min-height:90dvh; display:flex; align-items:flex-end; justify-content:flex-end;
 }
 #s3 .section-bg img {
-  opacity:.65;
-  filter: saturate(0.5) brightness(0.9) contrast(1.15);
+  opacity:.85;
+  filter: saturate(0.5) brightness(1.05) contrast(1.15);
 }
 #s3 .overlay {
   position:absolute; inset:0; z-index:1;
-  background:linear-gradient(to left, rgba(3,3,3,.92) 0%, rgba(3,3,3,.45) 55%, transparent 100%);
+  background:linear-gradient(to left, rgba(3,3,3,.85) 0%, rgba(3,3,3,.3) 55%, transparent 100%);
 }
 #s3 .section-inner {
   padding:0 var(--margin-h); padding-bottom:100px;
@@ -301,16 +325,16 @@ section::after {
    SEZIONE 4 — MACCHINA DA CUCIRE
 ═══════════════════════════════════════════ */
 #s4 {
-  height:100vh; display:flex; align-items:center; justify-content:center;
+  height:100dvh; display:flex; align-items:center; justify-content:center;
 }
 #s4 .section-bg img {
-  opacity:.65;
-  filter: grayscale(15%) brightness(0.9) contrast(1.15);
+  opacity:.85;
+  filter: grayscale(15%) brightness(1.05) contrast(1.15);
   object-position: center 80%;
 }
 #s4 .overlay {
   position:absolute; inset:0; z-index:1;
-  background:rgba(3,3,3,.35);
+  background:rgba(3,3,3,.2);
 }
 .center-card {
   border:1px solid rgba(255,255,255,0.08); padding:64px 80px;
@@ -332,13 +356,13 @@ section::after {
 /* ═══════════════════════════════════════════
    SEZIONE 5 — FIT ACCIAIO (generata)
 ═══════════════════════════════════════════ */
-#s5 { height:100vh; display:grid; grid-template-columns:1fr 1fr; }
+#s5 { height:100dvh; display:grid; grid-template-columns:1fr 1fr; }
 #s5-img {
   position:relative; overflow:hidden;
 }
 #s5-img img {
   width:100%; height:100%; object-fit:cover;
-  filter: brightness(1.0) contrast(1.1);
+  filter: brightness(1.1) contrast(1.1);
 }
 #s5-img::after {
   content:''; position:absolute; inset:0;
@@ -360,14 +384,14 @@ section::after {
 /* ═══════════════════════════════════════════
    SEZIONE 6 — MACRO DETTAGLI (generata)
 ═══════════════════════════════════════════ */
-#s6 { height:100vh; display:flex; align-items:center; }
+#s6 { height:100dvh; display:flex; align-items:center; }
 #s6 .section-bg img {
-  opacity:.75;
-  filter: brightness(0.9) contrast(1.2) saturate(0.7);
+  opacity:.9;
+  filter: brightness(1.05) contrast(1.2) saturate(0.7);
 }
 #s6 .overlay {
   position:absolute; inset:0; z-index:1;
-  background:linear-gradient(to right, rgba(3,3,3,.92) 0%, rgba(3,3,3,.5) 55%, rgba(3,3,3,.15) 100%);
+  background:linear-gradient(to right, rgba(3,3,3,.85) 0%, rgba(3,3,3,.35) 55%, rgba(3,3,3,0) 100%);
 }
 #s6 .section-inner { padding:0 var(--margin-h); max-width:600px; }
 .data-block {
@@ -398,19 +422,20 @@ section::after {
 ═══════════════════════════════════════════ */
 #s-product-wrap { position:relative; }
 #s-product {
-  height:100svh; display:flex; align-items:center; justify-content:center;
+  height:100dvh; display:flex; align-items:center; justify-content:center;
   background:var(--bg); overflow:hidden; position:relative;
 }
 .product-bg { position:absolute; inset:0; z-index:0; }
 .product-bg .p-img {
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   opacity:0; transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1);
-  filter: brightness(0.9) contrast(1.15);
+  filter: brightness(1.05) contrast(1.15);
+  will-change: transform, opacity;
 }
-.product-bg .p-img.visible { opacity:0.75; }
+.product-bg .p-img.visible { opacity:0.95; }
 .product-bg .overlay {
   position:absolute; inset:0; z-index:1;
-  background:radial-gradient(ellipse at center, transparent 30%, rgba(3,3,3,.7) 100%);
+  background:radial-gradient(ellipse at center, transparent 40%, rgba(3,3,3,.5) 100%);
 }
 .product-tagline {
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
@@ -498,7 +523,7 @@ section::after {
    SEZIONE 9 — CTA FINALE
 ═══════════════════════════════════════════ */
 #s9 {
-  min-height:100vh; display:flex; flex-direction:column;
+  min-height:100dvh; display:flex; flex-direction:column;
   align-items:center; justify-content:center;
   background:var(--bg); position:relative; overflow:hidden;
 }
@@ -512,8 +537,9 @@ section::after {
 /* Linea decorativa */
 .cta-line-top {
   width:1px; height:80px; background:var(--accent); margin-bottom:48px;
-  opacity:0; transform:scaleY(0); transform-origin:top;
+  transform:scaleY(0); transform-origin:top; transition:transform 1.2s var(--ease-expo);
 }
+.cta-line-top.is-visible { transform:scaleY(1); }
 .cta-inner {
   position:relative; z-index:10; text-align:center; padding:0 var(--margin-h);
   max-width:900px;
@@ -542,10 +568,10 @@ section::after {
   letter-spacing:.08em; text-transform:uppercase;
   border-radius:0; border:none;
   position:relative; overflow:hidden;
-  transition: background .3s, transform .2s;
+  transition: background .3s, transform .2s, opacity 1.2s var(--ease-expo) 0.5s, transform 1.2s var(--ease-expo) 0.5s;
   cursor:pointer;
-  opacity:0; transform:translateY(30px);
 }
+.cta-btn-primary.is-visible { opacity:1; transform:translateY(0); }
 .cta-btn-primary::before {
   content:''; position:absolute; inset:0;
   background:rgba(255,255,255,.12);
@@ -559,8 +585,9 @@ section::after {
 /* Dettagli CTA */
 .cta-details {
   margin-top:36px; display:flex; gap:40px; justify-content:center;
-  opacity:0; transform:translateY(20px);
+  transition: opacity 1s var(--ease-expo) 0.7s, transform 1s var(--ease-expo) 0.7s;
 }
+.cta-details.is-visible { opacity:1; transform:translateY(0); }
 .cta-detail-item {
   display:flex; flex-direction:column; align-items:center; gap:6px;
 }
@@ -642,14 +669,14 @@ footer {
   .nav-links{ display:none; }
   .nav-burger{ display:flex; }
 
-  #s1-hero{ height:100svh; }
-  #s2,#s4,#s6{ height:auto; min-height:80vh; }
-  #s3{ min-height:80vh; }
+  #s1-hero{ height:100dvh; }
+  #s2,#s4,#s6{ height:auto; min-height:80dvh; }
+  #s3{ min-height:80dvh; }
 
   /* S5 — grid 1 col, immagine assoluta come sfondo, testo overlay */
-  #s5{ grid-template-columns:1fr; height:auto; min-height:80vh; }
+  #s5{ grid-template-columns:1fr; height:auto; min-height:80dvh; }
   #s5-img{ position:absolute; inset:0; z-index:0; }
-  #s5-img img{ opacity:0.55; filter:brightness(0.85) contrast(1.1); }
+  #s5-img img{ opacity:0.85; filter:brightness(1.05) contrast(1.1); }
   #s5-img::after{
     background:
       linear-gradient(to right, transparent 40%, var(--bg) 100%),
@@ -682,7 +709,7 @@ footer {
 @media(max-width:767px){
   :root{ --margin-h:24px; }
 
-  #s1-hero{ height:100svh; }
+  #s1-hero{ height:100dvh; }
   .hero-title{ font-size:clamp(52px,13vw,90px); }
 
   #s2,#s3,#s4,#s6{ min-height:85vw; }
@@ -706,15 +733,15 @@ footer {
   .nav-logo{ font-size:18px; }
 
   /* Hero */
-  #s1-hero{ height:100svh; }
+  #s1-hero{ height:100dvh; }
   .hero-title{ font-size:clamp(44px,14vw,72px); }
   .hero-eyebrow{ font-size:9px; gap:8px; }
   .hero-eyebrow::before, .hero-eyebrow::after{ width:24px; }
   #hero-sub{ font-size:11px; padding-left:14px; }
 
   /* Sezioni sfondo */
-  #s2,#s4,#s6{ height:auto; min-height:75vh; }
-  #s3{ min-height:75vh; }
+  #s2,#s4,#s6{ height:auto; min-height:75dvh; }
+  #s3{ min-height:75dvh; }
 
   /* S2 — overlay verticale */
   #s2 .overlay{
@@ -737,9 +764,9 @@ footer {
   .center-card p{ font-size:11px; }
 
   /* S5 — colonna singola su smartphone */
-  #s5{ grid-template-columns:1fr; height:auto; min-height:70vh; }
+  #s5{ grid-template-columns:1fr; height:auto; min-height:70dvh; }
   #s5-img{ position:absolute; inset:0; z-index:0; }
-  #s5-img img{ opacity:0.45; filter:brightness(0.8) contrast(1.1); }
+  #s5-img img{ opacity:0.8; filter:brightness(1.0) contrast(1.1); }
   #s5-img::after{
     background:
       linear-gradient(to bottom, var(--bg) 0%, transparent 25%),
@@ -832,16 +859,20 @@ footer {
   margin-top:36px; overflow:visible;
 }
 .ld-bar-fill{
-  height:100%; width:0%;
+  height:100%; width:100%;
   background:#E60000;
+  transform:scaleX(0); transform-origin:left;
+}
+.ld-bar-glow-wrap{
+  position:absolute; top:-4px; left:0; width:100%; height:9px;
+  transform:translate3d(-100%,0,0);
+  pointer-events:none; overflow:visible;
 }
 .ld-bar-glow{
-  position:absolute; top:-4px; left:0%;
-  width:24px; height:9px;
+  position:absolute; right:-12px; top:0;
+  width:24px; height:100%;
   background:radial-gradient(ellipse at center,rgba(230,0,0,0.9) 0%,transparent 70%);
-  transform:translateX(-50%);
   opacity:0; transition:opacity 0.3s;
-  pointer-events:none;
 }
 .ld-meta{
   display:flex; justify-content:space-between; align-items:center;
@@ -874,7 +905,7 @@ footer {
     <div class="ld-logo" id="ld-logo">OVERLINE</div>
     <div class="ld-bar-wrap">
       <div class="ld-bar-fill" id="ld-fill"></div>
-      <div class="ld-bar-glow" id="ld-glow"></div>
+      <div class="ld-bar-glow-wrap" id="ld-glow-wrap"><div class="ld-bar-glow" id="ld-glow"></div></div>
     </div>
     <div class="ld-meta">
       <span class="ld-pct" id="ld-pct">0%</span>
@@ -914,8 +945,8 @@ footer {
   <div class="hero-content">
     <div class="hero-eyebrow" id="hero-eyebrow">OVERLINE — TAVOLI DA BRACCIO DI FERRO</div>
     <h1 class="hero-title">
-      <span class="reveal-wrap"><span class="reveal-line">ACCIAIO</span></span>
-      <span class="reveal-wrap"><span class="reveal-line">E <span class="accent">VOLONTÀ.</span></span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line">ACCIAIO</span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line">E <span class="accent">VOLONTÀ.</span></span></span>
     </h1>
     <p class="hero-sub" id="hero-sub">Struttura massiccia. Smontabilità ingegneristica.<br>Pad cuciti a mano. Costruito per non cedere mai.</p>
   </div>
@@ -934,8 +965,8 @@ footer {
   <div class="section-inner" style="padding:0 var(--margin-h);max-width:580px">
     <div class="label-tag"><span class="dot"></span>L'ARTIGIANATO</div>
     <h2 class="s-title">
-      <span class="reveal-wrap"><span class="reveal-line">SALDATO</span></span>
-      <span class="reveal-wrap"><span class="reveal-line">A MANO.</span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line">SALDATO</span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line" style="transition-delay:0.1s">A MANO.</span></span>
     </h2>
     <div class="spec-card" id="s2-card">
       <strong>TELAIO IN ACCIAIO MASSICCIO</strong>
@@ -969,9 +1000,9 @@ footer {
   <div class="section-inner" style="display:flex;align-items:center;justify-content:center;height:100%">
     <div class="center-card" id="s4-card">
       <div class="big-title">
-        <span class="reveal-wrap"><span class="reveal-line">CUCITO</span></span>
-        <span class="reveal-wrap"><span class="reveal-line">PUNTO</span></span>
-        <span class="reveal-wrap"><span class="reveal-line">PER PUNTO.</span></span>
+        <span class="reveal-wrap"><span class="reveal-line io-reveal-line">CUCITO</span></span>
+        <span class="reveal-wrap"><span class="reveal-line io-reveal-line" style="transition-delay:0.1s">PUNTO</span></span>
+        <span class="reveal-wrap"><span class="reveal-line io-reveal-line" style="transition-delay:0.2s">PER PUNTO.</span></span>
       </div>
       <p>Macchina industriale. Filo rinforzato. I pad in ecopelle premium vengono cuciti con una precisione che nessuna colla può replicare. Resistenza all'usura: oltre 50.000 cicli di contatto.</p>
     </div>
@@ -989,8 +1020,8 @@ footer {
   <div id="s5-text">
     <div class="label-tag"><span class="dot"></span>INGEGNERIA</div>
     <h2 class="s-title" id="s5-title">
-      <span class="reveal-wrap"><span class="reveal-line">FIT</span></span>
-      <span class="reveal-wrap"><span class="reveal-line">PERFETTO.</span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line">FIT</span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line" style="transition-delay:0.1s">PERFETTO.</span></span>
     </h2>
     <p class="s-body" id="s5-body">
       Smontabile in cinque minuti. Riassemblato con la stessa precisione ogni volta. I tubolari quadrati si incastrano con tolleranze di produzione che eliminano qualsiasi gioco. Nessun bullone che si allenta. Nessuna vibrazione. Solo acciaio su acciaio.
@@ -1008,8 +1039,8 @@ footer {
   <div class="section-inner">
     <div class="label-tag"><span class="dot"></span>DETTAGLIO</div>
     <h2 class="s-title" id="s6-title">
-      <span class="reveal-wrap"><span class="reveal-line">LA PERFEZIONE</span></span>
-      <span class="reveal-wrap"><span class="reveal-line">NEI MICRON.</span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line">LA PERFEZIONE</span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line" style="transition-delay:0.1s">NEI MICRON.</span></span>
     </h2>
     <div class="data-block" id="s6-data">
       <div class="data-row">
@@ -1151,39 +1182,42 @@ gsap.ticker.add((t) => lenis.raf(t * 1000));
 gsap.ticker.lagSmoothing(0);
 
 /* ── PROGRESS BAR ── */
-lenis.on('scroll', ({ progress }) => {
-  document.getElementById('progress').style.width = (progress * 100) + '%';
-});
+let progressTarget = 0;
+lenis.on('scroll', ({ progress }) => { progressTarget = progress; });
+function updateProgress() {
+  const p = document.getElementById('progress');
+  if(p) p.style.transform = `scaleX(${progressTarget})`;
+  requestAnimationFrame(updateProgress);
+}
+requestAnimationFrame(updateProgress);
 
 /* ── ANIMAZIONI ── */
 function initAnimations() {
 
+const revealObserver = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      obs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+const ioTargets = [
+  '.io-reveal-line',
+  '#hero-eyebrow', '#hero-sub', '#scroll-cue',
+  '#s2-card', '#s3-card', '#s4-card', '#s5-title', '#s5-body',
+  '#s6-data',
+  '#cta-line', '#cta-eyebrow', '#cta-headline', '#cta-sub', '#cta-btn', '#cta-details'
+].join(',');
+
+document.querySelectorAll(ioTargets).forEach(el => {
+  el.classList.add('io-reveal');
+  revealObserver.observe(el);
+});
+
 /* ── NAV ENTRANCE ── */
 gsap.to('#nav', { opacity: 1, y: 0, duration: 1.2, ease: 'power4.out', delay: 0.3 });
-
-/* ──────────────────────────────────────────
-   S1 — HERO ANIMATIONS
-────────────────────────────────────────── */
-// Eyebrow
-gsap.fromTo('#hero-eyebrow',
-  { opacity: 0, letterSpacing: '0.5em' },
-  { opacity: 1, letterSpacing: '0.3em', duration: 1.4, ease: 'power4.out', delay: 0.6 }
-);
-// Title lines
-gsap.fromTo('#s1-hero .reveal-line',
-  { y: 100, opacity: 0 },
-  { y: 0, opacity: 1, duration: 1.5, ease: 'expo.out', stagger: 0.2, delay: 0.9 }
-);
-// Subtitle
-gsap.fromTo('#hero-sub',
-  { opacity: 0, y: 24 },
-  { opacity: 1, y: 0, duration: 1.2, ease: 'power4.out', delay: 1.8 }
-);
-// Scroll cue
-gsap.fromTo('#scroll-cue',
-  { opacity: 0 },
-  { opacity: 1, duration: 1, ease: 'power2.out', delay: 2.6 }
-);
 
 /* ──────────────────────────────────────────
    S2 — SALDATURA
@@ -1193,18 +1227,6 @@ gsap.to('#s2-img', {
   yPercent: 18, ease: 'none',
   scrollTrigger: { trigger: '#s2', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
 });
-// Testo
-gsap.fromTo('#s2 .reveal-line',
-  { y: 80, opacity: 0 },
-  { y: 0, opacity: 1, duration: 1.3, ease: 'expo.out', stagger: 0.16,
-    scrollTrigger: { trigger: '#s2', start: 'top 72%', toggleActions: 'play none none none' }
-  }
-);
-// Card spec
-gsap.to('#s2-card', {
-  opacity: 1, y: 0, duration: 1.1, ease: 'power4.out',
-  scrollTrigger: { trigger: '#s2-card', start: 'top 82%', toggleActions: 'play none none none' }
-});
 
 /* ──────────────────────────────────────────
    S3 — LEGNO
@@ -1212,10 +1234,6 @@ gsap.to('#s2-card', {
 gsap.to('#s3-img', {
   yPercent: 14, ease: 'none',
   scrollTrigger: { trigger: '#s3', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
-});
-gsap.to('#s3-card', {
-  opacity: 1, x: 0, duration: 1.3, ease: 'expo.out',
-  scrollTrigger: { trigger: '#s3', start: 'top 70%', toggleActions: 'play none none none' }
 });
 
 /* ──────────────────────────────────────────
@@ -1225,34 +1243,10 @@ gsap.to('#s4-img', {
   yPercent: 15, ease: 'none',
   scrollTrigger: { trigger: '#s4', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
 });
-gsap.fromTo('#s4 .reveal-line',
-  { y: 80, opacity: 0 },
-  { y: 0, opacity: 1, duration: 1.3, ease: 'expo.out', stagger: 0.15,
-    scrollTrigger: { trigger: '#s4', start: 'top 70%', toggleActions: 'play none none none' }
-  }
-);
-gsap.to('#s4-card', {
-  opacity: 1, scale: 1, duration: 1.2, ease: 'expo.out',
-  scrollTrigger: { trigger: '#s4', start: 'top 72%', toggleActions: 'play none none none' }
-});
 
 /* ──────────────────────────────────────────
    S5 — FIT ACCIAIO
 ────────────────────────────────────────── */
-gsap.fromTo('#s5 .reveal-line',
-  { y: 80, opacity: 0 },
-  { y: 0, opacity: 1, duration: 1.2, ease: 'expo.out', stagger: 0.16,
-    scrollTrigger: { trigger: '#s5', start: 'top 70%', toggleActions: 'play none none none' }
-  }
-);
-gsap.to('#s5-title', {
-  opacity: 1, y: 0, duration: 1.2, ease: 'expo.out',
-  scrollTrigger: { trigger: '#s5', start: 'top 70%', toggleActions: 'play none none none' }
-});
-gsap.to('#s5-body', {
-  opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', delay: 0.2,
-  scrollTrigger: { trigger: '#s5', start: 'top 70%', toggleActions: 'play none none none' }
-});
 // Parallax immagine
 gsap.to('#s5-img img', {
   yPercent: 10, ease: 'none',
@@ -1265,16 +1259,6 @@ gsap.to('#s5-img img', {
 gsap.to('#s6 .section-bg img', {
   yPercent: 12, ease: 'none',
   scrollTrigger: { trigger: '#s6', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
-});
-gsap.fromTo('#s6 .reveal-line',
-  { y: 80, opacity: 0 },
-  { y: 0, opacity: 1, duration: 1.2, ease: 'expo.out', stagger: 0.15,
-    scrollTrigger: { trigger: '#s6', start: 'top 72%', toggleActions: 'play none none none' }
-  }
-);
-gsap.to('#s6-data', {
-  opacity: 1, y: 0, duration: 1.2, ease: 'power4.out',
-  scrollTrigger: { trigger: '#s6-data', start: 'top 80%', toggleActions: 'play none none none' }
 });
 // Numeri contatore
 const dataNums = document.querySelectorAll('.data-num');
@@ -1371,30 +1355,8 @@ document.querySelectorAll('#s-product .color-swatch').forEach(sw => {
 /* ──────────────────────────────────────────
    S9 — CTA
 ────────────────────────────────────────── */
-gsap.to('#cta-line', {
-  opacity: 1, scaleY: 1, duration: 1.2, ease: 'expo.out',
-  scrollTrigger: { trigger: '#s9', start: 'top 75%', toggleActions: 'play none none none' }
-});
-gsap.to('#cta-eyebrow', {
-  opacity: 1, y: 0, duration: 1, ease: 'power4.out', delay: 0.15,
-  scrollTrigger: { trigger: '#s9', start: 'top 75%', toggleActions: 'play none none none' }
-});
-gsap.to('#cta-headline', {
-  opacity: 1, y: 0, duration: 1.4, ease: 'expo.out', delay: 0.25,
-  scrollTrigger: { trigger: '#s9', start: 'top 72%', toggleActions: 'play none none none' }
-});
-gsap.to('#cta-sub', {
-  opacity: 1, y: 0, duration: 1.1, ease: 'power4.out', delay: 0.35,
-  scrollTrigger: { trigger: '#s9', start: 'top 72%', toggleActions: 'play none none none' }
-});
-gsap.to('#cta-btn', {
-  opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', delay: 0.5,
-  scrollTrigger: { trigger: '#s9', start: 'top 72%', toggleActions: 'play none none none' }
-});
-gsap.to('#cta-details', {
-  opacity: 1, y: 0, duration: 1, ease: 'power4.out', delay: 0.7,
-  scrollTrigger: { trigger: '#s9', start: 'top 72%', toggleActions: 'play none none none' }
-});
+// Gli elementi CTA vengono animati dal revealObserver e dal CSS (.is-visible)
+
 
 // Watermark parallax
 gsap.to('.cta-watermark', {
@@ -1452,30 +1414,44 @@ async function preload() {
     'VERIFICA STRUTTURA...', 'OTTIMIZZAZIONE...', 'PRONTO.'
   ];
 
+  const ldGlowWrap = document.getElementById('ld-glow-wrap');
   setTimeout(() => { ldGlow.style.opacity = '1'; }, 900);
 
   function animateBar() {
     displayPct += (targetPct - displayPct) * 0.06;
     const pct = Math.min(displayPct, 100);
-    ldFill.style.width = pct.toFixed(2) + '%';
-    ldGlow.style.left  = pct.toFixed(2) + '%';
+    ldFill.style.transform = `scaleX(${pct / 100})`;
+    ldGlowWrap.style.transform = `translate3d(${pct - 100}%, 0, 0)`;
     ldPct.textContent  = Math.round(pct) + '%';
     ldStatus.textContent = STATUSES[Math.min(Math.floor(pct / 20), 4)];
     rafId = requestAnimationFrame(animateBar);
   }
   rafId = requestAnimationFrame(animateBar);
 
-  // Tracciamento risorse
+  // Tracciamento risorse: True Cache Preloading
   const imgs = Array.from(document.images);
+  const bgImages = [];
+  document.querySelectorAll('*').forEach(el => {
+    const bg = window.getComputedStyle(el).backgroundImage;
+    if (bg && bg !== 'none' && bg.includes('url(')) {
+      bgImages.push(bg.slice(5, -2).replace(/["']/g, ""));
+    }
+  });
+  
+  // Precarica anche l'immagine della variante bianca che non e' subito visibile
+  bgImages.push("immagini/tavolo_garage_white.png");
+
+  const allUrls = [...new Set([...imgs.map(i => i.src), ...bgImages])].filter(Boolean);
   let loaded = 0;
-  const total = imgs.length + 1;
+  const total = allUrls.length + 1;
   const updateTarget = () => { loaded++; targetPct = Math.round((loaded / total) * 100); };
 
-  const imgPromises = imgs.map(img => {
-    if (img.complete && img.naturalWidth > 0) { updateTarget(); return Promise.resolve(); }
+  const imgPromises = allUrls.map(url => {
     return new Promise(r => {
-      img.addEventListener('load',  () => { updateTarget(); r(); }, { once: true });
-      img.addEventListener('error', () => { updateTarget(); r(); }, { once: true });
+      const img = new Image();
+      img.onload = () => { updateTarget(); r(); };
+      img.onerror = () => { updateTarget(); r(); };
+      img.src = url;
     });
   });
   const fontPromise = document.fonts.ready.then(updateTarget);
@@ -1489,14 +1465,14 @@ async function preload() {
   });
 
   cancelAnimationFrame(rafId);
-  ldFill.style.width = '100%';
-  ldGlow.style.left  = '100%';
+  ldFill.style.transform = 'scaleX(1)';
+  ldGlowWrap.style.transform = 'translate3d(0, 0, 0)';
   ldPct.textContent  = '100%';
   ldStatus.textContent = 'PRONTO.';
 
   // Flash glow finale
-  ldGlow.style.transition = 'width 0.3s ease, opacity 0.4s ease';
-  ldGlow.style.width = '100%';
+  ldGlowWrap.style.transition = 'transform 0.3s ease';
+  ldGlowWrap.style.transform = 'translate3d(0, 0, 0)';
   await new Promise(r => setTimeout(r, 400));
 
   // Curtain split exit

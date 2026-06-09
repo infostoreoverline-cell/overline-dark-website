@@ -42,8 +42,9 @@ button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
 /* ── PROGRESS BAR ── */
 #progress{
   position:fixed;top:0;left:0;height:1px;
-  background:var(--accent);width:0%;z-index:200;
-  transform-origin:left;
+  background:var(--accent);width:100%;z-index:200;
+  transform:scaleX(0);transform-origin:left;
+  will-change:transform;
 }
 
 /* ── NAV ── */
@@ -89,6 +90,27 @@ nav{
 .reveal-wrap{overflow:hidden;display:block}
 .reveal-line{display:block;overflow:hidden}
 
+.io-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1.2s var(--ease-expo), transform 1.2s var(--ease-expo);
+  will-change: transform, opacity;
+}
+.io-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.io-reveal-line {
+  opacity: 0;
+  transform: translateY(80px);
+  transition: opacity 1.2s var(--ease-expo), transform 1.2s var(--ease-expo);
+  will-change: transform, opacity;
+}
+.io-reveal-line.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* ── VIGNETTE ── */
 .vignette::after{
   content:'';position:absolute;inset:0;
@@ -98,7 +120,7 @@ nav{
 
 /* ── HERO ── */
 #hero{
-  position:relative;width:100%;height:100vh;
+  position:relative;width:100%;height:100dvh;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   overflow:hidden;
 }
@@ -106,13 +128,13 @@ nav{
   position:absolute;inset:0;z-index:0;
   animation:kenburns 14s ease-in-out infinite alternate;
 }
-#hero .bg img{width:100%;height:100%;object-fit:cover;object-position:center;opacity:.55}
+#hero .bg img{width:100%;height:100%;object-fit:cover;object-position:center;opacity:.55;will-change:transform;}
 @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07)}}
 #hero::after{
   content:'';position:absolute;inset:0;z-index:1;
   background:
-    radial-gradient(ellipse at center,transparent 35%,rgba(3,3,3,.65) 100%),
-    linear-gradient(to bottom,rgba(3,3,3,.3) 0%,transparent 40%,rgba(3,3,3,.8) 100%);
+    radial-gradient(ellipse at center,rgba(3,3,3,0) 35%,rgba(3,3,3,.65) 100%),
+    linear-gradient(to bottom,rgba(3,3,3,.3) 0%,rgba(3,3,3,0) 40%,var(--bg) 100%);
 }
 .hero-content{position:relative;z-index:3;text-align:center;padding:0 20px;max-width:900px}
 .hero-title{
@@ -133,10 +155,11 @@ nav{
 }
 .scroll-cue .line{width:1px;height:60px;background:rgba(255,255,255,.15);overflow:hidden;position:relative}
 .scroll-cue .line::after{
-  content:'';position:absolute;top:-100%;left:0;width:100%;height:50%;
+  content:'';position:absolute;top:0;left:0;width:100%;height:50%;
   background:#fff;animation:scrollline 2s ease-in-out infinite;
+  transform:translateY(-100%);
 }
-@keyframes scrollline{to{top:200%}}
+@keyframes scrollline{to{transform:translateY(200%)}}
 .scroll-cue span{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.4)}
 
 /* ── SECTION BASE ── */
@@ -145,26 +168,26 @@ section{position:relative;width:100%;overflow:hidden}
 .section-bg img{width:100%;height:100%;object-fit:cover}
 
 /* ── SECTION EDGE FADES (transizioni morbide tra sezioni) ── */
-section::before,section::after,#hero::before,#hero::after:not(.vignette::after){
+section::before,section::after,#hero::before{
   content:'';position:absolute;left:0;width:100%;z-index:8;pointer-events:none;
 }
 section::before,#hero::before{
-  top:0;height:18%;
-  background:linear-gradient(to bottom,var(--bg) 0%,transparent 100%);
+  top:0;height:30%;
+  background:linear-gradient(to bottom,var(--bg) 0%,rgba(3,3,3,0) 100%);
 }
 section::after{
-  bottom:0;height:18%;
-  background:linear-gradient(to top,var(--bg) 0%,transparent 100%);
+  bottom:0;height:30%;
+  background:linear-gradient(to top,var(--bg) 0%,rgba(3,3,3,0) 100%);
 }
 /* Hero ha già il suo vignette::after, quindi solo il top */
 #hero::before{
-  height:22%;z-index:3;
-  background:linear-gradient(to bottom,var(--bg) 0%,transparent 100%);
+  height:30%;z-index:3;
+  background:linear-gradient(to bottom,var(--bg) 0%,rgba(3,3,3,0) 100%);
 }
 .section-inner{position:relative;z-index:10}
 
 /* ── S1 DETTAGLI ── */
-#s1{height:90vh;display:flex;align-items:center}
+#s1{height:90dvh;display:flex;align-items:center}
 #s1 .overlay{
   position:absolute;inset:0;z-index:1;
   background:linear-gradient(to right,#000 0%,rgba(0,0,0,.5) 50%,transparent 100%);
@@ -195,7 +218,7 @@ section::after{
 }
 
 /* ── S2 MOVIMENTO ── */
-#s2{height:100vh;display:flex;align-items:center;justify-content:center}
+#s2{height:100dvh;display:flex;align-items:center;justify-content:center}
 #s2 .overlay{position:absolute;inset:0;z-index:1;background:rgba(3,3,3,.75)}
 .center-card{
   border:1px solid var(--outline);padding:64px 80px;
@@ -213,7 +236,7 @@ section::after{
 }
 
 /* ── S3 DURARE ── */
-#s3{min-height:85vh;display:flex;align-items:flex-end;justify-content:flex-end}
+#s3{min-height:85dvh;display:flex;align-items:flex-end;justify-content:flex-end}
 #s3 .overlay{
   position:absolute;inset:0;z-index:1;
   background:linear-gradient(to left,rgba(3,3,3,.95) 0%,rgba(3,3,3,.4) 60%,transparent 100%);
@@ -233,7 +256,7 @@ section::after{
 /* ── S4 PIN (FONDAMENTA) ── */
 #s4-wrap{position:relative}
 #s4{
-  height:100vh;display:flex;align-items:center;justify-content:center;
+  height:100dvh;display:flex;align-items:center;justify-content:center;
   background:var(--bg);
 }
 #s4 .section-bg img{opacity:.35}
@@ -248,7 +271,7 @@ section::after{
 /* ── S5 PRECISIONE (PIN DUAL) ── */
 #s5-wrap{position:relative}
 #s5-sticky{
-  position:sticky;top:0;height:100vh;display:grid;
+  position:sticky;top:0;height:100dvh;display:grid;
   grid-template-columns:1fr 1fr;overflow:hidden;
 }
 #s5-left{position:relative;overflow:hidden}
@@ -266,8 +289,8 @@ section::after{
   width:1px;background:var(--outline);
 }
 .progress-line::after{
-  content:'';position:absolute;top:0;left:0;width:100%;
-  background:var(--accent);height:var(--h,0%);transition:height .1s;
+  content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+  background:var(--accent);transform:scaleY(var(--h,0));transform-origin:top;transition:transform .1s;
 }
 .s5-panel{
   position:absolute;inset:0;display:flex;flex-direction:column;
@@ -285,10 +308,10 @@ section::after{
   font-family:var(--f-mono);font-size:12px;color:var(--muted);
   line-height:2;max-width:440px;border-left:1px solid var(--accent);padding-left:20px;
 }
-.s5-scroll-panels{height:300vh}
+.s5-scroll-panels{height:300dvh}
 
 /* ── S6 FILOSOFIA ── */
-#s6{height:100vh;display:flex;align-items:center;justify-content:center}
+#s6{height:100dvh;display:flex;align-items:center;justify-content:center}
 #s6 .overlay{
   position:absolute;inset:0;z-index:1;
   background:rgba(3,3,3,.6);
@@ -378,14 +401,14 @@ footer{
   .nav-links{ display:none; }
   .nav-burger{ display:flex; }
 
-  #hero{ height:100svh; }
+  #hero{ height:100dvh; }
   .hero-title{ font-size:clamp(52px,11vw,90px); }
   .hero-sub{ max-width:100%; }
 
-  #s1{ height:auto; min-height:80vh; }
-  #s2{ height:auto; min-height:80vh; }
-  #s3{ min-height:80vh; }
-  #s6{ height:auto; min-height:80vh; }
+  #s1{ height:auto; min-height:80dvh; }
+  #s2{ height:auto; min-height:80dvh; }
+  #s3{ min-height:80dvh; }
+  #s6{ height:auto; min-height:80dvh; }
 
   .center-card{ padding:40px 32px; max-width:90vw; }
   .bracket-card{ width:min(440px,88vw); padding:32px; }
@@ -412,7 +435,7 @@ footer{
 @media(max-width:767px){
   :root{ --margin-h:24px; }
 
-  #hero{ height:100svh; }
+  #hero{ height:100dvh; }
   .hero-title{ font-size:clamp(48px,13vw,80px); }
 
   #s1,#s2,#s3,#s6{ min-height:80vw; }
@@ -432,15 +455,15 @@ footer{
   nav{ height:56px; padding:0 20px; }
   .nav-logo{ font-size:18px; }
 
-  #hero{ height:100svh; }
+  #hero{ height:100dvh; }
   .hero-title{ font-size:clamp(44px,14vw,72px); }
   .hero-sub{ font-size:11px; max-width:100%; padding-left:14px; }
   .scroll-cue{ bottom:28px; }
 
-  #s1{ height:auto; min-height:75vh; }
-  #s2{ height:auto; min-height:75vh; }
-  #s3{ min-height:75vh; }
-  #s6{ height:auto; min-height:75vh; }
+  #s1{ height:auto; min-height:75dvh; }
+  #s2{ height:auto; min-height:75dvh; }
+  #s3{ min-height:75dvh; }
+  #s6{ height:auto; min-height:75dvh; }
 
   /* Overlay riadattati su asse verticale per mobile portrait */
   #s1 .overlay{
@@ -530,16 +553,20 @@ footer{
   margin-top:36px; overflow:visible;
 }
 .ld-bar-fill{
-  height:100%; width:0%;
+  height:100%; width:100%;
   background:#E60000;
+  transform:scaleX(0); transform-origin:left;
+}
+.ld-bar-glow-wrap{
+  position:absolute; top:-4px; left:0; width:100%; height:9px;
+  transform:translate3d(-100%,0,0);
+  pointer-events:none; overflow:visible;
 }
 .ld-bar-glow{
-  position:absolute; top:-4px; left:0%;
-  width:24px; height:9px;
+  position:absolute; right:-12px; top:0;
+  width:24px; height:100%;
   background:radial-gradient(ellipse at center,rgba(230,0,0,0.9) 0%,transparent 70%);
-  transform:translateX(-50%);
   opacity:0; transition:opacity 0.3s;
-  pointer-events:none;
 }
 .ld-meta{
   display:flex; justify-content:space-between; align-items:center;
@@ -571,7 +598,7 @@ footer{
     <div class="ld-logo" id="ld-logo">OVERLINE</div>
     <div class="ld-bar-wrap">
       <div class="ld-bar-fill" id="ld-fill"></div>
-      <div class="ld-bar-glow" id="ld-glow"></div>
+      <div class="ld-bar-glow-wrap" id="ld-glow-wrap"><div class="ld-bar-glow" id="ld-glow"></div></div>
     </div>
     <div class="ld-meta">
       <span class="ld-pct" id="ld-pct">0%</span>
@@ -595,10 +622,10 @@ footer{
   <div class="bg"><img src="immage/tavolo.webp" alt="Tavolo da braccio di ferro Overline" fetchpriority="high" decoding="async"/></div>
   <div class="hero-content">
     <h1 class="hero-title">
-      <span class="reveal-wrap"><span class="reveal-line">NIENTE</span></span>
-      <span class="reveal-wrap"><span class="reveal-line">SUPERFLUO.</span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line">NIENTE</span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line">SUPERFLUO.</span></span>
     </h1>
-    <p class="hero-sub">Design essenziale, metallo e precisione.<br>Il braccio di ferro nella sua espressione piu pulita.</p>
+    <p class="hero-sub io-reveal">Design essenziale, metallo e precisione.<br>Il braccio di ferro nella sua espressione piu pulita.</p>
   </div>
   <div class="scroll-cue"><div class="line"></div><span>SCOPRI OVERLINE</span></div>
 </header>
@@ -608,10 +635,10 @@ footer{
   <div class="section-inner" style="padding:0 var(--margin-h);max-width:600px">
     <div class="label-tag"><span class="dot"></span>MATERIALI</div>
     <h2 class="s-title">
-      <span class="reveal-wrap"><span class="reveal-line">QUESTIONE DI</span></span>
-      <span class="reveal-wrap"><span class="reveal-line">DETTAGLI</span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line">QUESTIONE DI</span></span>
+      <span class="reveal-wrap"><span class="reveal-line io-reveal-line" style="transition-delay:0.1s">DETTAGLI</span></span>
     </h2>
-    <div class="spec-card">
+    <div class="spec-card io-reveal">
       <strong>ECOPELLE PREMIUM</strong>
       <p>Superficie anti-scivolo cucita a mano. Resistenza all'usura: oltre 50.000 cicli.</p>
       <p class="spec-note">Ecopelle premium e cuciture artigianali. Il massimo del grip, fatto per durare.</p>
@@ -624,8 +651,8 @@ footer{
   <div class="section-inner" style="display:flex;align-items:center;justify-content:center;height:100%">
     <div class="center-card">
       <div class="big-title">
-        <span class="reveal-wrap"><span class="reveal-line">MOVIMENTO</span></span>
-        <span class="reveal-wrap"><span class="reveal-line">COSTANTE.</span></span>
+        <span class="reveal-wrap"><span class="reveal-line io-reveal-line">MOVIMENTO</span></span>
+        <span class="reveal-wrap"><span class="reveal-line io-reveal-line" style="transition-delay:0.1s">COSTANTE.</span></span>
       </div>
       <p>Struttura massiccia. Cuscinetti fluidi.<br>La forza arriva esattamente dove deve arrivare.</p>
     </div>
@@ -635,7 +662,7 @@ footer{
   <div class="section-bg"><img src="immage/pulley.webp" alt="Meccanismo di trazione Overline" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="section-inner">
-    <div class="bracket-card">
+    <div class="bracket-card io-reveal">
       <div class="label-tag"><span class="dot"></span>STRUTTURA</div>
       <h2>FATTO PER<br>DURARE.</h2>
       <p>La vera qualita si misura nel tempo. Attrezzatura costruita per non cedere mai, allenamento dopo allenamento.</p>
@@ -646,7 +673,7 @@ footer{
 <section id="s4">
   <div class="section-bg"><img src="immage/bach.webp" alt="Finitura acciaio Overline" decoding="async"/></div>
   <div class="overlay"></div>
-  <div class="pin-title">LA TUA FORZA.<br><span>LA NOSTRA BASE.</span></div>
+  <div class="pin-title io-reveal">LA TUA FORZA.<br><span>LA NOSTRA BASE.</span></div>
 </section>
 </div>
 <div class="s5-scroll-panels">
@@ -664,8 +691,8 @@ footer{
   <div class="section-bg"><img src="immage/Sfondo.webp" alt="Sfondo filosofia Overline" decoding="async"/></div>
   <div class="overlay"></div>
   <div class="philosophy-inner">
-    <span class="section-label">LA NOSTRA FILOSOFIA</span>
-    <div class="quote-card">
+    <span class="section-label io-reveal">LA NOSTRA FILOSOFIA</span>
+    <div class="quote-card io-reveal" style="transition-delay:0.15s">
       <p>Costruiamo attrezzatura per chi non cerca sconti sulla fatica. Dalla stampa 3D delle maniglie all'acciaio dei tavoli, ogni pezzo che esce da qui ha un solo scopo: non deluderti quando sei al limite.</p>
       <div class="quote-author"><div class="dot"></div><span>OVERLINE - FATTO COME DIO COMANDA</span></div>
     </div>
@@ -695,10 +722,15 @@ lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add((t) => lenis.raf(t * 1000));
 gsap.ticker.lagSmoothing(0);
 
-// Progress bar
-lenis.on('scroll', ({progress}) => {
-  document.getElementById('progress').style.width = (progress*100)+'%';
-});
+// Progress bar con requestAnimationFrame
+let progressTarget = 0;
+lenis.on('scroll', ({progress}) => { progressTarget = progress; });
+function updateProgress() {
+  const p = document.getElementById('progress');
+  if(p) p.style.transform = `scaleX(${progressTarget})`;
+  requestAnimationFrame(updateProgress);
+}
+requestAnimationFrame(updateProgress);
 
 /* ── PRELOADER ── */
 async function preload() {
@@ -717,30 +749,42 @@ async function preload() {
     'VERIFICA STRUTTURA...', 'OTTIMIZZAZIONE...', 'PRONTO.'
   ];
 
+  const ldGlowWrap = document.getElementById('ld-glow-wrap');
+
   setTimeout(() => { ldGlow.style.opacity = '1'; }, 900);
 
   function animateBar() {
     displayPct += (targetPct - displayPct) * 0.06;
     const pct = Math.min(displayPct, 100);
-    ldFill.style.width = pct.toFixed(2) + '%';
-    ldGlow.style.left  = pct.toFixed(2) + '%';
+    ldFill.style.transform = `scaleX(${pct / 100})`;
+    ldGlowWrap.style.transform = `translate3d(${pct - 100}%, 0, 0)`;
     ldPct.textContent  = Math.round(pct) + '%';
     ldStatus.textContent = STATUSES[Math.min(Math.floor(pct / 20), 4)];
     rafId = requestAnimationFrame(animateBar);
   }
   rafId = requestAnimationFrame(animateBar);
 
-  // Tracciamento risorse
+  // Tracciamento risorse: True Cache Preloading
   const imgs = Array.from(document.images);
+  const bgImages = [];
+  document.querySelectorAll('*').forEach(el => {
+    const bg = window.getComputedStyle(el).backgroundImage;
+    if (bg && bg !== 'none' && bg.includes('url(')) {
+      bgImages.push(bg.slice(5, -2).replace(/["']/g, ""));
+    }
+  });
+  
+  const allUrls = [...new Set([...imgs.map(i => i.src), ...bgImages])].filter(Boolean);
   let loaded = 0;
-  const total = imgs.length + 1;
+  const total = allUrls.length + 1;
   const updateTarget = () => { loaded++; targetPct = Math.round((loaded / total) * 100); };
 
-  const imgPromises = imgs.map(img => {
-    if (img.complete && img.naturalWidth > 0) { updateTarget(); return Promise.resolve(); }
+  const imgPromises = allUrls.map(url => {
     return new Promise(r => {
-      img.addEventListener('load',  () => { updateTarget(); r(); }, { once: true });
-      img.addEventListener('error', () => { updateTarget(); r(); }, { once: true });
+      const img = new Image();
+      img.onload = () => { updateTarget(); r(); };
+      img.onerror = () => { updateTarget(); r(); };
+      img.src = url;
     });
   });
   const fontPromise = document.fonts.ready.then(updateTarget);
@@ -754,14 +798,14 @@ async function preload() {
   });
 
   cancelAnimationFrame(rafId);
-  ldFill.style.width = '100%';
-  ldGlow.style.left  = '100%';
+  ldFill.style.transform = 'scaleX(1)';
+  ldGlowWrap.style.transform = 'translate3d(0, 0, 0)';
   ldPct.textContent  = '100%';
   ldStatus.textContent = 'PRONTO.';
 
   // Flash glow finale
-  ldGlow.style.transition = 'width 0.3s ease, opacity 0.4s ease';
-  ldGlow.style.width = '100%';
+  ldGlowWrap.style.transition = 'transform 0.3s ease';
+  ldGlowWrap.style.transform = 'translate3d(0, 0, 0)';
   await new Promise(r => setTimeout(r, 400));
 
   // Curtain split exit
@@ -773,25 +817,22 @@ async function preload() {
 /* ── ANIMAZIONI ── */
 function initAnimations() {
 
-  // Init all reveal-lines hidden via GSAP
-  gsap.set('.reveal-line', { y: 80, opacity: 0 });
+  // Intersection Observer for CSS Reveals
+  const revealObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.io-reveal, .io-reveal-line').forEach(el => {
+    revealObserver.observe(el);
+  });
 
   // NAV entrance
   gsap.to('#nav', { opacity:1, y:0, duration:1.2, ease:'power4.out', delay:0.3 });
-
-  // Hero text reveal
-  gsap.fromTo('#hero .reveal-line',
-    { y: 80, opacity: 0 },
-    { y: 0, opacity: 1, duration: 1.4, ease: 'expo.out', stagger: 0.2, delay: 0.7 }
-  );
-  gsap.fromTo('#hero .hero-sub',
-    { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 1.1, ease: 'power4.out', delay: 1.6 }
-  );
-  gsap.fromTo('#hero .scroll-cue',
-    { opacity: 0 },
-    { opacity: 1, duration: 1, ease: 'power2.out', delay: 2.4 }
-  );
 
   // Hero BG parallax
   gsap.to('#hero .bg', {
@@ -800,43 +841,19 @@ function initAnimations() {
     scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:1 }
   });
 
-  // S1 reveal
-  gsap.fromTo('#s1 .reveal-line',
-    { y: 80, opacity: 0 },
-    { y: 0, opacity: 1, duration: 1.2, ease: 'expo.out', stagger: 0.16,
-      scrollTrigger: { trigger: '#s1', start: 'top 75%', toggleActions: 'play none none none' }
-    }
-  );
-  gsap.to('#s1 .spec-card', {
-    opacity:1, y:0, duration:1, ease:'power4.out',
-    scrollTrigger:{ trigger:'#s1 .spec-card', start:'top 80%', toggleActions:'play none none none' }
-  });
+  // S1 reveal parallax
   gsap.to('#s1 .section-bg img', {
     yPercent:15, ease:'none',
     scrollTrigger:{ trigger:'#s1', start:'top bottom', end:'bottom top', scrub:1.5 }
   });
 
-  // S2 reveal
-  gsap.fromTo('#s2 .reveal-line',
-    { y: 80, opacity: 0 },
-    { y: 0, opacity: 1, duration: 1.3, ease: 'expo.out', stagger: 0.18,
-      scrollTrigger: { trigger: '#s2', start: 'top 70%', toggleActions: 'play none none none' }
-    }
-  );
-
-  // S3 bracket card
-  gsap.fromTo('#s3 .bracket-card',
-    { opacity:0, x:60 },
-    { opacity:1, x:0, duration:1.2, ease:'expo.out',
-      scrollTrigger:{ trigger:'#s3', start:'top 70%', toggleActions:'play none none none' }
-    }
-  );
+  // S3 bracket card parallax
   gsap.to('#s3 .section-bg img', {
     yPercent:12, ease:'none',
     scrollTrigger:{ trigger:'#s3', start:'top bottom', end:'bottom top', scrub:1 }
   });
 
-  // S4 pin + scale title
+  // S4 pin
   ScrollTrigger.create({
     trigger:'#s4-wrap', pin:'#s4', start:'top top', end:'+=100%',
     scrub:1.5, anticipatePin:1,
@@ -844,10 +861,6 @@ function initAnimations() {
       const s = 0.7 + self.progress * 0.3;
       document.querySelector('#s4 .pin-title').style.transform = 'scale('+s+')';
     }
-  });
-  gsap.from('#s4 .pin-title', {
-    opacity:0, duration:1,
-    scrollTrigger:{ trigger:'#s4', start:'top 80%', toggleActions:'play none none none' }
   });
 
   // S5 dual-panel
@@ -887,23 +900,9 @@ function initAnimations() {
     scrub: true,
     onUpdate: (self) => {
       const p = document.querySelector('#s5-prog');
-      if(p) p.style.setProperty('--h', (self.progress * 100) + '%');
+      if(p) p.style.setProperty('--h', self.progress);
     }
   });
-
-  // S6 quote
-  gsap.fromTo('#s6 .quote-card',
-    { opacity:0, y:50 },
-    { opacity:1, y:0, duration:1.4, ease:'expo.out',
-      scrollTrigger:{ trigger:'#s6', start:'top 70%', toggleActions:'play none none none' }
-    }
-  );
-  gsap.fromTo('#s6 .section-label',
-    { opacity:0, letterSpacing:'0.4em' },
-    { opacity:1, letterSpacing:'0.2em', duration:1.2, ease:'power4.out',
-      scrollTrigger:{ trigger:'#s6', start:'top 75%', toggleActions:'play none none none' }
-    }
-  );
 
   // Footer watermark parallax
   gsap.to('.footer-watermark', {
