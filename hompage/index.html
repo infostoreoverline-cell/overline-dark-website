@@ -166,7 +166,7 @@ nav{
 /* ── SECTION BASE ── */
 section{position:relative;width:100%;overflow:hidden}
 .section-bg{position:absolute;inset:0;z-index:0}
-.section-bg img{width:100%;height:100%;object-fit:cover}
+.section-bg img{width:100%;height:100%;object-fit:cover;will-change:transform}
 
 /* ── SECTION EDGE FADES (transizioni morbide tra sezioni) ── */
 section::before,section::after,#hero::before{
@@ -276,7 +276,7 @@ section::after{
   grid-template-columns:1fr 1fr;overflow:hidden;
 }
 #s5-left{position:relative;overflow:hidden}
-#s5-left img{width:100%;height:100%;object-fit:cover;opacity:.7}
+#s5-left img{width:100%;height:100%;object-fit:cover;opacity:.7;will-change:transform}
 #s5-left::after{
   content:'';position:absolute;inset:0;
   background:linear-gradient(to right,transparent 60%,var(--bg) 100%);
@@ -782,9 +782,13 @@ async function preload() {
   const imgPromises = allUrls.map(url => {
     return new Promise(r => {
       const img = new Image();
-      img.onload = () => { updateTarget(); r(); };
-      img.onerror = () => { updateTarget(); r(); };
       img.src = url;
+      if(img.decode) {
+        img.decode().then(() => { updateTarget(); r(); }).catch(() => { updateTarget(); r(); });
+      } else {
+        img.onload = () => { updateTarget(); r(); };
+        img.onerror = () => { updateTarget(); r(); };
+      }
     });
   });
   const fontPromise = document.fonts.ready.then(updateTarget);
