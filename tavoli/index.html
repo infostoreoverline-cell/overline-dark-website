@@ -1198,13 +1198,13 @@ const revealObserver = new IntersectionObserver((entries, obs) => {
   entries.forEach(entry => {
     if(entry.isIntersecting) {
       entry.target.classList.add('is-visible');
+      entry.target.querySelectorAll('.io-reveal-line').forEach(child => child.classList.add('is-visible'));
       obs.unobserve(entry.target);
     }
   });
 }, { threshold: 0.1 });
 
 const ioTargets = [
-  '.io-reveal-line',
   '#hero-eyebrow', '#hero-sub', '#scroll-cue',
   '#s2-card', '#s3-card', '#s4-card', '#s5-title', '#s5-body',
   '#s6-data',
@@ -1213,6 +1213,10 @@ const ioTargets = [
 
 document.querySelectorAll(ioTargets).forEach(el => {
   el.classList.add('io-reveal');
+  revealObserver.observe(el);
+});
+
+document.querySelectorAll('.reveal-wrap').forEach(el => {
   revealObserver.observe(el);
 });
 
