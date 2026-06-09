@@ -30,6 +30,7 @@
   --ease-expo:   cubic-bezier(0.16,1,0.3,1);
   --ease-heavy:  cubic-bezier(0.76,0,0.24,1);
   --margin-h:    64px;
+  --img-brightness: 0.85;
 }
 
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
@@ -38,7 +39,7 @@ body {
   background:var(--bg); color:var(--text);
   font-family:var(--f-body); overflow-x:hidden;
 }
-img { display:block; max-width:100%; }
+img { display:block; max-width:100%; filter:brightness(var(--img-brightness)); }
 a { color:inherit; text-decoration:none; }
 button { cursor:pointer; background:none; border:none; font:inherit; color:inherit; }
 
@@ -265,7 +266,7 @@ section::after {
 }
 #s2 .section-bg img {
   opacity:.85;
-  filter: grayscale(20%) brightness(1.05) contrast(1.1);
+  filter: grayscale(20%) brightness(var(--img-brightness)) contrast(1.1);
 }
 #s2 .overlay {
   position:absolute; inset:0; z-index:1;
@@ -297,7 +298,7 @@ section::after {
 }
 #s3 .section-bg img {
   opacity:.85;
-  filter: saturate(0.5) brightness(1.05) contrast(1.15);
+  filter: saturate(0.5) brightness(var(--img-brightness)) contrast(1.15);
 }
 #s3 .overlay {
   position:absolute; inset:0; z-index:1;
@@ -329,7 +330,7 @@ section::after {
 }
 #s4 .section-bg img {
   opacity:.85;
-  filter: grayscale(15%) brightness(1.05) contrast(1.15);
+  filter: grayscale(15%) brightness(var(--img-brightness)) contrast(1.15);
   object-position: center 80%;
 }
 #s4 .overlay {
@@ -362,7 +363,7 @@ section::after {
 }
 #s5-img img {
   width:100%; height:100%; object-fit:cover;
-  filter: brightness(1.1) contrast(1.1);
+  filter: brightness(var(--img-brightness)) contrast(1.1);
 }
 #s5-img::after {
   content:''; position:absolute; inset:0;
@@ -387,7 +388,7 @@ section::after {
 #s6 { height:100dvh; display:flex; align-items:center; }
 #s6 .section-bg img {
   opacity:.9;
-  filter: brightness(1.05) contrast(1.2) saturate(0.7);
+  filter: brightness(var(--img-brightness)) contrast(1.2) saturate(0.7);
 }
 #s6 .overlay {
   position:absolute; inset:0; z-index:1;
@@ -429,7 +430,7 @@ section::after {
 .product-bg .p-img {
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   opacity:0; transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1);
-  filter: brightness(1.05) contrast(1.15);
+  filter: brightness(var(--img-brightness)) contrast(1.15);
   will-change: transform, opacity;
 }
 .product-bg .p-img.visible { opacity:0.95; }
@@ -663,8 +664,7 @@ footer {
 
 /* ══ 991px — Tablet verticale ══ */
 @media(max-width:991px){
-  img { filter: brightness(1.25); }
-  :root{ --margin-h:32px; }
+  :root{ --margin-h:32px; --img-brightness: 1.35; }
   nav{ padding:0 32px; }
   .nav-links{ display:none; }
   .nav-burger{ display:flex; }
@@ -676,7 +676,7 @@ footer {
   /* S5 — grid 1 col, immagine assoluta come sfondo, testo overlay */
   #s5{ grid-template-columns:1fr; height:auto; min-height:80dvh; }
   #s5-img{ position:absolute; inset:0; z-index:0; }
-  #s5-img img{ opacity:0.85; filter:brightness(1.05) contrast(1.1); }
+  #s5-img img{ opacity:0.85; filter:brightness(var(--img-brightness)) contrast(1.1); }
   #s5-img::after{
     background:
       linear-gradient(to right, transparent 40%, var(--bg) 100%),
@@ -766,7 +766,7 @@ footer {
   /* S5 — colonna singola su smartphone */
   #s5{ grid-template-columns:1fr; height:auto; min-height:70dvh; }
   #s5-img{ position:absolute; inset:0; z-index:0; }
-  #s5-img img{ opacity:0.8; filter:brightness(1.0) contrast(1.1); }
+  #s5-img img{ opacity:0.8; filter:brightness(var(--img-brightness)) contrast(1.1); }
   #s5-img::after{
     background:
       linear-gradient(to bottom, var(--bg) 0%, transparent 25%),
