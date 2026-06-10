@@ -814,29 +814,14 @@ footer {
 #loader::after { bottom:0; height:51%; transform:translateY(0); }
 #loader.exit::before{ transform:translateY(-100%); }
 #loader.exit::after { transform:translateY(100%); }
-.ld-corner{
-  position:absolute; width:28px; height:28px;
-  opacity:0; animation:ldCornerIn 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
-}
-.ld-corner.tl{ top:28px; left:28px; border-top:1px solid rgba(255,255,255,0.2); border-left:1px solid rgba(255,255,255,0.2); }
-.ld-corner.tr{ top:28px; right:28px; border-top:1px solid rgba(255,255,255,0.2); border-right:1px solid rgba(255,255,255,0.2); }
-.ld-corner.bl{ bottom:28px; left:28px; border-bottom:1px solid rgba(255,255,255,0.2); border-left:1px solid rgba(255,255,255,0.2); }
-.ld-corner.br{ bottom:28px; right:28px; border-bottom:1px solid rgba(255,255,255,0.2); border-right:1px solid rgba(255,255,255,0.2); }
-@keyframes ldCornerIn{
-  from{ opacity:0; transform:scale(0.5); }
-  to  { opacity:1; transform:scale(1); }
-}
+/* Removed ld-corner styles */
 .ld-center{
   position:relative; z-index:2;
   display:flex; flex-direction:column; align-items:center;
   transition:opacity 0.2s ease;
 }
 #loader.exit .ld-center{ opacity:0; }
-.ld-eyebrow{
-  font-family:var(--f-mono); font-size:9px; letter-spacing:0.3em;
-  color:#E60000; text-transform:uppercase; margin-bottom:20px;
-  opacity:0; animation:ldFadeUp 0.6s ease 0.3s forwards;
-}
+/* Removed ld-eyebrow styles */
 .ld-logo{
   font-family:var(--f-display); font-size:clamp(40px,10vw,72px);
   letter-spacing:0.15em; color:#ffffff;
@@ -869,18 +854,13 @@ footer {
   opacity:0; transition:opacity 0.3s;
 }
 .ld-meta{
-  display:flex; justify-content:space-between; align-items:center;
+  display:flex; justify-content:center; align-items:center;
   width:min(260px,55vw); margin-top:14px;
   opacity:0; animation:ldFadeUp 0.5s ease 0.9s forwards;
 }
 .ld-pct{
   font-family:var(--f-display); font-size:12px;
   color:#E60000; letter-spacing:0.1em;
-}
-.ld-status{
-  font-family:var(--f-mono); font-size:9px;
-  color:rgba(255,255,255,0.3); letter-spacing:0.18em;
-  text-transform:uppercase;
 }
 @keyframes ldFadeUp{
   from{ opacity:0; transform:translateY(8px); }
@@ -890,12 +870,7 @@ footer {
 </head>
 <body>
 <div id="loader">
-  <div class="ld-corner tl"></div>
-  <div class="ld-corner tr"></div>
-  <div class="ld-corner bl"></div>
-  <div class="ld-corner br"></div>
   <div class="ld-center">
-    <div class="ld-eyebrow">SISTEMA DI CARICAMENTO</div>
     <div class="ld-logo" id="ld-logo">OVERLINE</div>
     <div class="ld-bar-wrap">
       <div class="ld-bar-fill" id="ld-fill"></div>
@@ -903,7 +878,6 @@ footer {
     </div>
     <div class="ld-meta">
       <span class="ld-pct" id="ld-pct">0%</span>
-      <span class="ld-status" id="ld-status">INIZIALIZZAZIONE...</span>
     </div>
   </div>
 </div>
@@ -1399,29 +1373,27 @@ async function preload() {
   const ldFill   = document.getElementById('ld-fill');
   const ldGlow   = document.getElementById('ld-glow');
   const ldPct    = document.getElementById('ld-pct');
-  const ldStatus = document.getElementById('ld-status');
   const ldLogo   = document.getElementById('ld-logo');
   const loader   = document.getElementById('loader');
+  const ldGlowWrap = document.getElementById('ld-glow-wrap');
 
   // Barra interpolata via rAF
   let targetPct  = 0;
   let displayPct = 0;
   let rafId;
-  const STATUSES = [
-    'INIZIALIZZAZIONE...', 'CARICAMENTO ASSETS...',
-    'VERIFICA STRUTTURA...', 'OTTIMIZZAZIONE...', 'PRONTO.'
-  ];
 
-  const ldGlowWrap = document.getElementById('ld-glow-wrap');
+
   setTimeout(() => { ldGlow.style.opacity = '1'; }, 900);
 
-  function animateBar() {
-    displayPct += (targetPct - displayPct) * 0.06;
-    const pct = Math.min(displayPct, 100);
+  const animateBar = () => {
+    displayPct += (targetPct - displayPct) * 0.1;
+    if (displayPct > 99.5) displayPct = 100;
+    
+    const pct = displayPct;
+    if(pct > 5) ldGlow.style.opacity = 1;
     ldFill.style.transform = `scaleX(${pct / 100})`;
     ldGlowWrap.style.transform = `translate3d(${pct - 100}%, 0, 0)`;
     ldPct.textContent  = Math.round(pct) + '%';
-    ldStatus.textContent = STATUSES[Math.min(Math.floor(pct / 20), 4)];
     rafId = requestAnimationFrame(animateBar);
   }
   rafId = requestAnimationFrame(animateBar);
@@ -1470,7 +1442,6 @@ async function preload() {
   ldFill.style.transform = 'scaleX(1)';
   ldGlowWrap.style.transform = 'translate3d(0, 0, 0)';
   ldPct.textContent  = '100%';
-  ldStatus.textContent = 'PRONTO.';
 
   // Flash glow finale
   ldGlowWrap.style.transition = 'transform 0.3s ease';
